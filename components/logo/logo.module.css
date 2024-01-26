@@ -1,0 +1,30 @@
+.wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.target {
+  position: relative;
+}
+
+.arrow {
+  position: absolute;
+
+  opacity: 0;
+}
+
+.animate {
+  animation: shootArrow 0.3s ease-in-out forwards;
+}
+
+@keyframes shootArrow {
+  0% {
+    transform: translateX(200%) translateY(-13%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(65%) translateY(-13%);
+    opacity: 1;
+  }
+}

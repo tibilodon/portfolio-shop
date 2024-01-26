@@ -1,0 +1,38 @@
+.wrap {
+  border: 2px solid black;
+}
+.menu {
+  gap: 0.1em;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  filter: invert(13%) sepia(8%) saturate(4057%) hue-rotate(191deg)
+    brightness(92%) contrast(84%);
+}
+.sidebar {
+  width: 60%;
+  position: absolute;
+  /* top: 0; */
+  display: grid;
+  grid-template-columns: 0fr;
+  transition: 400ms ease-in-out;
+}
+
+.active {
+  width: 100%;
+  grid-template-columns: 1fr;
+}
+
+.items {
+  top: 0;
+  height: 10em;
+  border: 2px solid red;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  background: gray;
+  width: 60%;
+  overflow: hidden;
+}
