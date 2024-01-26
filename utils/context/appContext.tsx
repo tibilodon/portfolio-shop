@@ -12,6 +12,8 @@ type AppContextProviderType = {
   setSidebar: Dispatch<SetStateAction<boolean>>;
   animate: boolean;
   setAnimate: Dispatch<SetStateAction<boolean>>;
+  header: string;
+  setHeader: Dispatch<SetStateAction<string>>;
   //   loggedIn: boolean;
   //   setLoggedIn: Dispatch<SetStateAction<boolean>>;
   //   color: string;
@@ -23,6 +25,8 @@ const AppContext = createContext<AppContextProviderType>({
   setSidebar: () => {}, // Should have the same signature as the actual setSidebar function
   animate: false,
   setAnimate: () => {},
+  header: "",
+  setHeader: () => {},
   //   loggedIn: false,
   //   setLoggedIn: () => {},
   //   color: "green",
@@ -49,11 +53,15 @@ type ProviderProps = {
 export default function AppContextProvider({ children }: ProviderProps) {
   const [sidebar, setSidebar] = useState(false);
   const [animate, setAnimate] = useState(false);
+  const [header, setHeader] = useState("");
+
   //   const [loggedIn, setLoggedIn] = useState(false);
   //   const [color, setColor] = useState(data[0].color!!);
 
   return (
-    <AppContext.Provider value={{ sidebar, setSidebar, animate, setAnimate }}>
+    <AppContext.Provider
+      value={{ sidebar, setSidebar, animate, setAnimate, header, setHeader }}
+    >
       <>{children}</>
     </AppContext.Provider>
   );

@@ -4,19 +4,19 @@
   height: 100vh;
   position: fixed;
   top: 0;
-  left: 0;
+  
+  left: -10em;
   opacity: 0;
   transition: width 0.3s ease, opacity 0.3s ease;
-  background: rgba(0, 0, 0, 0.5);
 }
 
 .active {
   width: 100%;
   opacity: 1;
+  left: 0;
 }
 .items {
-  border: 2px solid green;
-
+  border: 2px solid black;
   height: 100vh;
   background-color: var(--white);
   width: 80%;
@@ -37,13 +37,10 @@
 }
 
 .menuItems {
-  position: relative;
-  cursor: pointer;
   width: 100%;
   padding: 1em;
   height: 100%;
-  /* border-bottom: 1px solid rgba(0, 0, 0, 0.2); */
-  border: 2px solid red;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -7,7 +7,7 @@
   height: 4em;
   display: flex;
   align-items: center;
-  padding: 1em;
+  /* padding: 1em; */
 }
 .icon {
   /* border: 2px solid black; */

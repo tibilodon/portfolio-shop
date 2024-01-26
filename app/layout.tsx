@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/bars/navbar/Navbar";
 import AppContextProvider from "@/utils/context/appContext";
 import TestWrap from "@/components/wrapper/Wrapper";
+import Sidebar from "@/components/sidebar/Sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AppContextProvider>
+          <Sidebar />
           <Navbar />
           <div className="children">
             <TestWrap>{children}</TestWrap>

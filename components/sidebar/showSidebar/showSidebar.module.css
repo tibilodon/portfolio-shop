@@ -1,0 +1,13 @@
+.wrap {
+  gap: 0.1em;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-left: 1em;
+  border: 2px solid red;
+}
+
+.icon {
+  filter: invert(13%) sepia(8%) saturate(4057%) hue-rotate(191deg)
+    brightness(92%) contrast(84%);
+}

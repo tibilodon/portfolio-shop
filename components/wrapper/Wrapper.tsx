@@ -19,6 +19,7 @@ const TestWrap: React.FunctionComponent<Props> = ({ children }) => {
 
   return (
     <div
+      className={styles.wrap}
       onScroll={scrollHandler}
       onWheel={scrollHandler}
       onClick={sidebarHandler}

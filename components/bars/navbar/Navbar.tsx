@@ -3,13 +3,14 @@ import Image from "next/image";
 import TestButton from "@/components/test/TestButton";
 import Logo from "@/components/logo/Logo";
 import Sidebar from "@/components/sidebar/Sidebar";
+import ShowSidebar from "@/components/sidebar/showSidebar/ShowSidebar";
 type Props = {};
 
 const Navbar: React.FunctionComponent = (props: Props) => {
   return (
     <>
       <div className={styles.wrap}>
-        <Sidebar />
+        <ShowSidebar />
         <span className={styles.icon}>
           <Logo />
         </span>
