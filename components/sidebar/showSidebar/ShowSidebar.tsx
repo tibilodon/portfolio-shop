@@ -7,7 +7,6 @@ type Props = {};
 
 const ShowSidebar: React.FunctionComponent<Props> = () => {
   const { sidebar, setSidebar } = useAppProvider();
-  console.log("sidebar", sidebar);
 
   return (
     <>

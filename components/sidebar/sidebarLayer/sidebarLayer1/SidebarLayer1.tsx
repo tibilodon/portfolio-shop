@@ -1,28 +1,30 @@
 "use client";
-import styles from "./test.module.css";
+import styles from "../sidebarLayer.module.css";
+import { useState } from "react";
 import { useAppProvider } from "@/utils/context/appContext";
 import Image from "next/image";
 import closeIcon from "@/public/icons/close.svg";
-
-import { useState } from "react";
-import SidebarLayer from "./SidebarLayer";
+import SidebarLayer2 from "../sidebarLayer2/SidebarLayer2";
+import NavForwardButton from "@/components/buttons/navigate/forward/NavForwardButton";
+import NavBackButton from "@/components/buttons/navigate/back/NavBackButton";
 
 type Props = {
-  state: boolean;
-  setState: React.Dispatch<React.SetStateAction<any>>;
   items: string[];
-  altItems?: string[];
+  altItems?: any;
 };
 
-const TestSidebar: React.FunctionComponent<Props> = ({
-  state,
-  setState,
-  items,
-  altItems,
-}) => {
-  const { sidebar, setSidebar, header, setHeader } = useAppProvider();
+const SidebarLayer1: React.FunctionComponent<Props> = ({ items, altItems }) => {
+  const {
+    setSidebar,
+    sidebarLayer,
+    setSidebarLayer,
+    setSidebarLayer2,
+    header,
+    setHeader,
+  } = useAppProvider();
 
   const onCloseHandler = () => {
+    setSidebarLayer(false);
     setSidebar(false);
 
     //in order to be in sync with CSS transition
@@ -31,15 +33,28 @@ const TestSidebar: React.FunctionComponent<Props> = ({
     }, 300);
   };
 
-  const [testState, setTestState] = useState<boolean>(false);
+  const onCollapseHandler = () => {
+    setSidebarLayer(false);
+    setTimeout(() => {
+      setHeader("");
+    }, 300);
+  };
+
+  const [current, setCurrent] = useState();
 
   const handler = (item: string) => {
-    setTestState(true);
-    setHeader(item);
+    setCurrent(altItems[item]);
+    setSidebarLayer2(true);
+    setTimeout(() => {
+      setHeader(item);
+    }, 100);
   };
+
   return (
     <div
-      className={state ? `${styles.sidebar} ${styles.active}` : styles.sidebar}
+      className={
+        sidebarLayer ? `${styles.sidebar} ${styles.active}` : styles.sidebar
+      }
     >
       <div className={styles.items}>
         <span
@@ -48,7 +63,7 @@ const TestSidebar: React.FunctionComponent<Props> = ({
         >
           {header && (
             <>
-              <span onClick={() => setState(false)}> {"<"}</span>
+              <NavBackButton handler={onCollapseHandler} />
               <h3>{header}</h3>
             </>
           )}
@@ -70,18 +85,15 @@ const TestSidebar: React.FunctionComponent<Props> = ({
                 className={styles.menuItems}
               >
                 {item}
-                <span>{">"}</span>
+                <NavForwardButton />
               </div>
             );
           })}
       </div>
-      <SidebarLayer
-        items={altItems}
-        setState={setTestState}
-        state={testState}
-      />
+
+      <SidebarLayer2 items={current} />
     </div>
   );
 };
 
-export default TestSidebar;
+export default SidebarLayer1;

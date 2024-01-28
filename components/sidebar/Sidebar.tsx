@@ -6,21 +6,24 @@ import closeIcon from "@/public/icons/close.svg";
 import TestSidebar from "../test/TestSidebar";
 
 import { useState } from "react";
+import SidebarLayer1 from "./sidebarLayer/sidebarLayer1/SidebarLayer1";
+
+import jsonData from "@/utils/dataset.json";
+import data from "@/utils/data";
+import NavForwardButton from "../buttons/navigate/forward/NavForwardButton";
 type Props = {};
 
 const Sidebar: React.FunctionComponent<Props> = () => {
-  const { sidebar, setSidebar, header, setHeader } = useAppProvider();
-
-  // const [header, setHeader] = useState<string>("");
-
-  const items = [
-    "Bows",
-    "Bow Accessories",
-    "Arrows",
-    "Shooting accessories",
-    "Targets",
-    "Tools",
-  ];
+  const {
+    sidebar,
+    setSidebar,
+    header,
+    setHeader,
+    prevHeader,
+    setPrevHeader,
+    sidebarLayer,
+    setSidebarLayer,
+  } = useAppProvider();
 
   const onCloseHandler = () => {
     setSidebar(false);
@@ -31,13 +34,23 @@ const Sidebar: React.FunctionComponent<Props> = () => {
     }, 300);
   };
 
-  const [test, setTest] = useState(false);
-  const [test2, setTest2] = useState(false);
+  const [bowState, setBowState] = useState(false);
+  const [bowAccessoriesState, setBowAccessoriesState] = useState(false);
 
+  const j: any = jsonData;
+  const [current, setCurrent] = useState<any>(Object.keys(j["Bows"]));
+  const [alt, setAlt] = useState();
+  // const [mainHeader, setMainHeader] = useState("");
+  console.log(alt);
   const testHandler = (item: string) => {
-    console.log("clicked");
-    setTest(true);
+    if (item && j[item]) {
+      setCurrent(Object.keys(j[item]));
+      setAlt(j[item]);
+    }
+    setSidebarLayer(true);
+    // setTest(true);
     setHeader(item);
+    setPrevHeader(item);
   };
 
   return (
@@ -62,7 +75,7 @@ const Sidebar: React.FunctionComponent<Props> = () => {
               alt="close icon"
             />
           </span>
-          {items.map((item, i) => {
+          {Object.keys(jsonData).map((item, i) => {
             return (
               <div
                 onClick={() => testHandler(item)}
@@ -70,15 +83,38 @@ const Sidebar: React.FunctionComponent<Props> = () => {
                 className={styles.menuItems}
               >
                 <span>{item}</span>
-                <span>{">"}</span>
+                <NavForwardButton />
               </div>
             );
           })}
         </div>
       </div>
-      <TestSidebar state={test} setState={setTest} />
-      <TestSidebar state={test2} setState={setTest2} />
-      {/* </div> */}
+      {/* <TestSidebar
+        state={test}
+        setState={setTest}
+        items={items1}
+        altItems={items2}
+      />
+      <TestSidebar
+        items={items1}
+        state={test2}
+        setState={setTest2}
+        altItems={items2}
+      /> */}
+      {/* <SidebarLayer1
+        state={bowState}
+        setState={setBowState}
+        items={items1}
+        altItems={items2}
+      /> */}
+
+      <SidebarLayer1
+        // state={bowState}
+        // setState={setBowState}
+        items={current}
+        altItems={alt}
+        // mainHeader={mainHeader}
+      />
     </>
   );
 };

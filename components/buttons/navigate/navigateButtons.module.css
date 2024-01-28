@@ -1,0 +1,5 @@
+.wrap {
+  cursor: pointer;
+  display: flex;
+  padding: 0.2em;
+}

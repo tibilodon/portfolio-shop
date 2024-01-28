@@ -1,28 +1,28 @@
 "use client";
-import styles from "./test.module.css";
+import styles from "../sidebarLayer.module.css";
 import { useAppProvider } from "@/utils/context/appContext";
 import Image from "next/image";
 import closeIcon from "@/public/icons/close.svg";
-
-import { useState } from "react";
-import SidebarLayer from "./SidebarLayer";
+import NavBackButton from "@/components/buttons/navigate/back/NavBackButton";
 
 type Props = {
-  state: boolean;
-  setState: React.Dispatch<React.SetStateAction<any>>;
-  items: string[];
-  altItems?: string[];
+  items?: string[];
 };
 
-const TestSidebar: React.FunctionComponent<Props> = ({
-  state,
-  setState,
-  items,
-  altItems,
-}) => {
-  const { sidebar, setSidebar, header, setHeader } = useAppProvider();
+const SidebarLayer2: React.FunctionComponent<Props> = ({ items }) => {
+  const {
+    setSidebar,
+    setSidebarLayer,
+    sidebarLayer2,
+    setSidebarLayer2,
+    header,
+    setHeader,
+    prevHeader,
+  } = useAppProvider();
 
   const onCloseHandler = () => {
+    setSidebarLayer(false);
+    setSidebarLayer2(false);
     setSidebar(false);
 
     //in order to be in sync with CSS transition
@@ -31,15 +31,16 @@ const TestSidebar: React.FunctionComponent<Props> = ({
     }, 300);
   };
 
-  const [testState, setTestState] = useState<boolean>(false);
-
-  const handler = (item: string) => {
-    setTestState(true);
-    setHeader(item);
+  const onCollapseHandler = () => {
+    setSidebarLayer2(false);
+    setHeader(prevHeader);
   };
+
   return (
     <div
-      className={state ? `${styles.sidebar} ${styles.active}` : styles.sidebar}
+      className={
+        sidebarLayer2 ? `${styles.sidebar} ${styles.active}` : styles.sidebar
+      }
     >
       <div className={styles.items}>
         <span
@@ -48,7 +49,7 @@ const TestSidebar: React.FunctionComponent<Props> = ({
         >
           {header && (
             <>
-              <span onClick={() => setState(false)}> {"<"}</span>
+              <NavBackButton handler={onCollapseHandler} />
               <h3>{header}</h3>
             </>
           )}
@@ -65,23 +66,18 @@ const TestSidebar: React.FunctionComponent<Props> = ({
           items.map((item, i) => {
             return (
               <div
-                onClick={() => handler(item)}
+                onClick={() => setHeader(item)}
                 key={i}
                 className={styles.menuItems}
               >
                 {item}
-                <span>{">"}</span>
+                {/* <span>{">"}</span> */}
               </div>
             );
           })}
       </div>
-      <SidebarLayer
-        items={altItems}
-        setState={setTestState}
-        state={testState}
-      />
     </div>
   );
 };
 
-export default TestSidebar;
+export default SidebarLayer2;

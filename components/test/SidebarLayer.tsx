@@ -5,20 +5,17 @@ import Image from "next/image";
 import closeIcon from "@/public/icons/close.svg";
 
 import { useState } from "react";
-import SidebarLayer from "./SidebarLayer";
 
 type Props = {
   state: boolean;
   setState: React.Dispatch<React.SetStateAction<any>>;
-  items: string[];
-  altItems?: string[];
+  items?: string[];
 };
 
-const TestSidebar: React.FunctionComponent<Props> = ({
+const SidebarLayer: React.FunctionComponent<Props> = ({
   state,
   setState,
   items,
-  altItems,
 }) => {
   const { sidebar, setSidebar, header, setHeader } = useAppProvider();
 
@@ -32,11 +29,6 @@ const TestSidebar: React.FunctionComponent<Props> = ({
   };
 
   const [testState, setTestState] = useState<boolean>(false);
-
-  const handler = (item: string) => {
-    setTestState(true);
-    setHeader(item);
-  };
   return (
     <div
       className={state ? `${styles.sidebar} ${styles.active}` : styles.sidebar}
@@ -65,7 +57,7 @@ const TestSidebar: React.FunctionComponent<Props> = ({
           items.map((item, i) => {
             return (
               <div
-                onClick={() => handler(item)}
+                onClick={() => setHeader(item)}
                 key={i}
                 className={styles.menuItems}
               >
@@ -75,13 +67,13 @@ const TestSidebar: React.FunctionComponent<Props> = ({
             );
           })}
       </div>
-      <SidebarLayer
-        items={altItems}
+      {/* <SidebarLayer
+        altItems={altItems}
         setState={setTestState}
         state={testState}
-      />
+      /> */}
     </div>
   );
 };
 
-export default TestSidebar;
+export default SidebarLayer;
