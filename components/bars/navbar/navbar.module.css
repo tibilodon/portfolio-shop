@@ -6,6 +6,7 @@
   /* overflow: hidden; */
   height: 4em;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   /* padding: 1em; */
 }
@@ -23,4 +24,12 @@
   top: 0;
   z-index: -1;
   /* top: 1em; */
+}
+.items {
+  margin-right: 1em;
+  display: flex;
+  gap: 1em;
+}
+.item {
+  filter: var(--icon_color);
 }

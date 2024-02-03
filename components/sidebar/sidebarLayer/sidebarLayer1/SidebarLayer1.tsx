@@ -1,12 +1,11 @@
 "use client";
-import styles from "../sidebarLayer.module.css";
+import styles from "../../sidebar.module.css";
 import { useState } from "react";
 import { useAppProvider } from "@/utils/context/appContext";
-import Image from "next/image";
-import closeIcon from "@/public/icons/close.svg";
 import SidebarLayer2 from "../sidebarLayer2/SidebarLayer2";
 import NavForwardButton from "@/components/buttons/navigate/forward/NavForwardButton";
 import NavBackButton from "@/components/buttons/navigate/back/NavBackButton";
+import NavCloseButton from "@/components/buttons/navigate/close/NavCloseButton";
 
 type Props = {
   items: string[];
@@ -53,7 +52,9 @@ const SidebarLayer1: React.FunctionComponent<Props> = ({ items, altItems }) => {
   return (
     <div
       className={
-        sidebarLayer ? `${styles.sidebar} ${styles.active}` : styles.sidebar
+        sidebarLayer
+          ? `${styles.sidebar} ${styles.layer} ${styles.active}`
+          : styles.sidebar
       }
     >
       <div className={styles.items}>
@@ -67,14 +68,8 @@ const SidebarLayer1: React.FunctionComponent<Props> = ({ items, altItems }) => {
               <h3>{header}</h3>
             </>
           )}
-          <Image
-            onClick={onCloseHandler}
-            className={styles.icon}
-            src={closeIcon}
-            width={30}
-            height={30}
-            alt="close icon"
-          />
+
+          <NavCloseButton handler={onCloseHandler} />
         </span>
         {items &&
           items.map((item, i) => {

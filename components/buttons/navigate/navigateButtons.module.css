@@ -2,4 +2,5 @@
   cursor: pointer;
   display: flex;
   padding: 0.2em;
+  filter: var(--icon_color);
 }

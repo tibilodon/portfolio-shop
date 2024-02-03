@@ -1,35 +1,110 @@
 {
   "Bows": {
-    "Compound Bows": [
-      "Target Compound Bows",
-      "Hunting Compound Bows",
-      "Compound Bow Packages"
-    ],
-    "Recurve Bows": [
-      "Take-Down Recurve Risers",
-      "Take-down Recurve Limbs",
-      "Take-down Recurve Bows",
-      "One-piece Recurve Bows",
-      "Recurve Bow Packages"
-    ]
+    "Compound Bows": {
+      "Target Compound Bows": {
+        "targ comp bow 1": {
+          "id": 1,
+          "stock": 3,
+          "desc": "this is some desc for the item"
+        },
+        "targ com bow 2": {
+          "id": 2,
+          "stock": 4,
+          "desc": "this is some desc for the item"
+        }
+      },
+      "Hunting Compound Bows": {
+        "hunt comp bow 1": {
+          "id": 3,
+          "stock": 3,
+          "desc": "this is some desc for the item"
+        },
+        "hunt com bow 2": {
+          "id": 4,
+          "stock": 4,
+          "desc": "this is some desc for the item"
+        }
+      }
+    },
+    "Recurve Bows": {
+      "Take-Down Recurve Risers": {
+        "takedown recurve risers 1": {
+          "id": 5,
+          "stock": 3,
+          "desc": "this is some desc for the item"
+        },
+        "takedown recurve risers 2": {
+          "id": 6,
+          "stock": 4,
+          "desc": "this is some desc for the item"
+        }
+      },
+      "Take-down Recurve Limbs": {
+        "takedown recurve limbs 1": {
+          "id": 7,
+          "stock": 3,
+          "desc": "this is some desc for the item"
+        },
+        "takedown recurve limbs 2": {
+          "id": 8,
+          "stock": 4,
+          "desc": "this is some desc for the item"
+        }
+      }
+    }
   },
   "Bow Accessories": {
-    "Sights & Scopes": [
-      "Hunting Sights",
-      "Recurve Target Sights",
-      "Sight Accessories",
-      "Scope Lenses",
-      "Scope Accessories"
-    ],
-    "Arrow Rests, Plungers & Clickers": [
-      "Compound Hunting Rests",
-      "Recurve & Finger Rests",
-      "Traditional Rests & Rugs",
-      "Arrow Rest Accessories",
-      "Plungers",
-      "Plunger Accessories",
-      "Clickers",
-      "Clicker Accessories"
-    ]
+    "Sights & Scopes": {
+      "Hunting Sights": {
+        "hunt sights 1": {
+          "id": 9,
+          "stock": 3,
+          "desc": "this is some desc for the item"
+        },
+        "hunt sights 2": {
+          "id": 10,
+          "stock": 4,
+          "desc": "this is some desc for the item"
+        }
+      },
+      "Recurve Target Sights": {
+        "recurve sights 1": {
+          "id": 11,
+          "stock": 3,
+          "desc": "this is some desc for the item"
+        },
+        "recurve sights 2": {
+          "id": 12,
+          "stock": 4,
+          "desc": "this is some desc for the item"
+        }
+      }
+    },
+    "Arrow Rests, Plungers & Clickers": {
+      "Compound Hunting Rests": {
+        "comp hunt rest 1": {
+          "id": 13,
+          "stock": 3,
+          "desc": "this is some desc for the item"
+        },
+        "comp hunt rest 2": {
+          "id": 14,
+          "stock": 4,
+          "desc": "this is some desc for the item"
+        }
+      },
+      "Recurve & Finger Rests": {
+        "finger rest 1": {
+          "id": 15,
+          "stock": 3,
+          "desc": "this is some desc for the item"
+        },
+        "finger rest 2": {
+          "id": 16,
+          "stock": 4,
+          "desc": "this is some desc for the item"
+        }
+      }
+    }
   }
 }

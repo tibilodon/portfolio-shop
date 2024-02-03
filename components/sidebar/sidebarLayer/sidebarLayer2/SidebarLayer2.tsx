@@ -1,15 +1,18 @@
 "use client";
-import styles from "../sidebarLayer.module.css";
+// import styles from "../sidebarLayer.module.css";
+import styles from "../../sidebar.module.css";
+
 import { useAppProvider } from "@/utils/context/appContext";
-import Image from "next/image";
-import closeIcon from "@/public/icons/close.svg";
 import NavBackButton from "@/components/buttons/navigate/back/NavBackButton";
+import NavCloseButton from "@/components/buttons/navigate/close/NavCloseButton";
+import { useRouter } from "next/navigation";
 
 type Props = {
-  items?: string[];
+  items?: any;
 };
 
 const SidebarLayer2: React.FunctionComponent<Props> = ({ items }) => {
+  const router = useRouter();
   const {
     setSidebar,
     setSidebarLayer,
@@ -36,10 +39,20 @@ const SidebarLayer2: React.FunctionComponent<Props> = ({ items }) => {
     setHeader(prevHeader);
   };
 
+  const linker = (item: string) => {
+    const regex = /\s]+/g;
+    const page = item.replaceAll(regex, "-");
+    console.log("page", page);
+    onCloseHandler();
+    router.push("/collections/" + item);
+  };
+
   return (
     <div
       className={
-        sidebarLayer2 ? `${styles.sidebar} ${styles.active}` : styles.sidebar
+        sidebarLayer2
+          ? `${styles.sidebar} ${styles.layer} ${styles.active}`
+          : styles.sidebar
       }
     >
       <div className={styles.items}>
@@ -53,25 +66,17 @@ const SidebarLayer2: React.FunctionComponent<Props> = ({ items }) => {
               <h3>{header}</h3>
             </>
           )}
-          <Image
-            onClick={onCloseHandler}
-            className={styles.icon}
-            src={closeIcon}
-            width={30}
-            height={30}
-            alt="close icon"
-          />
+          <NavCloseButton handler={onCloseHandler} />
         </span>
         {items &&
-          items.map((item, i) => {
+          Object.keys(items).map((item: any, i: number) => {
             return (
               <div
-                onClick={() => setHeader(item)}
+                onClick={() => linker(item)}
                 key={i}
                 className={styles.menuItems}
               >
                 {item}
-                {/* <span>{">"}</span> */}
               </div>
             );
           })}

@@ -1,0 +1,31 @@
+.wrap {
+  display: flex;
+  cursor: pointer;
+}
+
+.cartItemsWrap {
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+  text-align: center;
+  /* justify-content: center; */
+  position: absolute;
+  top: 0.3em;
+  right: 0.3em;
+  border-radius: 50%;
+  background-color: var(--black);
+  width: 20px;
+  height: 20px;
+
+  /* text-align: center; */
+}
+.cartItemsWrap span {
+  color: var(--white);
+  font-size: small;
+}
+/* .item {
+} */
+.item {
+  filter: var(--icon_color);
+  /* border: 2px solid red; */
+}

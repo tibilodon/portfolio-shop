@@ -4,10 +4,9 @@
   align-items: center;
   cursor: pointer;
   margin-left: 1em;
-  border: 2px solid red;
+  /* z-index: 24; */
 }
 
 .icon {
-  filter: invert(13%) sepia(8%) saturate(4057%) hue-rotate(191deg)
-    brightness(92%) contrast(84%);
+  filter: var(--icon_color);
 }

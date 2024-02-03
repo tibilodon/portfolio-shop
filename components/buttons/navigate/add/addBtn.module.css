@@ -1,0 +1,6 @@
+.wrap {
+  border: 2px solid black;
+  display: flex;
+  width: 4em;
+  cursor: pointer;
+}

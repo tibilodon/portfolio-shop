@@ -5,7 +5,9 @@ import {
   useState,
   Dispatch,
   SetStateAction,
+  useEffect,
 } from "react";
+// import { getCookie, getAllCookies } from "../cookieActions";
 
 type AppContextProviderType = {
   sidebar: boolean;
@@ -20,6 +22,11 @@ type AppContextProviderType = {
   setHeader: Dispatch<SetStateAction<string>>;
   prevHeader: string;
   setPrevHeader: Dispatch<SetStateAction<string>>;
+  cart: boolean;
+  setCart: Dispatch<SetStateAction<boolean>>;
+  // cartItems: number;
+  // setCartItems: Dispatch<SetStateAction<number>>;
+
   //   loggedIn: boolean;
   //   setLoggedIn: Dispatch<SetStateAction<boolean>>;
   //   color: string;
@@ -45,10 +52,10 @@ const AppContext = createContext<AppContextProviderType>({
   setHeader: () => {},
   prevHeader: "",
   setPrevHeader: () => {},
-  //   loggedIn: false,
-  //   setLoggedIn: () => {},
-  //   color: "green",
-  //   setColor: () => {},
+  cart: false,
+  setCart: () => {},
+  // cartItems: 0,
+  // setCartItems: () => {},
 });
 
 export const useAppProvider = () => {
@@ -69,6 +76,8 @@ type ProviderProps = {
   //   }[];
 };
 export default function AppContextProvider({ children }: ProviderProps) {
+  //check cookies for order and set cartItems
+
   const [sidebar, setSidebar] = useState(false);
   const [animate, setAnimate] = useState(false);
   const [header, setHeader] = useState("");
@@ -77,8 +86,24 @@ export default function AppContextProvider({ children }: ProviderProps) {
   const [sidebarLayer, setSidebarLayer] = useState(false);
   const [sidebarLayer2, setSidebarLayer2] = useState(false);
 
-  //   const [loggedIn, setLoggedIn] = useState(false);
-  //   const [color, setColor] = useState(data[0].color!!);
+  const [cart, setCart] = useState(false);
+  // const [cartItems, setCartItems] = useState(0);
+
+  // useEffect(() => {
+  //   const inCart = async () => {
+  //     const data = await getAllCookies();
+  //     if (data) {
+  //       console.log("thy cookies", data);
+  //       let addedToCart: number = 0;
+  //       for (let index = 0; index < data.length; index++) {
+  //         const obj = data[index];
+  //         addedToCart = addedToCart + Number(obj.value);
+  //       }
+  //       setCartItems(addedToCart);
+  //     }
+  //   };
+  //   inCart();
+  // }, []);
 
   return (
     <AppContext.Provider
@@ -95,6 +120,10 @@ export default function AppContextProvider({ children }: ProviderProps) {
         setHeader,
         prevHeader,
         setPrevHeader,
+        cart,
+        setCart,
+        // cartItems,
+        // setCartItems,
       }}
     >
       <>{children}</>
