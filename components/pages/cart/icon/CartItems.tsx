@@ -1,9 +1,6 @@
 //must remain a server component
-
 import styles from "./cartIcon.module.css";
-// import { useAppProvider } from "@/utils/context/appContext";
 import { getCookie, getAllCookies } from "@/utils/cookieActions";
-// import { useEffect } from "react";
 
 type Props = {};
 

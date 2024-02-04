@@ -4,11 +4,10 @@ import { useAppProvider } from "@/utils/context/appContext";
 type Props = {};
 
 const TestButton = (props: Props) => {
-  const { setCartItems } = useAppProvider();
+  // const { setCartItems } = useAppProvider();
   return (
     <>
-      <button onClick={() => setCartItems(12)}>set cart</button>
-      <button onClick={() => setCartItems(0)}>reset</button>
+      <button>good on ya</button>
     </>
   );
 };

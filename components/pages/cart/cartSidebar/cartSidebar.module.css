@@ -1,14 +1,13 @@
 .sidebar {
-  z-index: 24;
+  z-index: 23;
   width: 0;
   height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
-
   opacity: 0;
-
-  transition: width 0.2s ease, opacity 0.2s ease;
+  transition: 0.3s;
+  overflow: hidden;
   background: rgba(0, 0, 0, 0.5);
 }
 
@@ -16,8 +15,13 @@
   width: 100%;
   opacity: 1;
 }
+.layer {
+  background: none;
+}
 
 .items {
+  border: 2px solid green;
+
   height: 100vh;
   background-color: var(--white);
   width: 80%;
@@ -28,6 +32,7 @@
 }
 .header {
   padding: 1em;
+
   min-height: 4em;
   width: 100%;
   display: flex;
@@ -40,11 +45,16 @@
   position: relative;
   cursor: pointer;
   width: 100%;
-  padding: 1em;
+  padding: 2em;
   height: 100%;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  /* border: 2px solid red; */
+  /* border-bottom: 1px solid rgba(0, 0, 0, 0.2); */
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  /* justify-content: space-around; */
   align-items: center;
+  justify-content: center;
+  gap: 1em;
+  /* border: 3px solid red; */
+}
+.cartItems {
 }

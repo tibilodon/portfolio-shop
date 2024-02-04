@@ -1,16 +1,40 @@
+"use client";
 import styles from "./cartItem.module.css";
-import icon from "@/public/icons/empty_target.svg";
-import Image from "next/image";
+
+import { deleteCookie } from "@/utils/cookieActions";
+import { useRouter } from "next/navigation";
 
 type Props = {
-  testData?: string;
+  product: string;
+  value: string;
 };
+const CartItem: React.FunctionComponent<Props> = ({ product, value }) => {
+  const router = useRouter();
+  const test = () => {
+    deleteCookie(product);
+    router.refresh();
+  };
 
-const CartItem: React.FunctionComponent<Props> = ({ testData }) => {
   return (
     <>
-      {testData ? (
-        <>{testData}</>
+      <div className={styles.wrap}>
+        <h5>{product}</h5>
+        <h5>{value}</h5>
+        <button onClick={test}>test delete</button>
+      </div>
+      {/* {title ? (
+        <>
+          <h1>
+            {data.map((items, i: number) => {
+              return (
+                <div key={i}>
+                  <h5>product name: {items.name}</h5>
+                  <h5>value: {items.value}</h5>
+                </div>
+              );
+            })}
+          </h1>
+        </>
       ) : (
         <div className={styles.wrap}>
           <Image
@@ -22,7 +46,7 @@ const CartItem: React.FunctionComponent<Props> = ({ testData }) => {
           />
           <h1>A kosár üres</h1>
         </div>
-      )}
+      )} */}
     </>
   );
 };
