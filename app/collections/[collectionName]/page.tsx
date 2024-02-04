@@ -27,16 +27,13 @@ export default function CollectionDetails({
   };
 
   const pageData = findKey(data, keyName);
-  console.log("Pagedata", pageData);
-  const test = (): void => {
-    console.log("add to carrt");
-  };
+  // console.log("Pagedata", pageData);
 
   return (
     <>
       <div className={styles.wrap}>
         <h1>collection details</h1>
-        <h1>{params.collectionName}</h1>
+        {/* <h1>{params.collectionName}</h1> */}
         <h1>{keyName}</h1>
         {Object.keys(pageData).map((item, i) => {
           return (
@@ -51,7 +48,7 @@ export default function CollectionDetails({
                       <p>stock: {val.stock}</p>
                       <p>desc: {val.desc}</p>
                     </Link>
-                    <AddBtn id={val.id} />
+                    <AddBtn id={item} />
                   </div>
                 );
               })}

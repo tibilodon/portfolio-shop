@@ -25,7 +25,7 @@ const CartIcon: React.FunctionComponent<Props> = () => {
         {/*Cart items counter*/}
         {/* <CartItems /> */}
       </div>
-      <CartSidebar testData="" />
+      {/* <CartSidebar testData="" /> */}
     </>
   );
 };
