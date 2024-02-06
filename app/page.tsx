@@ -2,6 +2,7 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import PlaceholderP from "@/components/test/PlaceholderP";
 import TestButton from "@/components/test/TestButton";
+import ImageSlider from "@/components/pages/home/imageSlider/ImageSlider";
 
 export default function Home() {
   return (
@@ -11,9 +12,10 @@ export default function Home() {
           <h1>hello world</h1>
           <TestButton />
         </span>
+        {/* <PlaceholderP />
         <PlaceholderP />
-        <PlaceholderP />
-        <PlaceholderP />
+        <PlaceholderP /> */}
+        <ImageSlider />
       </div>
     </>
   );

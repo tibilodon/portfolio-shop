@@ -1,4 +1,6 @@
 import data from "@/utils/dataset.json";
+import TempBtn from "./TempBtn";
+import AddToCartBtn from "@/components/buttons/navigate/addToCart/AddToCartBtn";
 
 export default function ProductDetails({
   params,
@@ -23,7 +25,6 @@ export default function ProductDetails({
   };
 
   const pageData = findKey(data, keyName);
-  console.log("Pagedata", pageData);
 
   return (
     <>
@@ -35,6 +36,12 @@ export default function ProductDetails({
             <p>{item.id}</p>
             <p>{item.stock}</p>
             <p>{item.desc}</p>
+            <AddToCartBtn
+              productName={keyName}
+              stock={item.stock}
+              variant_1={item.variant_1}
+              variant_2={item.variant_2}
+            />
           </span>
         );
       })}

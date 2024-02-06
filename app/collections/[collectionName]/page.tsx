@@ -1,7 +1,11 @@
 import styles from "./page.module.css";
 import data from "@/utils/dataset.json";
 import Link from "next/link";
-import AddBtn from "@/components/buttons/navigate/add/AddBtn";
+import AddToCartBtn from "@/components/buttons/navigate/addToCart/AddToCartBtn";
+import Image from "next/image";
+
+import noImg from "@/static/no_image.svg";
+
 export default function CollectionDetails({
   params,
 }: {
@@ -27,7 +31,6 @@ export default function CollectionDetails({
   };
 
   const pageData = findKey(data, keyName);
-  // console.log("Pagedata", pageData);
 
   return (
     <>
@@ -47,8 +50,31 @@ export default function CollectionDetails({
                       <p>id: {val.id}</p>
                       <p>stock: {val.stock}</p>
                       <p>desc: {val.desc}</p>
+                      {val.img ? (
+                        <Image
+                          width={50}
+                          height={50}
+                          src={val.img}
+                          alt={`image of ${item}`}
+                        />
+                      ) : (
+                        <span className={styles.noImage}>
+                          <Image
+                            width={50}
+                            height={50}
+                            src={noImg}
+                            alt={`image of ${item}`}
+                          />
+                          <strong>No Image available</strong>
+                        </span>
+                      )}
                     </Link>
-                    <AddBtn id={item} />
+                    <AddToCartBtn
+                      productName={item}
+                      variant_1={val.variant_1}
+                      variant_2={val.variant_2}
+                      stock={Number(val.stock)}
+                    />
                   </div>
                 );
               })}

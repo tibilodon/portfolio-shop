@@ -7,13 +7,25 @@ import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
 export default async function Cart() {
   const data: RequestCookie[] | undefined = await getAllCookies();
+  const filteredData = [];
+
+  if (data?.length) {
+    for (let index = 0; index < data.length; index++) {
+      const element = data[index];
+      if (element.name !== "tnc") {
+        filteredData.push(element);
+      }
+    }
+  }
+
+  //TODO:add else LOADING
 
   return (
     <>
-      {data?.length ? (
+      {filteredData?.length ? (
         <div className={styles.wrap}>
           <h1>hello cart</h1>
-          {data.map(({ name, value }, i: number) => {
+          {filteredData.map(({ name, value }, i: number) => {
             return (
               <div key={i} className={styles.items}>
                 <h1>{name}</h1>

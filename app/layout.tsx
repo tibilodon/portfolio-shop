@@ -7,8 +7,7 @@ import Wrapper from "@/components/wrapper/Wrapper";
 import Sidebar from "@/components/sidebar/Sidebar";
 import CartSidebar from "@/components/pages/cart/cartSidebar/CartSidebar";
 import { getCookie, getAllCookies } from "@/utils/cookieActions";
-import jData from "@/utils/dataset.json";
-
+import CookieBar from "@/components/bars/cookie/CookieBar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -18,8 +17,15 @@ export const metadata: Metadata = {
 
 const getData = async () => {
   const data = await getAllCookies();
-  if (data) {
-    return data;
+  if (data?.length) {
+    const newData = [];
+    for (let index = 0; index < data.length; index++) {
+      const element = data[index];
+      if (element.name !== "tnc") {
+        newData.push(element);
+      }
+    }
+    return newData;
   }
   return;
 };
@@ -41,6 +47,7 @@ export default async function RootLayout({
           <div className="children">
             <Wrapper>{children}</Wrapper>
           </div>
+          <CookieBar />
         </AppContextProvider>
       </body>
     </html>
