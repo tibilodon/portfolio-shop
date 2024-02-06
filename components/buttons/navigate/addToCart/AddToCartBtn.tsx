@@ -11,6 +11,8 @@ type Props = {
   variant_1: string;
   variant_2: string;
   stock: number;
+  selectedAmount?: number;
+  selectedVariant?: string;
 };
 
 //TODO: handle variants
@@ -19,9 +21,13 @@ const AddToCartBtn: React.FunctionComponent<Props> = ({
   variant_1,
   variant_2,
   stock,
+  selectedAmount,
+  selectedVariant,
 }) => {
-  const [selected, setSelected] = useState(variant_1);
-  const [amount, setAmount] = useState(1);
+  const [selected, setSelected] = useState(
+    selectedVariant ? selectedVariant : variant_1
+  );
+  const [amount, setAmount] = useState(selectedAmount ? selectedAmount : 1);
   const variantsArray = [variant_1, variant_2];
 
   //cookie: productName__variant:value

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import highLightData from "@/utils/highlights.json";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import AddToCartBtn from "@/components/buttons/navigate/addToCart/AddToCartBtn";
 type Props = {
   //   desc: string;
 };
@@ -15,14 +16,24 @@ const ImageSlider: React.FunctionComponent<Props> = () => {
   const [desc, setDesc] = useState<string>("");
   const [freeze, setFreeze] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
+  const [amount, setAmount] = useState(0);
+  const [variant, setVariant] = useState("");
+  const [variant_2, setVariant_2] = useState("");
+
+  const amountData: number[] = [];
+  const variantData: string[] = [];
+  const variantData_2: string[] = [];
 
   const currentBg: React.CSSProperties = {
     backgroundImage: `url(${bg})`,
   };
   const images: string[] = [];
   const descs: string[] = [];
-  Object.values(highLightData).map((item) => {
+  Object.values(highLightData).map((item: any) => {
     images.push(item.img);
+    amountData.push(Number(item.stock));
+    variantData.push(item.variant_1);
+    variantData_2.push(item.variant_2);
   });
   Object.keys(highLightData).map((prod) => descs.push(prod));
 
@@ -34,9 +45,15 @@ const ImageSlider: React.FunctionComponent<Props> = () => {
         if (images && images.indexOf(bg) !== images.length - 1) {
           setBg(images[value]);
           setDesc(descs[value]);
+          setAmount(amountData[value]);
+          setVariant(variantData[value]);
+          setVariant_2(variantData_2[value]);
         } else {
           setBg(images[0]);
           setDesc(descs[0]);
+          setAmount(amountData[0]);
+          setVariant(variantData[0]);
+          setVariant_2(variantData_2[0]);
         }
       }, 3000);
       // Clean up the interval when the component unmounts or when a dependency changes
@@ -92,6 +109,13 @@ const ImageSlider: React.FunctionComponent<Props> = () => {
           </div>
           <h3>{desc}</h3>
         </Link>
+        <AddToCartBtn
+          productName={desc}
+          stock={amount}
+          variant_1={variant}
+          variant_2={variant_2}
+        />
+
         <button disabled={isDisabled} onClick={handler}>
           next
         </button>
