@@ -1,0 +1,9 @@
+.wrap {
+  position: fixed;
+  bottom: 0;
+  background-color: var(--white);
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  box-shadow: rgba(99, 99, 99, 0.2) 40px 2px 8px 0px;
+}

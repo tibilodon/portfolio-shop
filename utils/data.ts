@@ -1,3 +1,5 @@
+import tt from "@/public/icons/cart.svg";
+
 const data = [
   {
     Bows: {

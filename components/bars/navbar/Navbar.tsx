@@ -17,13 +17,14 @@ const Navbar: React.FunctionComponent = (props: Props) => {
           <Logo />
         </span>
         <div className={styles.items}>
-          <Image
+          {/*v2 only*/}
+          {/* <Image
             height={25}
             width={25}
             className={styles.item}
             src={account}
             alt="person icon"
-          />
+          /> */}
 
           <CartIcon />
           <CartItems />
