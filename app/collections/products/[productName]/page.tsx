@@ -1,6 +1,8 @@
 import data from "@/utils/dataset.json";
-import TempBtn from "./TempBtn";
 import AddToCartBtn from "@/components/buttons/navigate/addToCart/AddToCartBtn";
+import Image from "next/image";
+import NoImage from "@/components/error/noImage/NoImage";
+import { findKey } from "@/utils/helpers";
 
 export default function ProductDetails({
   params,
@@ -8,21 +10,6 @@ export default function ProductDetails({
   params: { productName: string };
 }) {
   const keyName = params.productName.replace(/%20/g, " ").replace(/%26/g, "&");
-
-  const findKey = (obj: any, targetKey: string) => {
-    if (obj && typeof obj === "object") {
-      if (targetKey in obj) {
-        return obj[targetKey];
-      }
-      for (const key in obj) {
-        const result: any = findKey(obj[key], targetKey);
-        if (result !== undefined) {
-          return result;
-        }
-      }
-    }
-    return undefined;
-  };
 
   const pageData = findKey(data, keyName);
 
@@ -36,6 +23,16 @@ export default function ProductDetails({
             <p>{item.id}</p>
             <p>{item.stock}</p>
             <p>{item.desc}</p>
+            {item.img ? (
+              <Image
+                width={50}
+                height={50}
+                src={item.img}
+                alt={`image of ${keyName}`}
+              />
+            ) : (
+              <NoImage />
+            )}
             <AddToCartBtn
               productName={keyName}
               stock={item.stock}

@@ -3,8 +3,9 @@ import data from "@/utils/dataset.json";
 import Link from "next/link";
 import AddToCartBtn from "@/components/buttons/navigate/addToCart/AddToCartBtn";
 import Image from "next/image";
+import { findKey } from "@/utils/helpers";
 
-import noImg from "@/static/no_image.svg";
+import NoImage from "@/components/error/noImage/NoImage";
 
 export default function CollectionDetails({
   params,
@@ -14,21 +15,6 @@ export default function CollectionDetails({
   const keyName = params.collectionName
     .replace(/%20/g, " ")
     .replace(/%26/g, "&");
-
-  const findKey = (obj: any, targetKey: string) => {
-    if (obj && typeof obj === "object") {
-      if (targetKey in obj) {
-        return obj[targetKey];
-      }
-      for (const key in obj) {
-        const result: any = findKey(obj[key], targetKey);
-        if (result !== undefined) {
-          return result;
-        }
-      }
-    }
-    return undefined;
-  };
 
   const pageData = findKey(data, keyName);
 
@@ -58,15 +44,16 @@ export default function CollectionDetails({
                           alt={`image of ${item}`}
                         />
                       ) : (
-                        <span className={styles.noImage}>
-                          <Image
-                            width={50}
-                            height={50}
-                            src={noImg}
-                            alt={`image of ${item}`}
-                          />
-                          <strong>No Image available</strong>
-                        </span>
+                        // <span className={styles.noImage}>
+                        //   <Image
+                        //     width={50}
+                        //     height={50}
+                        //     src={noImg}
+                        //     alt={`image of ${item}`}
+                        //   />
+                        //   <strong>No Image available</strong>
+                        // </span>
+                        <NoImage />
                       )}
                     </Link>
                     <AddToCartBtn
