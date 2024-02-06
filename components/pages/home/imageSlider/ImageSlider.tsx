@@ -12,21 +12,11 @@ type Props = {
 
 const ImageSlider: React.FunctionComponent<Props> = () => {
   const router = useRouter();
-  const [bg, setBg] = useState<string>("");
-  const [desc, setDesc] = useState<string>("");
-  const [freeze, setFreeze] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [amount, setAmount] = useState(0);
-  const [variant, setVariant] = useState("");
-  const [variant_2, setVariant_2] = useState("");
 
   const amountData: number[] = [];
   const variantData: string[] = [];
   const variantData_2: string[] = [];
 
-  const currentBg: React.CSSProperties = {
-    backgroundImage: `url(${bg})`,
-  };
   const images: string[] = [];
   const descs: string[] = [];
   Object.values(highLightData).map((item: any) => {
@@ -36,6 +26,16 @@ const ImageSlider: React.FunctionComponent<Props> = () => {
     variantData_2.push(item.variant_2);
   });
   Object.keys(highLightData).map((prod) => descs.push(prod));
+  const [bg, setBg] = useState<string>(images[0]);
+  const currentBg: React.CSSProperties = {
+    backgroundImage: `url(${bg})`,
+  };
+  const [desc, setDesc] = useState<string>(descs[0]);
+  const [freeze, setFreeze] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [amount, setAmount] = useState(amountData[0]);
+  const [variant, setVariant] = useState(variantData[0]);
+  const [variant_2, setVariant_2] = useState(variantData_2[0]);
 
   //TODO:set next | prev btn disabled for the duration of the animation or 1s
   useEffect(() => {

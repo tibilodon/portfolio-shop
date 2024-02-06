@@ -14,6 +14,7 @@
           "id": 2,
           "stock": 4,
           "desc": "this is some desc for the item",
+          "img": "",
           "variant_1": "variant_1",
           "variant_2": "variant_2"
         }
@@ -31,6 +32,8 @@
           "id": 4,
           "stock": 4,
           "desc": "this is some desc for the item",
+          "img": "",
+
           "variant_1": "variant_1",
           "variant_2": "variant_2"
         }
@@ -50,6 +53,8 @@
           "id": 6,
           "stock": 4,
           "desc": "this is some desc for the item",
+          "img": "",
+
           "variant_1": "variant_1",
           "variant_2": "variant_2"
         }
@@ -67,6 +72,8 @@
           "id": 8,
           "stock": 4,
           "desc": "this is some desc for the item",
+          "img": "",
+
           "variant_1": "variant_1",
           "variant_2": "variant_2"
         }
@@ -80,6 +87,8 @@
           "id": 9,
           "stock": 3,
           "desc": "this is some desc for the item",
+          "img": "",
+
           "variant_1": "variant_1",
           "variant_2": "variant_2"
         },
@@ -87,6 +96,8 @@
           "id": 10,
           "stock": 4,
           "desc": "this is some desc for the item",
+          "img": "",
+
           "variant_1": "variant_1",
           "variant_2": "variant_2"
         }
@@ -96,6 +107,8 @@
           "id": 11,
           "stock": 3,
           "desc": "this is some desc for the item",
+          "img": "",
+
           "variant_1": "variant_1",
           "variant_2": "variant_2"
         },
@@ -103,6 +116,8 @@
           "id": 12,
           "stock": 4,
           "desc": "this is some desc for the item",
+          "img": "",
+
           "variant_1": "variant_1",
           "variant_2": "variant_2"
         }
@@ -114,6 +129,8 @@
           "id": 13,
           "stock": 3,
           "desc": "this is some desc for the item",
+          "img": "",
+
           "variant_1": "variant_1",
           "variant_2": "variant_2"
         },
@@ -121,6 +138,8 @@
           "id": 14,
           "stock": 4,
           "desc": "this is some desc for the item",
+          "img": "",
+
           "variant_1": "variant_1",
           "variant_2": "variant_2"
         }
@@ -130,6 +149,8 @@
           "id": 15,
           "stock": 3,
           "desc": "this is some desc for the item",
+          "img": "",
+
           "variant_1": "variant_1",
           "variant_2": "variant_2"
         },
@@ -137,6 +158,8 @@
           "id": 16,
           "stock": 4,
           "desc": "this is some desc for the item",
+          "img": "",
+
           "variant_1": "variant_1",
           "variant_2": "variant_2"
         }

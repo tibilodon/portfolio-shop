@@ -5,7 +5,7 @@ import AddToCartBtn from "@/components/buttons/navigate/addToCart/AddToCartBtn";
 import Image from "next/image";
 import { findKey } from "@/utils/helpers";
 
-import NoImage from "@/components/error/noImage/NoImage";
+import Images from "@/components/images/Images";
 
 export default function CollectionDetails({
   params,
@@ -29,32 +29,15 @@ export default function CollectionDetails({
             <span key={i}>
               <h3>PRODUCT: {item}</h3>
 
-              {[pageData[item]].map((val: any, j: number) => {
+              {[pageData[item]].map((val, j: number) => {
                 return (
                   <div key={j}>
                     <Link href={"/collections/products/" + item}>
                       <p>id: {val.id}</p>
                       <p>stock: {val.stock}</p>
                       <p>desc: {val.desc}</p>
-                      {val.img ? (
-                        <Image
-                          width={50}
-                          height={50}
-                          src={val.img}
-                          alt={`image of ${item}`}
-                        />
-                      ) : (
-                        // <span className={styles.noImage}>
-                        //   <Image
-                        //     width={50}
-                        //     height={50}
-                        //     src={noImg}
-                        //     alt={`image of ${item}`}
-                        //   />
-                        //   <strong>No Image available</strong>
-                        // </span>
-                        <NoImage />
-                      )}
+
+                      <Images image={val.img} alt={item} />
                     </Link>
                     <AddToCartBtn
                       productName={item}

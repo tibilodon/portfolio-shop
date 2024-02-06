@@ -1,0 +1,14 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.wrap strong {
+  position: absolute;
+  text-align: center;
+}
+.noImg {
+  opacity: 0.4;
+}
