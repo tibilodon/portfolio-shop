@@ -1,6 +1,5 @@
 "use client";
 import styles from "./cartSidebar.module.css";
-import { useState } from "react";
 import { useAppProvider } from "@/utils/context/appContext";
 import NavCloseButton from "@/components/buttons/navigate/close/NavCloseButton";
 // import icon from "@/public/icons/empty_target.svg";
@@ -9,6 +8,8 @@ import CartItem from "../cartItem/CartItem";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import EmptyCart from "../cartItem/emptyCart/EmptyCart";
 import { useRouter } from "next/navigation";
+import { filterCookieData } from "@/utils/helpers";
+import { deleteCookie } from "@/utils/cookieActions";
 
 type Props = {
   data: RequestCookie[] | undefined;
@@ -28,6 +29,21 @@ const CartSidebar: React.FunctionComponent<Props> = ({ data }) => {
     //TODO: can set context in order to "fetch" cart data
     onCloseHandler();
     router.push("/cart");
+  };
+
+  const deleteItem = (product: string) => {
+    deleteCookie(product);
+    router.refresh();
+  };
+
+  const linker = (prod: string) => {
+    const separate = filterCookieData(prod);
+    if (separate?.product) {
+      console.log("seem", separate.product);
+      router.push(`/collections/products/${separate.product}`);
+      onCloseHandler();
+    }
+    return;
   };
 
   return (
@@ -62,7 +78,12 @@ const CartSidebar: React.FunctionComponent<Props> = ({ data }) => {
               {data.map((item, i: number) => {
                 return (
                   <div key={i} className={styles.cartItems}>
-                    <CartItem product={item.name} value={item.value} />
+                    <span onClick={() => linker(item.name)}>
+                      <CartItem product={item.name} value={item.value} />
+                    </span>
+                    <button onClick={() => deleteItem(item.name)}>
+                      delete item
+                    </button>
                   </div>
                 );
               })}

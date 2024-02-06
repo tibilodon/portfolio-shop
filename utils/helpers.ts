@@ -1,5 +1,5 @@
 const filterCookieData = (data: string) => {
-  const testStr = "some product name__variant_2";
+  // const testStr = "some product name__variant_2";
   const regexPattern = /([^_]+)__(.+)/;
 
   if (data) {

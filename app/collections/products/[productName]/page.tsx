@@ -1,8 +1,7 @@
 import data from "@/utils/dataset.json";
 import AddToCartBtn from "@/components/buttons/navigate/addToCart/AddToCartBtn";
-import Image from "next/image";
-import NoImage from "@/components/error/noImage/NoImage";
 import { findKey } from "@/utils/helpers";
+import Images from "@/components/images/Images";
 
 export default function ProductDetails({
   params,
@@ -23,16 +22,8 @@ export default function ProductDetails({
             <p>{item.id}</p>
             <p>{item.stock}</p>
             <p>{item.desc}</p>
-            {item.img ? (
-              <Image
-                width={50}
-                height={50}
-                src={item.img}
-                alt={`image of ${keyName}`}
-              />
-            ) : (
-              <NoImage />
-            )}
+
+            <Images image={item.img} alt={item} />
             <AddToCartBtn
               productName={keyName}
               stock={item.stock}

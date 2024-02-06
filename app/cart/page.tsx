@@ -6,10 +6,9 @@ import dataSet from "@/utils/dataset.json";
 import { filterCookieData, findKey } from "@/utils/helpers";
 import AddToCartBtn from "@/components/buttons/navigate/addToCart/AddToCartBtn";
 import TestDel from "./TestDel";
+import Images from "@/components/images/Images";
+import Link from "next/link";
 
-//  TODO:>get data from cookies, if empty return slide-in / sidebar type empty cart page
-
-//TODO:add delete
 export default async function Cart() {
   const data: RequestCookie[] | undefined = await getAllCookies();
   const cartData = [];
@@ -27,7 +26,6 @@ export default async function Cart() {
             modData.product = separate.product;
             modData.selectedAmount = Number(element.value);
             modData.selectedVariant = separate.variant;
-            console.log("spea", modData);
             cartData.push(modData);
           }
         }
@@ -42,17 +40,23 @@ export default async function Cart() {
           {cartData.map((item, i) => {
             return (
               <span key={i}>
-                <h1>prod name:</h1>
-                {item.product}
-                <AddToCartBtn
-                  productName={item.product}
-                  stock={item.stock}
-                  variant_1={item.variant_1}
-                  variant_2={item.variant_2}
-                  selectedAmount={item.selectedAmount}
-                  selectedVariant={item.selectedVariant}
-                />
-                <TestDel product={`${item.product}__${item.selectedVariant}`} />
+                <Link href={`/collections/products/${item.product}`}>
+                  <h1>prod name:</h1>
+                  {item.product}
+                  <Images alt={item.product} image={item.image} />
+
+                  <AddToCartBtn
+                    productName={item.product}
+                    stock={item.stock}
+                    variant_1={item.variant_1}
+                    variant_2={item.variant_2}
+                    selectedAmount={item.selectedAmount}
+                    selectedVariant={item.selectedVariant}
+                  />
+                  <TestDel
+                    product={`${item.product}__${item.selectedVariant}`}
+                  />
+                </Link>
               </span>
             );
           })}
