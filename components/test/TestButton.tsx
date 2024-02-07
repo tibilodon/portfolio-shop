@@ -4,10 +4,13 @@ import { useAppProvider } from "@/utils/context/appContext";
 type Props = {};
 
 const TestButton = (props: Props) => {
+  const handler = () => {
+    throw new Error("error");
+  };
   // const { setCartItems } = useAppProvider();
   return (
     <>
-      <button>good on ya</button>
+      <button onClick={handler}>good on ya</button>
     </>
   );
 };
