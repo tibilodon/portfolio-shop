@@ -32,4 +32,44 @@ const findKey = (obj: any, targetKey: string) => {
   }
   return undefined;
 };
-export { filterCookieData, findKey };
+
+import { Metadata } from "next";
+
+interface Image {
+  url: string;
+  width: number;
+  height: number;
+}
+
+class CustomMetaData implements Metadata {
+  title: string;
+  description: string;
+  metadataBase: URL;
+  openGraph: {
+    title: string;
+    description: string;
+    images: Image[];
+  };
+
+  constructor(title: string, description: string) {
+    const testUrl = "http://localhost:3000";
+    const ogHostUrl: string = testUrl + "/api/og";
+
+    this.title = title;
+    this.description = description;
+    this.metadataBase = new URL(ogHostUrl);
+    this.openGraph = {
+      title: title,
+      description: description,
+      images: [
+        {
+          url: ogHostUrl,
+          width: 1200,
+          height: 630,
+        },
+      ],
+    };
+  }
+}
+
+export { filterCookieData, findKey, CustomMetaData };

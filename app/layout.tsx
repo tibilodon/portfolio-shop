@@ -8,12 +8,10 @@ import Sidebar from "@/components/sidebar/Sidebar";
 import CartSidebar from "@/components/pages/cart/cartSidebar/CartSidebar";
 import { getCookie, getAllCookies } from "@/utils/cookieActions";
 import CookieBar from "@/components/bars/cookie/CookieBar";
-const inter = Inter({ subsets: ["latin"] });
+import { CustomMetaData } from "@/utils/helpers";
 
-export const metadata: Metadata = {
-  title: "Nyílműhely",
-  description: "Archery themed test shop",
-};
+const inter = Inter({ subsets: ["latin"] });
+export const metadata = new CustomMetaData("Shop Title", "Shop Description");
 
 const getData = async () => {
   const data = await getAllCookies();

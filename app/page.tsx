@@ -3,6 +3,12 @@ import styles from "./page.module.css";
 import PlaceholderP from "@/components/test/PlaceholderP";
 import TestButton from "@/components/test/TestButton";
 import ImageSlider from "@/components/pages/home/imageSlider/ImageSlider";
+import { CustomMetaData } from "@/utils/helpers";
+
+export const metadata = new CustomMetaData(
+  "Shop - home page",
+  "Shop homepage description"
+);
 
 export default function Home() {
   return (
