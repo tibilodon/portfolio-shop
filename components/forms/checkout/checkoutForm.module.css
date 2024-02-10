@@ -1,0 +1,8 @@
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+/* .customer input:invalid:required {
+  border: 1px solid red;
+} */

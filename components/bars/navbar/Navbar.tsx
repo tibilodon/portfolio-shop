@@ -3,7 +3,6 @@ import Image from "next/image";
 import Logo from "@/components/logo/Logo";
 import ShowSidebar from "@/components/sidebar/showSidebar/ShowSidebar";
 import account from "@/public/icons/account.svg";
-import cart from "@/public/icons/cart.svg";
 import CartIcon from "@/components/pages/cart/icon/CartIcon";
 import CartItems from "@/components/pages/cart/icon/CartItems";
 type Props = {};

@@ -39,7 +39,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AppContextProvider>
-          <Navbar />
+          {/* <Navbar /> */}
           <Sidebar />
           <CartSidebar data={data} />
           <div className="children">

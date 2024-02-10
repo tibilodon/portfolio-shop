@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 
 export default function Error({
   error,
@@ -7,10 +8,11 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const router = useRouter();
   return (
     <div>
       <h2>Something went wrong!</h2>
-      <button onClick={() => reset()}>Try again</button>
+      <button onClick={() => router.push("/")}>Back to the home page</button>
     </div>
   );
 }
