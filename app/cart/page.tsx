@@ -2,8 +2,7 @@ import styles from "./page.module.css";
 import { getAllCookies, deleteCookie } from "@/utils/cookieActions";
 import EmptyCart from "@/components/pages/cart/cartItem/emptyCart/EmptyCart";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
-import dataSet from "@/utils/dataset.json";
-import { filterCookieData, findKey } from "@/utils/helpers";
+import { CartData } from "@/utils/helpers";
 import AddToCartBtn from "@/components/buttons/navigate/addToCart/AddToCartBtn";
 import TestDel from "./TestDel";
 import Images from "@/components/images/Images";
@@ -11,27 +10,8 @@ import Link from "next/link";
 
 export default async function Cart() {
   const data: RequestCookie[] | undefined = await getAllCookies();
-  const cartData = [];
-
-  if (data?.length) {
-    for (let index = 0; index < data.length; index++) {
-      const element = data[index];
-      if (element.name !== "tnc") {
-        const separate = filterCookieData(element.name);
-
-        if (separate) {
-          let oriData = findKey(dataSet, separate.product);
-          if (oriData) {
-            let modData = { ...oriData };
-            modData.product = separate.product;
-            modData.selectedAmount = Number(element.value);
-            modData.selectedVariant = separate.variant;
-            cartData.push(modData);
-          }
-        }
-      }
-    }
-  }
+  const cartDataInstance = new CartData(data);
+  const cartData = cartDataInstance.getCartData();
 
   return (
     <>
@@ -43,7 +23,7 @@ export default async function Cart() {
                 <Link href={`/collections/products/${item.product}`}>
                   <h1>prod name:</h1>
                   {item.product}
-                  <Images alt={item.product} image={item.image} />
+                  <Images alt={item.product} image={item.img} />
 
                   <AddToCartBtn
                     productName={item.product}
@@ -60,6 +40,9 @@ export default async function Cart() {
               </span>
             );
           })}
+          <Link href={"/checkout"}>
+            <button>proceed to checkout</button>
+          </Link>
         </div>
       ) : (
         <div className={styles.emptyWrap}>

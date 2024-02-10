@@ -1,11 +1,14 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { useAppProvider } from "@/utils/context/appContext";
 
 type Props = {};
 
 const TestButton = (props: Props) => {
+  const router = useRouter();
   const handler = () => {
-    throw new Error("error");
+    console.log("great");
+    router.push("/checkout");
   };
   // const { setCartItems } = useAppProvider();
   return (
