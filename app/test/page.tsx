@@ -1,5 +1,7 @@
+import { randomUUID } from "crypto";
 import styles from "./page.module.css";
 import Image from "next/image";
+import { CustomerDataType } from "@/utils/helpers";
 
 export default function Test() {
   const mockCustomer = [
@@ -36,19 +38,55 @@ export default function Test() {
       selectedVariant: "variant_2",
     },
   ];
+  console.log(Date.now());
+  const customerComp = () => {
+    const orderNo = randomUUID();
+    //  merge data into {} for ease of use
+    let mergedCustomer: any = {};
+    mockCustomer.forEach((obj) => {
+      mergedCustomer = { ...mergedCustomer, ...obj };
+    });
 
-  //  merge data into [{}]
-  let mergedCustomer = {};
-  mockCustomer.forEach((obj) => {
-    mergedCustomer = { ...mergedCustomer, ...obj };
-  });
+    if (mergedCustomer) {
+      const { email, firstName, lastName, zip, city, address, phone } =
+        mergedCustomer;
+      let customer: string = `<div style="display: flex; flexDirection: column">
+      <head style="backgroundColor: #5e5eda">
+      <title>Megrendelés adatai</title>
+      </head>
+      <span>
+      <strong>Megrendelés sorszáma:</strong>
+      <p>${orderNo}</p>
+      </span>
+      <span>
+      <strong>Megrendelés időpontja:</strong>
+      <p>${Date.now().toLocaleString()}</p>
+      </span>
+      <span>
+      <strong>Megrendelő:</strong>
+      <p>${lastName} ${firstName}</p></br>
+      <p>${zip}, ${city}, ${address}, (${phone})</p>
+      </span>
 
-  const customerComp = () => {};
+      <span>
+      <strong>E-mail cím:</strong>
+      <p>${email}</p>
+      </span>
+
+      <span>
+      <strong>Számlázási adatok:</strong>
+      <p>${lastName} ${firstName}</p></br>
+      <p>${zip}, ${city}, ${address}</p>
+      </span>
+
+      </div>`;
+    }
+  };
 
   return (
     <>
       <div>
-        <head>{/* <title>Order from: {mockCustomer.firstName}</title> */}</head>
+        <h1>test</h1>
       </div>
     </>
   );
