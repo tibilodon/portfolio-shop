@@ -355,6 +355,86 @@ async function frontendValidator(
 //   const validator = async () => {};
 // }
 
+import { randomUUID } from "crypto";
+
+const dateParser = () => {
+  // Timestamp in milliseconds
+  const timestamp = 1707649583119;
+
+  // Convert timestamp to Date object
+  const date = new Date(timestamp);
+
+  // Extract year, month, day, hours, minutes, and seconds
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+
+  // Construct the formatted date string
+  const formattedDate = `${year}.${month}.${day} ${hours}:${minutes}:${seconds}`;
+
+  return formattedDate;
+};
+
+const customerTemplate = (customerData: CustomerDataType[]) => {
+  const orderNo = randomUUID();
+  //  merge data into {} for ease of use
+  let mergedCustomer: any = {};
+  customerData.forEach((obj) => {
+    mergedCustomer = { ...mergedCustomer, ...obj };
+  });
+
+  const { email, firstName, lastName, zip, city, address, phone } =
+    mergedCustomer;
+  // <head style="background-color: #5e5eda">
+  // <title>Megrendelés adatai</title>
+  // </head>
+  let customer: string = `<table>
+    <tr>
+   
+    
+    <th>Megrendelés sorszáma:</th>
+    <td>${orderNo}</td>
+
+    </tr>
+    
+    <tr>
+   
+    <th>Megrendelés időpontja:</th>
+    <td>${dateParser()}</td>
+
+    </tr>
+
+    
+    <tr>
+   
+    <th>Megrendelő:</th>
+    <td>${lastName} ${firstName}, ${zip}, ${city}, ${address}, (${phone})</td>
+
+    </tr>
+
+    <tr>
+   
+    
+    <th>E-mail cím:</th>
+    <td>${email}</td>
+
+    </tr>
+
+    <tr>
+   
+    
+    <th>Számlázási adatok:</th>
+    <td>${lastName} ${firstName}, ${zip}, ${city}, ${address}</td>
+
+    </tr>
+
+    </table>`;
+  return customer;
+};
+
 export {
   filterCookieData,
   findKey,
@@ -362,4 +442,5 @@ export {
   CartData,
   frontendValidator,
   validator,
+  customerTemplate,
 };
