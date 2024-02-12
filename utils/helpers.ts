@@ -87,6 +87,8 @@ export type CartObjectType = {
   product: string;
   selectedAmount: number;
   selectedVariant: string;
+  price: number;
+  calcPrice: number;
 };
 class CartData {
   protected cartData: CartObjectType[];
@@ -105,6 +107,7 @@ class CartData {
               modData.product = separate.product;
               modData.selectedAmount = Number(element.value);
               modData.selectedVariant = separate.variant;
+              modData.calcPrice = Number(element.value) * Number(oriData.price);
               this.cartData.push(modData);
             }
           }
@@ -319,42 +322,6 @@ async function frontendValidator(
   };
 }
 
-//----------------
-// const data = formData.getAll("customer");
-// if (data) {
-// for (let index = 0; index < data.length; index++) {
-//   const element = data[index];
-//   if (element === "") {
-//     return { message: "error!", id: "email", redirect: false };
-//   }
-// }
-// try {
-//   const order = await getOrderData();
-//   const resp = await fetch("/api/submit", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({ data, order }),
-//   });
-//   console.log(resp);
-//   return {
-//     message: "goo to go",
-//     id: "email",
-//     redirect: resp.redirected ? resp.url : false,
-//   };
-//   // return resp;
-// } catch (error) {
-//   return { message: "error!", id: "email", redirect: false };
-// }
-// } else {
-//   return { message: "error!", redirect: false };
-// }
-//----------------
-
-//   const validator = async () => {};
-// }
-
 import { randomUUID } from "crypto";
 
 const dateParser = () => {
@@ -392,6 +359,12 @@ const customerTemplate = (customerData: CustomerDataType[]) => {
   // <title>Megrendelés adatai</title>
   // </head>
   let customer: string = `<table>
+<tr class="header">
+<th >
+Megrendelés adatai:
+
+</th>
+</tr>
     <tr>
    
     
@@ -435,6 +408,33 @@ const customerTemplate = (customerData: CustomerDataType[]) => {
   return customer;
 };
 
+const orderTemplate = (orderData: CartObjectType[]): string => {
+  let resString = "";
+  for (let index = 0; index < orderData.length; index++) {
+    //tr-->td
+    //prod name, amount, price, calc price
+    const obj = orderData[index];
+    const { product, selectedVariant, selectedAmount, price, calcPrice } = obj;
+    let str = `<tr>
+    <td>
+    ${product} - ${selectedVariant}
+    </td>
+    <td>
+${selectedAmount}
+    </td>
+    <td>
+${price}
+    </td>
+    <td>
+${calcPrice}
+    </td>
+    </tr>`;
+    resString += str;
+  }
+
+  return resString;
+};
+
 export {
   filterCookieData,
   findKey,
@@ -443,4 +443,5 @@ export {
   frontendValidator,
   validator,
   customerTemplate,
+  orderTemplate,
 };
