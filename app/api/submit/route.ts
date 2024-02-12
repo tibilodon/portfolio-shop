@@ -20,7 +20,6 @@ export async function POST(request: NextRequest) {
 
   if (!validateCustomerDetails.length && data.order) {
     const orderData: CartObjectType[] = data.order;
-    // console.log("orderdata", orderData);
     const customerData: CustomerDataType[] = data.customerValues;
     // const test = orderTemplate(orderData);
     // console.log("test", test);
