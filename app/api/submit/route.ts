@@ -1,7 +1,12 @@
 import { NextResponse, NextRequest } from "next/server";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { getAllCookies } from "@/utils/cookieActions";
-import { validator, CartObjectType, CustomerDataType } from "@/utils/helpers";
+import {
+  validator,
+  CartObjectType,
+  CustomerDataType,
+  orderTemplate,
+} from "@/utils/helpers";
 import sendEmail from "@/utils/sendEmail";
 
 export async function POST(request: NextRequest) {
@@ -15,9 +20,11 @@ export async function POST(request: NextRequest) {
 
   if (!validateCustomerDetails.length && data.order) {
     const orderData: CartObjectType[] = data.order;
+    // console.log("orderdata", orderData);
     const customerData: CustomerDataType[] = data.customerValues;
-
-    await sendEmail(orderData, customerData, String(requestUrl.origin));
+    // const test = orderTemplate(orderData);
+    // console.log("test", test);
+    // await sendEmail(orderData, customerData, String(requestUrl.origin));
     //  redirect after logged in
     return NextResponse.redirect(requestUrl.origin, {
       status: 301,

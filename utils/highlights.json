@@ -5,7 +5,8 @@
     "desc": "this is some desc for the item",
     "img": "/static/cart.svg",
     "variant_1": "variant_1",
-    "variant_2": "variant_2"
+    "variant_2": "variant_2",
+    "price": 10
   },
   "hunt comp bow 1": {
     "id": 3,
@@ -13,7 +14,8 @@
     "desc": "this is some desc for the item",
     "img": "/static/account.svg",
     "variant_1": "variant_1",
-    "variant_2": "variant_2"
+    "variant_2": "variant_2",
+    "price": 30
   },
   "takedown recurve risers 1": {
     "id": 5,
@@ -21,7 +23,8 @@
     "desc": "this is some desc for the item",
     "img": "/static/close.svg",
     "variant_1": "variant_1",
-    "variant_2": "variant_2"
+    "variant_2": "variant_2",
+    "price": 50
   },
   "takedown recurve limbs 1": {
     "id": 7,
@@ -29,6 +32,7 @@
     "desc": "this is some desc for the item",
     "img": "/static/empty_target.svg",
     "variant_1": "variant_1",
-    "variant_2": "variant_2"
+    "variant_2": "variant_2",
+    "price": 70
   }
 }

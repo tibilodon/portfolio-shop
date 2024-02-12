@@ -8,7 +8,8 @@
           "desc": "this is some desc for the item",
           "img": "/static/cart.svg",
           "variant_1": "variant_1",
-          "variant_2": "variant_2"
+          "variant_2": "variant_2",
+          "price": 10
         },
         "targ comp bow 2": {
           "id": 2,
@@ -16,7 +17,8 @@
           "desc": "this is some desc for the item",
           "img": "",
           "variant_1": "variant_1",
-          "variant_2": "variant_2"
+          "variant_2": "variant_2",
+          "price": 20
         }
       },
       "Hunting Compound Bows": {
@@ -26,16 +28,17 @@
           "desc": "this is some desc for the item",
           "img": "/static/account.svg",
           "variant_1": "variant_1",
-          "variant_2": "variant_2"
+          "variant_2": "variant_2",
+          "price": 30
         },
         "hunt com bow 2": {
           "id": 4,
           "stock": 4,
           "desc": "this is some desc for the item",
           "img": "",
-
           "variant_1": "variant_1",
-          "variant_2": "variant_2"
+          "variant_2": "variant_2",
+          "price": 40
         }
       }
     },
@@ -47,7 +50,8 @@
           "desc": "this is some desc for the item",
           "img": "/static/close.svg",
           "variant_1": "variant_1",
-          "variant_2": "variant_2"
+          "variant_2": "variant_2",
+          "price": 50
         },
         "takedown recurve risers 2": {
           "id": 6,
@@ -56,7 +60,8 @@
           "img": "",
 
           "variant_1": "variant_1",
-          "variant_2": "variant_2"
+          "variant_2": "variant_2",
+          "price": 60
         }
       },
       "Take-down Recurve Limbs": {
@@ -66,16 +71,17 @@
           "desc": "this is some desc for the item",
           "img": "/static/empty_target.svg",
           "variant_1": "variant_1",
-          "variant_2": "variant_2"
+          "variant_2": "variant_2",
+          "price": 70
         },
         "takedown recurve limbs 2": {
           "id": 8,
           "stock": 4,
           "desc": "this is some desc for the item",
           "img": "",
-
           "variant_1": "variant_1",
-          "variant_2": "variant_2"
+          "variant_2": "variant_2",
+          "price": 80
         }
       }
     }
@@ -88,18 +94,18 @@
           "stock": 3,
           "desc": "this is some desc for the item",
           "img": "",
-
           "variant_1": "variant_1",
-          "variant_2": "variant_2"
+          "variant_2": "variant_2",
+          "price": 90
         },
         "hunt sights 2": {
           "id": 10,
           "stock": 4,
           "desc": "this is some desc for the item",
           "img": "",
-
           "variant_1": "variant_1",
-          "variant_2": "variant_2"
+          "variant_2": "variant_2",
+          "price": 100
         }
       },
       "Recurve Target Sights": {
@@ -108,18 +114,18 @@
           "stock": 3,
           "desc": "this is some desc for the item",
           "img": "",
-
           "variant_1": "variant_1",
-          "variant_2": "variant_2"
+          "variant_2": "variant_2",
+          "price": 110
         },
         "recurve sights 2": {
           "id": 12,
           "stock": 4,
           "desc": "this is some desc for the item",
           "img": "",
-
           "variant_1": "variant_1",
-          "variant_2": "variant_2"
+          "variant_2": "variant_2",
+          "price": 120
         }
       }
     },
@@ -130,18 +136,18 @@
           "stock": 3,
           "desc": "this is some desc for the item",
           "img": "",
-
           "variant_1": "variant_1",
-          "variant_2": "variant_2"
+          "variant_2": "variant_2",
+          "price": 130
         },
         "comp hunt rest 2": {
           "id": 14,
           "stock": 4,
           "desc": "this is some desc for the item",
           "img": "",
-
           "variant_1": "variant_1",
-          "variant_2": "variant_2"
+          "variant_2": "variant_2",
+          "price": 140
         }
       },
       "Recurve & Finger Rests": {
@@ -150,18 +156,18 @@
           "stock": 3,
           "desc": "this is some desc for the item",
           "img": "",
-
           "variant_1": "variant_1",
-          "variant_2": "variant_2"
+          "variant_2": "variant_2",
+          "price": 150
         },
         "finger rest 2 & test": {
           "id": 16,
           "stock": 4,
           "desc": "this is some desc for the item",
           "img": "",
-
           "variant_1": "variant_1",
-          "variant_2": "variant_2"
+          "variant_2": "variant_2",
+          "price": 160
         }
       }
     }

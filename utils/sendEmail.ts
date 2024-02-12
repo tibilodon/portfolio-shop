@@ -1,5 +1,10 @@
 import nodemailer from "nodemailer";
-import { CartObjectType, CustomerDataType, customerTemplate } from "./helpers";
+import {
+  CartObjectType,
+  CustomerDataType,
+  customerTemplate,
+  orderTemplate,
+} from "./helpers";
 import im from "../static/shop_logo.png";
 
 const transporter = nodemailer.createTransport({
@@ -23,6 +28,7 @@ const sendEmail = async (
 ) => {
   try {
     const customerData = customerTemplate(customer);
+    const orderData = orderTemplate(order);
     const info = await transporter.sendMail({
       from: {
         name: "TEST",
@@ -47,7 +53,7 @@ const sendEmail = async (
       <title>order</title>
       <style type="text/css">
         body {
-
+width:100%;
           margin: 0;
           background-color: #cccccc;
         }
@@ -66,13 +72,13 @@ const sendEmail = async (
           border: 0;
           width:200px;
         }
-        header{
+        .header{
           background-color: #5e5eda;
           color: #fff;
           padding: 0.3em;
         }
         .banner{
-          margin: 0 3em;
+          margin: 0 6em;
         }
       </style>
     </head>
@@ -89,9 +95,28 @@ const sendEmail = async (
     </tr
     </table>
 
-    <header>Megrendelés adatai:</header>
 
     ${customerData}
+
+    <table>
+    <tr class="header">
+    <th>
+Termék neve
+    </th>
+    <th>
+    Db
+        </th>
+    <th>
+Egységár
+    </th>
+    <th>
+Érték
+    </th>
+    </tr>
+
+${orderData}
+
+    </table>
 
     </body>
   </html>
