@@ -1,13 +1,15 @@
+//display items based on category
 import styles from "./page.module.css";
 import data from "@/utils/dataset.json";
 import Link from "next/link";
 import AddToCartBtn from "@/components/buttons/navigate/addToCart/AddToCartBtn";
-import Image from "next/image";
 import { findKey } from "@/utils/helpers";
-
+import prisma from "@/prisma/prismaClient";
 import Images from "@/components/images/Images";
+import Loading from "@/app/loading";
+import ProductCard from "@/components/cards/product/ProductCard";
 
-export default function CollectionDetails({
+export default async function CollectionDetails({
   params,
 }: {
   params: { collectionName: string };
@@ -16,39 +18,38 @@ export default function CollectionDetails({
     .replace(/%20/g, " ")
     .replace(/%26/g, "&");
 
-  const pageData = findKey(data, keyName);
+  //fetch data from db
+  const prismaData = await prisma.product.findMany({
+    where: {
+      categoryId: keyName,
+    },
+    include: {
+      variants: true,
+    },
+  });
+
+  //if !data return Loading
+  if (!prismaData) {
+    return <Loading />;
+  }
 
   return (
     <>
       <div className={styles.wrap}>
         <h1>collection details</h1>
-        {/* <h1>{params.collectionName}</h1> */}
+
+        {/*product name*/}
         <h1>{keyName}</h1>
-        {Object.keys(pageData).map((item, i) => {
+        {/*map over data and return each product in a Card*/}
+        {prismaData.map((item) => {
           return (
-            <span key={i}>
-              <h3>PRODUCT: {item}</h3>
-
-              {[pageData[item]].map((val, j: number) => {
-                return (
-                  <div key={j}>
-                    <Link href={"/collections/products/" + item}>
-                      <p>id: {val.id}</p>
-                      <p>stock: {val.stock}</p>
-                      <p>desc: {val.desc}</p>
-
-                      <Images image={val.img} alt={item} />
-                    </Link>
-                    <AddToCartBtn
-                      productName={item}
-                      variant_1={val.variant_1}
-                      variant_2={val.variant_2}
-                      stock={Number(val.stock)}
-                    />
-                  </div>
-                );
-              })}
-            </span>
+            <ProductCard
+              key={item.id}
+              description={item.description}
+              image={item.imageUrl}
+              productName={item.name}
+              variants={item.variants}
+            />
           );
         })}
       </div>

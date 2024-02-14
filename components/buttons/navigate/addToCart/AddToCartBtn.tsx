@@ -13,6 +13,8 @@ type Props = {
   stock: number;
   selectedAmount?: number;
   selectedVariant?: string;
+
+  prismaVariants?: any;
 };
 
 //TODO: handle variants
@@ -23,12 +25,17 @@ const AddToCartBtn: React.FunctionComponent<Props> = ({
   stock,
   selectedAmount,
   selectedVariant,
+  prismaVariants,
 }) => {
   const [selected, setSelected] = useState(
     selectedVariant ? selectedVariant : variant_1
   );
   const [amount, setAmount] = useState(selectedAmount ? selectedAmount : 1);
   const variantsArray = [variant_1, variant_2];
+  let newVariants;
+  if (prismaVariants) {
+    newVariants = prismaVariants.map((item: any) => item.name);
+  }
 
   //cookie: productName__variant:value
   const setCookie = async () => {
@@ -56,12 +63,12 @@ const AddToCartBtn: React.FunctionComponent<Props> = ({
   return (
     <>
       <div className={styles.wrap}>
-        <VariantSelector
+        {/* <VariantSelector
           setState={setSelected}
           state={selected}
           variants={variantsArray}
-        />
-        <AmountSelector amount={stock} state={amount} setState={setAmount} />
+        /> */}
+        {/* <AmountSelector amount={stock} state={amount} setState={setAmount} /> */}
         <button onClick={setCookie}>Add to Cart</button>
       </div>
     </>

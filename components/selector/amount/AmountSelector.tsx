@@ -4,13 +4,13 @@ import { Dispatch, SetStateAction } from "react";
 type Props = {
   state: number;
   setState: Dispatch<SetStateAction<number>>;
-  amount: number;
+  selected: number;
 };
 
 const AmountSelector: React.FunctionComponent<Props> = ({
   state,
   setState,
-  amount,
+  selected,
 }) => {
   return (
     <>
@@ -20,7 +20,7 @@ const AmountSelector: React.FunctionComponent<Props> = ({
           value={state}
           onChange={(e) => setState(Number(e.currentTarget.value))}
         >
-          {Array.from({ length: Number(amount) }, (_, i) => i + 1).map(
+          {Array.from({ length: Number(selected) }, (_, i) => i + 1).map(
             (item, i) => {
               return (
                 <option key={i} value={item}>
