@@ -20,7 +20,10 @@ export default async function Cart() {
           {cartData.map((item, i) => {
             return (
               <span key={i}>
-                <Link href={`/collections/products/${item.product}`}>
+                <Link
+                  className={styles.items}
+                  href={`/collections/products/${item.product}`}
+                >
                   <h1>prod name:</h1>
                   {item.product}
                   <Images alt={item.product} image={item.img} />
@@ -33,10 +36,8 @@ export default async function Cart() {
                     selectedAmount={item.selectedAmount}
                     selectedVariant={item.selectedVariant}
                   />
-                  <TestDel
-                    product={`${item.product}__${item.selectedVariant}`}
-                  />
                 </Link>
+                <TestDel product={`${item.product}__${item.selectedVariant}`} />
               </span>
             );
           })}

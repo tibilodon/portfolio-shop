@@ -13,9 +13,11 @@ import { deleteCookie } from "@/utils/cookieActions";
 
 type Props = {
   data: RequestCookie[] | undefined;
+  //TODO:
+  prismaData: any;
 };
 
-const CartSidebar: React.FunctionComponent<Props> = ({ data }) => {
+const CartSidebar: React.FunctionComponent<Props> = ({ data, prismaData }) => {
   const router = useRouter();
   const { cart, setCart } = useAppProvider();
 
@@ -45,14 +47,14 @@ const CartSidebar: React.FunctionComponent<Props> = ({ data }) => {
     }
     return;
   };
-
+  console.log("data from sidebar", data);
   return (
     <div
       className={cart ? `${styles.sidebar} ${styles.active}` : styles.sidebar}
     >
       <div className={styles.items}>
         <span
-          style={{ justifyContent: "space-between" }}
+          style={{ justifyContent: "space-between", overflow: "hidden" }}
           className={styles.header}
         >
           <h3>Kosár</h3>
@@ -79,7 +81,11 @@ const CartSidebar: React.FunctionComponent<Props> = ({ data }) => {
                 return (
                   <div key={i} className={styles.cartItems}>
                     <span onClick={() => linker(item.name)}>
-                      <CartItem product={item.name} value={item.value} />
+                      <CartItem
+                        product={item.name}
+                        value={item.value}
+                        prismaData={prismaData}
+                      />
                     </span>
                     <button onClick={() => deleteItem(item.name)}>
                       delete item

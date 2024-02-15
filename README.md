@@ -9,3 +9,5 @@ The wrapper sets the animation state for the logo, can also pick up any onclick 
 Amount and variant selector components had to be separated, as without state issues were present.
 
 AmountSelector can be omitted.
+
+Variant(s) are mandatory

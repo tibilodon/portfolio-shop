@@ -4,13 +4,39 @@ import PlaceholderP from "@/components/test/PlaceholderP";
 import TestButton from "@/components/test/TestButton";
 import ImageSlider from "@/components/pages/home/imageSlider/ImageSlider";
 import { CustomMetaData } from "@/utils/helpers";
+import prisma from "@/prisma/prismaClient";
+import { VariantType } from "@/components/cards/product/ProductCard";
 
 export const metadata = new CustomMetaData(
   "Shop - home page",
   "Shop homepage description"
 );
 
-export default function Home() {
+export type ProductType = {
+  id: number;
+  created_at: Date;
+  updated_at: Date | null;
+  name: string;
+  description: string;
+  highlighted: boolean;
+  categoryId: string | null;
+  imageUrl: string;
+  variants: VariantType[];
+  price: number;
+  stock: number;
+};
+
+export default async function Home() {
+  //  fetch data
+  const data: ProductType[] = await prisma.product.findMany({
+    where: {
+      highlighted: true,
+    },
+    include: {
+      variants: true,
+    },
+  });
+
   return (
     <>
       <div className={styles.wrap}>
@@ -21,7 +47,7 @@ export default function Home() {
         {/* <PlaceholderP />
         <PlaceholderP />
         <PlaceholderP /> */}
-        <ImageSlider />
+        <ImageSlider data={data} />
       </div>
     </>
   );

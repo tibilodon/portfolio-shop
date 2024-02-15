@@ -10,8 +10,17 @@
   height: var(--page-height);
 }
 .wrap {
+  border: 2px solid red;
+  height: 100%;
+  gap: 2em;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.items {
+  border: 2px solid red;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
 }

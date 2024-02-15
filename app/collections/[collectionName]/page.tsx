@@ -28,6 +28,8 @@ export default async function CollectionDetails({
     },
   });
 
+  console.log("prismaData", prismaData);
+
   //if !data return Loading
   if (!prismaData) {
     return <Loading />;
@@ -49,6 +51,8 @@ export default async function CollectionDetails({
               image={item.imageUrl}
               productName={item.name}
               variants={item.variants}
+              basePrice={item.price}
+              baseStock={item.stock}
             />
           );
         })}

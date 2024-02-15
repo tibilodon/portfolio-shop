@@ -1,12 +1,13 @@
 .wrap {
-  border: 1px solid black;
-  /* height: 100%; */
+  border: 3px solid black;
+  height: 100%;
   /* width: 100%; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   /* gap: 2em; */
+  padding: 1em;
 }
 .icon {
   filter: var(--icon_color);

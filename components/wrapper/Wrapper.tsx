@@ -4,7 +4,8 @@ import { useAppProvider } from "@/utils/context/appContext";
 type Props = { children: React.ReactNode };
 
 const Wrapper: React.FunctionComponent<Props> = ({ children }) => {
-  const { animate, setAnimate, sidebar, setSidebar } = useAppProvider();
+  const { animate, setAnimate, sidebar, setSidebar, cart, setCart } =
+    useAppProvider();
   const scrollHandler = (): void => {
     if (!animate) {
       setAnimate(true);
@@ -14,7 +15,7 @@ const Wrapper: React.FunctionComponent<Props> = ({ children }) => {
   const sidebarHandler = (): void => {
     if (sidebar) {
       setSidebar(false);
-    } else return;
+    }
   };
 
   return (

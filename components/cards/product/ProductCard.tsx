@@ -25,6 +25,8 @@ type Props = {
   productName: string;
   description: string;
   variants: VariantType[];
+  basePrice: number;
+  baseStock: number;
 };
 
 const ProductCard: React.FunctionComponent<Props> = ({
@@ -32,20 +34,25 @@ const ProductCard: React.FunctionComponent<Props> = ({
   image,
   productName,
   description,
+  basePrice,
+  baseStock,
 }) => {
   //  state containing the selected variant
-  const [selected, setSelected] = useState(variants[0]);
   const [amount, setAmount] = useState<number>(1);
-  const { name, price, stock } = selected;
 
+  const [selected, setSelected] = useState<VariantType | null>(
+    variants.length ? variants[0] : null
+  );
+
+  //TODO: rework this:
   const setCookie = async () => {
-    const cookieName = `${productName}__${name}`;
+    const cookieName = `${productName}__${selected && selected.name}`;
     const inCart = await getCookie(cookieName);
     if (inCart?.value) {
       const items: number = Number(inCart.value);
       const filterData = filterCookieData(inCart.name);
       if (filterData) {
-        if (filterData.variant === name) {
+        if (filterData.variant === selected?.name) {
           await createCookie(cookieName, `${items + amount}`);
         }
       }
@@ -53,6 +60,8 @@ const ProductCard: React.FunctionComponent<Props> = ({
       await createCookie(cookieName, `${amount}`);
     }
   };
+
+  //TODO: stock and baseStock
   return (
     <>
       <div className={styles.wrap}>
@@ -60,20 +69,28 @@ const ProductCard: React.FunctionComponent<Props> = ({
         <Link href={"/collections/products/" + productName}>
           <h3>prod: {productName}</h3>
           <h3>desc: {description}</h3>
-          <h3>PRICE: {price}</h3>
+          <h3>PRICE: {selected ? selected.price : basePrice}</h3>
           <Images
             image={image}
-            stock={stock}
-            alt={`Image representing ${productName} with variant: ${name}`}
+            stock={selected ? selected.stock : baseStock}
+            alt={`Image representing ${productName} ${
+              selected ? " with variant: " + selected.name : ""
+            }`}
           />
         </Link>
 
-        <VariantSelector
-          variants={variants}
-          state={selected}
-          setState={setSelected}
+        {selected && (
+          <VariantSelector
+            variants={variants}
+            state={selected}
+            setState={setSelected}
+          />
+        )}
+        <AmountSelector
+          selected={selected ? selected.stock : baseStock}
+          state={amount}
+          setState={setAmount}
         />
-        <AmountSelector selected={stock} state={amount} setState={setAmount} />
         <button onClick={setCookie}>add to cart</button>
       </div>
     </>

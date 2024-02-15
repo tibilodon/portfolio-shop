@@ -9,6 +9,7 @@ import CartSidebar from "@/components/pages/cart/cartSidebar/CartSidebar";
 import { getCookie, getAllCookies } from "@/utils/cookieActions";
 import CookieBar from "@/components/bars/cookie/CookieBar";
 import { CustomMetaData } from "@/utils/helpers";
+import prisma from "@/prisma/prismaClient";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata = new CustomMetaData("Shop Title", "Shop Description");
@@ -28,12 +29,21 @@ const getData = async () => {
   return;
 };
 
+const getPrismaData = async () => {
+  return await prisma.product.findMany({
+    include: {
+      variants: true,
+    },
+  });
+};
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const data = await getData();
+  const prismaData = await getPrismaData();
 
   return (
     <html lang="en">
@@ -41,7 +51,7 @@ export default async function RootLayout({
         <AppContextProvider>
           <Navbar />
           <Sidebar />
-          <CartSidebar data={data} />
+          <CartSidebar data={data} prismaData={prismaData} />
           <div className="children">
             <Wrapper>{children}</Wrapper>
           </div>
