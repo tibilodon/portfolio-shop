@@ -47,14 +47,15 @@ const CartSidebar: React.FunctionComponent<Props> = ({ data, prismaData }) => {
     }
     return;
   };
-  console.log("data from sidebar", data);
   return (
     <div
       className={cart ? `${styles.sidebar} ${styles.active}` : styles.sidebar}
     >
       <div className={styles.items}>
         <span
-          style={{ justifyContent: "space-between", overflow: "hidden" }}
+          style={{
+            justifyContent: "space-between",
+          }}
           className={styles.header}
         >
           <h3>Kosár</h3>
@@ -77,6 +78,9 @@ const CartSidebar: React.FunctionComponent<Props> = ({ data, prismaData }) => {
         <div className={styles.menuItems}>
           {data?.length ? (
             <>
+              <button className={styles.toCheckoutBtn} onClick={handler}>
+                proceed to cart
+              </button>
               {data.map((item, i: number) => {
                 return (
                   <div key={i} className={styles.cartItems}>
@@ -93,7 +97,6 @@ const CartSidebar: React.FunctionComponent<Props> = ({ data, prismaData }) => {
                   </div>
                 );
               })}
-              <button onClick={handler}>proceed to cart</button>
             </>
           ) : (
             <EmptyCart />

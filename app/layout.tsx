@@ -10,11 +10,12 @@ import { getCookie, getAllCookies } from "@/utils/cookieActions";
 import CookieBar from "@/components/bars/cookie/CookieBar";
 import { CustomMetaData } from "@/utils/helpers";
 import prisma from "@/prisma/prismaClient";
+import { redirect } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata = new CustomMetaData("Shop Title", "Shop Description");
 
-const getData = async () => {
+const getCookieData = async () => {
   const data = await getAllCookies();
   if (data?.length) {
     const newData = [];
@@ -29,12 +30,29 @@ const getData = async () => {
   return;
 };
 
-const getPrismaData = async () => {
-  return await prisma.product.findMany({
-    include: {
-      variants: true,
-    },
-  });
+const getDbData = async () => {
+  try {
+    return await prisma.product.findMany({
+      include: {
+        variants: true,
+      },
+    });
+  } catch (error) {
+    redirect("/error");
+  }
+};
+
+const getCategories = async () => {
+  try {
+    return await prisma.category.findMany({
+      include: {
+        parent: true,
+        subcategories: true,
+      },
+    });
+  } catch (error) {
+    redirect("/error");
+  }
 };
 
 export default async function RootLayout({
@@ -42,15 +60,18 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const data = await getData();
-  const prismaData = await getPrismaData();
+  const data = await getCookieData();
+  const prismaData = await getDbData();
+  const categories = await getCategories();
+
+  // console.log(categories);
 
   return (
     <html lang="en">
       <body className={inter.className}>
         <AppContextProvider>
           <Navbar />
-          <Sidebar />
+          <Sidebar categories={categories} />
           <CartSidebar data={data} prismaData={prismaData} />
           <div className="children">
             <Wrapper>{children}</Wrapper>

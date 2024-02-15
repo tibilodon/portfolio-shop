@@ -17,12 +17,13 @@ const VariantSelector: React.FunctionComponent<Props> = ({
   setState,
 }) => {
   const handler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { id } = e.currentTarget;
-    console.log("the id:", id);
+    const { value } = e.currentTarget;
+
     //id needs to be reconverted to Number
     //find variant with the corresponding id and set state
-    const findVariant = variants.find((ids) => Number(ids.id) === Number(id));
-    console.log("thee variant", findVariant);
+    const findVariant = variants.find(
+      (ids) => Number(ids.id) === Number(value)
+    );
     setState(findVariant!!);
   };
 
@@ -30,15 +31,16 @@ const VariantSelector: React.FunctionComponent<Props> = ({
     <>
       {state && (
         <div className={styles.wrap}>
+          <label htmlFor="variant">select a variant:</label>
           <select
             required
-            id={String(state.id)}
-            value={state.name}
+            name="variant"
+            id="variant"
             onChange={(e) => handler(e)}
           >
             {variants.map((item, i: number) => {
               return (
-                <option key={i} id={String(item.id)} value={item.name}>
+                <option key={i} value={item.id}>
                   {item.name}
                 </option>
               );

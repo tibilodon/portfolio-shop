@@ -1,6 +1,5 @@
 //display items based on category
 import styles from "./page.module.css";
-import data from "@/utils/dataset.json";
 import Link from "next/link";
 import AddToCartBtn from "@/components/buttons/navigate/addToCart/AddToCartBtn";
 import { findKey } from "@/utils/helpers";
@@ -19,7 +18,7 @@ export default async function CollectionDetails({
     .replace(/%26/g, "&");
 
   //fetch data from db
-  const prismaData = await prisma.product.findMany({
+  const data = await prisma.product.findMany({
     where: {
       categoryId: keyName,
     },
@@ -28,10 +27,8 @@ export default async function CollectionDetails({
     },
   });
 
-  console.log("prismaData", prismaData);
-
   //if !data return Loading
-  if (!prismaData) {
+  if (!data) {
     return <Loading />;
   }
 
@@ -43,7 +40,7 @@ export default async function CollectionDetails({
         {/*product name*/}
         <h1>{keyName}</h1>
         {/*map over data and return each product in a Card*/}
-        {prismaData.map((item) => {
+        {data.map((item) => {
           return (
             <ProductCard
               key={item.id}

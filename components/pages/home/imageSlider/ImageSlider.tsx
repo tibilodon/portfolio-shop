@@ -18,13 +18,13 @@ const ImageSlider: React.FunctionComponent<Props> = ({ data }) => {
 
   const [freeze, setFreeze] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [testData, setTestData] = useState(data[0]);
+  const [highlightData, setHighlightData] = useState(data[0]);
 
   //TODO:set next | prev btn disabled for the duration of the animation or 1s
 
   // create function for local scope variable
   const localValue = (): number => {
-    return data.indexOf(testData);
+    return data.indexOf(highlightData);
   };
   useEffect(() => {
     // let value = images.indexOf(bg) + 1;
@@ -32,9 +32,9 @@ const ImageSlider: React.FunctionComponent<Props> = ({ data }) => {
     if (!freeze) {
       const intervalId = setInterval(() => {
         if (data && localValue() !== data.length - 1) {
-          setTestData(data[value]);
+          setHighlightData(data[value]);
         } else {
-          setTestData(data[0]);
+          setHighlightData(data[0]);
         }
       }, 3000);
       // Clean up the interval when the component unmounts or when a dependency changes
@@ -50,9 +50,9 @@ const ImageSlider: React.FunctionComponent<Props> = ({ data }) => {
 
     let value = localValue() + 1;
     if (data && localValue() !== data.length - 1) {
-      setTestData(data[value]);
+      setHighlightData(data[value]);
     } else {
-      setTestData(data[0]);
+      setHighlightData(data[0]);
     }
   };
 
@@ -64,10 +64,10 @@ const ImageSlider: React.FunctionComponent<Props> = ({ data }) => {
 
     let value = localValue() - 1;
     if (data && localValue() !== 0) {
-      setTestData(data[value]);
+      setHighlightData(data[value]);
     } else {
       // If at the beginning, set the last item
-      setTestData(data[data.length - 1]);
+      setHighlightData(data[data.length - 1]);
     }
   };
 
@@ -77,7 +77,7 @@ const ImageSlider: React.FunctionComponent<Props> = ({ data }) => {
     }, 3000);
   }, [isDisabled]);
 
-  const { name, imageUrl, description, variants, price, stock } = testData;
+  const { name, imageUrl, description, variants, price, stock } = highlightData;
 
   return (
     <>
