@@ -1,9 +1,9 @@
+//  #prisma cannot run here
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
-import dataSet from "@/utils/dataset.json";
 
 //separate cookie.value to product and variant
 const filterCookieData = (data: string) => {
-  // const testStr = "some product name__variant_2";
+  // const format = "some product name__variant_2";
   const regexPattern = /([^_]+)__(.+)/;
 
   if (data) {
@@ -92,7 +92,8 @@ export type CartObjectType = {
 };
 class CartData {
   protected cartData: CartObjectType[];
-  constructor(data: RequestCookie[] | undefined) {
+
+  constructor(data: RequestCookie[] | undefined, dataSet: any[]) {
     this.cartData = [];
     if (data?.length) {
       for (let index = 0; index < data.length; index++) {
@@ -124,12 +125,18 @@ class CartData {
 import { getAllCookies, deleteCookie } from "@/utils/cookieActions";
 
 //  async class cannot be created
-const getOrderData = async () => {
-  const data: RequestCookie[] | undefined = await getAllCookies();
-  const cartDataInstance = new CartData(data);
-  const cartData = cartDataInstance.getCartData();
-  return cartData;
-};
+//  fetch all data
+// const getAllData = async (): Promise<any[]> => {
+//   return await prisma.product.findMany({});
+// };
+
+// const getOrderData = async () => {
+//   const data: RequestCookie[] | undefined = await getAllCookies();
+//   // const getData = await getAllData();
+//   // const cartDataInstance = new CartData(data, getData);
+//   // const cartData = cartDataInstance.getCartData();
+//   return getData;
+// };
 
 const errorMsg = (key: string): string => {
   let message: string = "";
@@ -287,8 +294,8 @@ async function frontendValidator(
   // }
 
   //  data validated
-  const order = await getOrderData();
-  if (!invalids.length && order.length) {
+  const order = await getAllCookies();
+  if (!invalids.length && order !== undefined) {
     try {
       const resp = await fetch("/api/submit", {
         method: "POST",
@@ -323,6 +330,7 @@ async function frontendValidator(
 }
 
 import { randomUUID } from "crypto";
+// import prisma from "@/prisma/prismaClient";
 
 const dateParser = () => {
   // Timestamp in milliseconds
@@ -435,6 +443,18 @@ ${calcPrice}
   return resString;
 };
 
+const recursiveFilter = (data: any, parentId: number, result: any[]): any[] => {
+  for (const item of data) {
+    if (item.parentId === parentId) {
+      result.push(item);
+    }
+    if (item.subcategories) {
+      recursiveFilter(item.subcategories, parentId, result);
+    }
+  }
+  return result;
+};
+
 export {
   filterCookieData,
   findKey,
@@ -444,4 +464,5 @@ export {
   validator,
   customerTemplate,
   orderTemplate,
+  recursiveFilter,
 };

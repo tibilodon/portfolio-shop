@@ -19,8 +19,9 @@ export async function POST(request: NextRequest) {
   const validateCustomerDetails = validator(data.customerValues);
 
   if (!validateCustomerDetails.length && data.order) {
-    const orderData: CartObjectType[] = data.order;
-    const customerData: CustomerDataType[] = data.customerValues;
+    console.log("here is your test data", data.order[0]);
+    // const orderData: CartObjectType[] = data.order;
+    // const customerData: CustomerDataType[] = data.customerValues;
     // const test = orderTemplate(orderData);
     // console.log("test", test);
     // await sendEmail(orderData, customerData, String(requestUrl.origin));

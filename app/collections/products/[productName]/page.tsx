@@ -1,5 +1,4 @@
 import styles from "./page.module.css";
-import data from "@/utils/dataset.json";
 import AddToCartBtn from "@/components/buttons/navigate/addToCart/AddToCartBtn";
 import { findKey } from "@/utils/helpers";
 import Images from "@/components/images/Images";

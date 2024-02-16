@@ -1,15 +1,11 @@
 "use client";
 import styles from "./sidebar.module.css";
 import { useAppProvider } from "@/utils/context/appContext";
-import Image from "next/image";
-import closeIcon from "@/public/icons/close.svg";
-
 import { useState } from "react";
 import SidebarLayer1 from "./sidebarLayer/sidebarLayer1/SidebarLayer1";
-
-import jsonData from "@/utils/dataset.json";
 import NavForwardButton from "../buttons/navigate/forward/NavForwardButton";
 import NavCloseButton from "../buttons/navigate/close/NavCloseButton";
+import { recursiveFilter } from "@/utils/helpers";
 type Props = {
   categories: ({
     parent: {
@@ -41,7 +37,6 @@ const Sidebar: React.FunctionComponent<Props> = ({ categories }) => {
 
   const onCloseHandler = () => {
     setSidebar(false);
-
     //in order to be in sync with CSS transition
     setTimeout(() => {
       setHeader("");
@@ -49,22 +44,16 @@ const Sidebar: React.FunctionComponent<Props> = ({ categories }) => {
   };
 
   //  filter categories
-  const j: any = jsonData;
   const mainCategories = categories.filter((cats) => !cats.parent);
-  console.log(mainCategories);
 
-  //  represents the categories with parent categories - default value can be the first element or null
-  //TODO:
-  const [current, setCurrent] = useState<any[]>(Object.keys(j["Bows"]));
-  console.log("current", current);
-  const [alt, setAlt] = useState();
-  const altCategoriesHandler = (item: string) => {
-    if (item && j[item]) {
-      setCurrent(Object.keys(j[item]));
-      setAlt(j[item]);
-    }
+  const [isSelected, setIsSelected] = useState<any[]>([]);
+
+  //  pass in name & id and find corresponding subCategories
+  const altCategoriesHandler = (item: string, id: number) => {
+    const result: any[] = [];
+    recursiveFilter(mainCategories, id, result);
+    setIsSelected(result);
     setSidebarLayer(true);
-    // setTest(true);
     setHeader(item);
     setPrevHeader(item);
   };
@@ -80,22 +69,10 @@ const Sidebar: React.FunctionComponent<Props> = ({ categories }) => {
           <span className={styles.header}>
             <NavCloseButton handler={onCloseHandler} />
           </span>
-          {/* {Object.keys(jsonData).map((item, i) => {
-            return (
-              <div
-                onClick={() => altCategoriesHandler(item)}
-                key={i}
-                className={styles.menuItems}
-              >
-                <span>{item}</span>
-                <NavForwardButton />
-              </div>
-            );
-          })} */}
           {mainCategories.map((items) => {
             return (
               <div
-                onClick={() => altCategoriesHandler(items.name)}
+                onClick={() => altCategoriesHandler(items.name, items.id)}
                 key={items.id}
                 className={styles.menuItems}
               >
@@ -106,7 +83,7 @@ const Sidebar: React.FunctionComponent<Props> = ({ categories }) => {
           })}
         </div>
       </div>
-      <SidebarLayer1 items={current} altItems={alt} />
+      {isSelected && <SidebarLayer1 selected={isSelected} />}
     </>
   );
 };

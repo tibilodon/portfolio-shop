@@ -47,7 +47,11 @@ const getCategories = async () => {
     return await prisma.category.findMany({
       include: {
         parent: true,
-        subcategories: true,
+        subcategories: {
+          include: {
+            subcategories: true,
+          },
+        },
       },
     });
   } catch (error) {

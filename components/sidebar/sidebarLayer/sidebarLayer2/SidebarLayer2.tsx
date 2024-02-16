@@ -1,17 +1,15 @@
 "use client";
-// import styles from "../sidebarLayer.module.css";
 import styles from "../../sidebar.module.css";
-
 import { useAppProvider } from "@/utils/context/appContext";
 import NavBackButton from "@/components/buttons/navigate/back/NavBackButton";
 import NavCloseButton from "@/components/buttons/navigate/close/NavCloseButton";
 import { useRouter } from "next/navigation";
 
 type Props = {
-  items?: any;
+  selected: any[];
 };
 
-const SidebarLayer2: React.FunctionComponent<Props> = ({ items }) => {
+const SidebarLayer2: React.FunctionComponent<Props> = ({ selected }) => {
   const router = useRouter();
   const {
     setSidebar,
@@ -68,15 +66,15 @@ const SidebarLayer2: React.FunctionComponent<Props> = ({ items }) => {
           )}
           <NavCloseButton handler={onCloseHandler} />
         </span>
-        {items &&
-          Object.keys(items).map((item: any, i: number) => {
+        {selected &&
+          selected.map((items) => {
             return (
               <div
-                onClick={() => linker(item)}
-                key={i}
+                onClick={() => linker(items.name)}
+                key={items.id}
                 className={styles.menuItems}
               >
-                {item}
+                {items.name}
               </div>
             );
           })}

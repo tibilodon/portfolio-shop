@@ -6,13 +6,13 @@ import SidebarLayer2 from "../sidebarLayer2/SidebarLayer2";
 import NavForwardButton from "@/components/buttons/navigate/forward/NavForwardButton";
 import NavBackButton from "@/components/buttons/navigate/back/NavBackButton";
 import NavCloseButton from "@/components/buttons/navigate/close/NavCloseButton";
+import { recursiveFilter } from "@/utils/helpers";
 
 type Props = {
-  items: string[];
-  altItems?: any;
+  selected: any[];
 };
 
-const SidebarLayer1: React.FunctionComponent<Props> = ({ items, altItems }) => {
+const SidebarLayer1: React.FunctionComponent<Props> = ({ selected }) => {
   const {
     setSidebar,
     sidebarLayer,
@@ -39,10 +39,14 @@ const SidebarLayer1: React.FunctionComponent<Props> = ({ items, altItems }) => {
     }, 300);
   };
 
-  const [current, setCurrent] = useState();
+  // const [current, setCurrent] = useState();
+  const [isSelected, setIsSelected] = useState<any[]>([]);
 
-  const handler = (item: string) => {
-    setCurrent(altItems[item]);
+  const handler = (item: string, id: number) => {
+    const result: any[] = [];
+
+    recursiveFilter(selected, id, result);
+    setIsSelected(result);
     setSidebarLayer2(true);
     setTimeout(() => {
       setHeader(item);
@@ -71,22 +75,22 @@ const SidebarLayer1: React.FunctionComponent<Props> = ({ items, altItems }) => {
 
           <NavCloseButton handler={onCloseHandler} />
         </span>
-        {items &&
-          items.map((item, i) => {
+        {selected &&
+          selected.map((items) => {
             return (
               <div
-                onClick={() => handler(item)}
-                key={i}
+                onClick={() => handler(items.name, items.id)}
+                key={items.id}
                 className={styles.menuItems}
               >
-                {item}
+                {items.name}
                 <NavForwardButton />
               </div>
             );
           })}
       </div>
 
-      <SidebarLayer2 items={current} />
+      {isSelected && <SidebarLayer2 selected={isSelected} />}
     </div>
   );
 };
