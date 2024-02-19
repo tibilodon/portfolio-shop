@@ -2,5 +2,15 @@ import { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
-  const checkTnc = request.cookies.has("tnC");
+  // Store current request url in a custom header, which you can read later
+  const requestHeaders = new Headers(request.headers);
+  //   const agreedTnc = request.cookies.has("tnc");
+  //   requestHeaders.set("x-url", request.url);
+
+  return NextResponse.next({
+    request: {
+      // Apply new request headers
+      headers: requestHeaders,
+    },
+  });
 }

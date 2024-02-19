@@ -10,21 +10,11 @@ import Image from "next/image";
 import { ProductType } from "../page";
 import ProductCard from "@/components/cards/product/ProductCard";
 import IncreaseDecrease from "@/components/selector/increaseDecrease/IncreaseDecrease";
+import { headers } from "next/headers";
 
 export default async function Cart() {
   const data: RequestCookie[] | undefined = await getAllCookies();
-  //filter out tnc
-  // const cookieData = data?.filter((item) => item.name !== "tnc");
-  // const filteredCookieData = [];
-  // if (cookieData) {
-  //   for (let index = 0; index < cookieData.length; index++) {
-  //     const element = cookieData[index];
-  //     const res = filterCookieData(element);
-  //     if (res) {
-  //       filteredCookieData.push(res);
-  //     }
-  //   }
-  // }
+
   const dbData = await prisma.product.findMany({
     include: {
       variants: true,

@@ -30,6 +30,7 @@ export async function POST(request: NextRequest) {
 
   if (!customer.length && order) {
     const productsInOrder = fromCookieToDbData(order, dbData);
+    console.log(productsInOrder);
     //  validate the existence and stock of ordered products
     if (productsInOrder) {
       for (let index = 0; index < productsInOrder.length; index++) {

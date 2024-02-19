@@ -10,6 +10,7 @@ import CookieBar from "@/components/bars/cookie/CookieBar";
 import { CustomMetaData } from "@/utils/helpers";
 import prisma from "@/prisma/prismaClient";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata = new CustomMetaData("Shop Title", "Shop Description");
@@ -67,8 +68,9 @@ export default async function RootLayout({
   const data = await getCookieData();
   const prismaData = await getDbData();
   const categories = await getCategories();
-  //  check tnc for last
-  const tnC = await getCookie("tnc");
+
+  //  check right before every page load -- page is getting cached, in that way cannot read out headers before every page "load"
+  const tnc = await getCookie("tnc");
 
   return (
     <html lang="en">
@@ -80,7 +82,7 @@ export default async function RootLayout({
           <div className="children">
             <Wrapper>{children}</Wrapper>
           </div>
-          {tnC?.value !== "1" ? <CookieBar /> : null}
+          {tnc?.value !== "1" ? <CookieBar /> : null}
         </AppContextProvider>
       </body>
     </html>

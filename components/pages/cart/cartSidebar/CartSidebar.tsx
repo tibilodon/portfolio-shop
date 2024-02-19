@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { filterCookieData, fromCookieToDbData } from "@/utils/helpers";
 import { deleteCookie } from "@/utils/cookieActions";
 import DeleteFromCookies from "../buttons/deleteFromCookies/DeleteFromCookies";
+import Loading from "@/app/loading";
 
 type Props = {
   data: RequestCookie[] | undefined;
@@ -35,6 +36,9 @@ const CartSidebar: React.FunctionComponent<Props> = ({ data, prismaData }) => {
   };
 
   const findData = fromCookieToDbData(data, prismaData);
+  if (!findData.length) {
+    return <Loading />;
+  }
 
   const linker = (product: RequestCookie) => {
     // const separate = filterCookieData(cookie);
