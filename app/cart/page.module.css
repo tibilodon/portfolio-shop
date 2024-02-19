@@ -5,13 +5,12 @@
   justify-content: center;
   height: var(--page-height);
 }
-.emptyWrap,
+
 .wrap {
-  height: var(--page-height);
-}
-.wrap {
-  border: 2px solid red;
-  min-height: 100%;
+  /* border: 2px solid red; */
+  min-height: var(--page-height);
+  /* margin-top: 10em; */
+  margin-top: 8em;
   width: 100%;
   gap: 2em;
   display: flex;

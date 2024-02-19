@@ -8,8 +8,9 @@ import CartItem from "../cartItem/CartItem";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import EmptyCart from "../cartItem/emptyCart/EmptyCart";
 import { useRouter } from "next/navigation";
-import { filterCookieData } from "@/utils/helpers";
+import { filterCookieData, fromCookieToDbData } from "@/utils/helpers";
 import { deleteCookie } from "@/utils/cookieActions";
+import DeleteFromCookies from "../buttons/deleteFromCookies/DeleteFromCookies";
 
 type Props = {
   data: RequestCookie[] | undefined;
@@ -33,19 +34,16 @@ const CartSidebar: React.FunctionComponent<Props> = ({ data, prismaData }) => {
     router.push("/cart");
   };
 
-  const deleteItem = (product: string) => {
-    deleteCookie(product);
-    router.refresh();
-  };
+  const findData = fromCookieToDbData(data, prismaData);
 
-  const linker = (prod: string) => {
-    const separate = filterCookieData(prod);
-    if (separate?.product) {
-      console.log("seem", separate.product);
-      router.push(`/collections/products/${separate.product}`);
-      onCloseHandler();
-    }
-    return;
+  const linker = (product: RequestCookie) => {
+    // const separate = filterCookieData(cookie);
+    // if (separate?.product) {
+    // console.log("seem", separate.product);
+    router.push(`/collections/products/${product}`);
+    onCloseHandler();
+    // }
+    // return;
   };
   return (
     <div
@@ -62,38 +60,37 @@ const CartSidebar: React.FunctionComponent<Props> = ({ data, prismaData }) => {
 
           <NavCloseButton handler={onCloseHandler} />
         </span>
-        {/* {items &&
-          items.map((item, i) => {
-            return (
-              <div
-                onClick={() => handler(item)}
-                key={i}
-                className={styles.menuItems}
-              >
-                {item}
-                <NavForwardButton />
-              </div>
-            );
-          })} */}
         <div className={styles.menuItems}>
-          {data?.length ? (
+          {findData?.length ? (
             <>
               <button className={styles.toCheckoutBtn} onClick={handler}>
                 proceed to cart
               </button>
-              {data.map((item, i: number) => {
+              {findData.map((item, i: number) => {
+                const {
+                  name,
+                  price,
+                  selectedAmount,
+                  variants,
+                  cookieName,
+                  imageUrl,
+                } = item;
                 return (
                   <div key={i} className={styles.cartItems}>
-                    <span onClick={() => linker(item.name)}>
+                    <span onClick={() => linker(name)}>
                       <CartItem
-                        product={item.name}
-                        value={item.value}
-                        prismaData={prismaData}
+                        name={name}
+                        basePrice={price}
+                        selectedAmount={selectedAmount}
+                        variants={variants}
+                        imageUrl={imageUrl}
                       />
                     </span>
-                    <button onClick={() => deleteItem(item.name)}>
-                      delete item
-                    </button>
+
+                    <DeleteFromCookies
+                      label={"delete product"}
+                      product={cookieName}
+                    />
                   </div>
                 );
               })}

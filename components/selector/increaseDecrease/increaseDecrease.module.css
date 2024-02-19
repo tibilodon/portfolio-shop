@@ -1,0 +1,15 @@
+.wrap {
+  display: flex;
+  /* max-width: 15em; */
+  gap: 1em;
+  border: 2px solid black;
+
+  align-items: center;
+}
+.wrap > * {
+  padding: 1em;
+}
+.wrap button:disabled {
+  border: 2px solid red;
+  background-color: gray;
+}

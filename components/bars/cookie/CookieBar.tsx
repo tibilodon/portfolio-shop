@@ -3,15 +3,19 @@ import styles from "./cookieBar.module.css";
 import { getCookie } from "@/utils/cookieActions";
 
 const CookieBar = async () => {
-  const isSet = await getCookie("tnc");
+  // const isSet = await getCookie("tnc");
   return (
     <>
-      {isSet?.value !== "1" ? (
+      {/* {isSet?.value !== "1" ? (
         <div className={styles.wrap}>
           <h1>CookieBar</h1>
           <SetCookie />
         </div>
-      ) : null}
+      ) : null} */}
+      <div className={styles.wrap}>
+        <h1>CookieBar</h1>
+        <SetCookie />
+      </div>
     </>
   );
 };

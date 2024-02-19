@@ -50,7 +50,7 @@ const ProductCard: React.FunctionComponent<Props> = ({
     const inCart = await getCookie(cookieName);
     if (inCart?.value) {
       const items: number = Number(inCart.value);
-      const filterData = filterCookieData(inCart.name);
+      const filterData = filterCookieData(inCart);
       if (filterData) {
         if (filterData.variant === selected?.name) {
           await createCookie(cookieName, `${items + amount}`);
@@ -61,7 +61,6 @@ const ProductCard: React.FunctionComponent<Props> = ({
     }
   };
 
-  //TODO: stock and baseStock
   return (
     <>
       <div className={styles.wrap}>

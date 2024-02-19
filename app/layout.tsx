@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/bars/navbar/Navbar";
@@ -17,6 +16,7 @@ export const metadata = new CustomMetaData("Shop Title", "Shop Description");
 
 const getCookieData = async () => {
   const data = await getAllCookies();
+
   if (data?.length) {
     const newData = [];
     for (let index = 0; index < data.length; index++) {
@@ -67,8 +67,8 @@ export default async function RootLayout({
   const data = await getCookieData();
   const prismaData = await getDbData();
   const categories = await getCategories();
-
-  // console.log(categories);
+  //  check tnc for last
+  const tnC = await getCookie("tnc");
 
   return (
     <html lang="en">
@@ -80,7 +80,7 @@ export default async function RootLayout({
           <div className="children">
             <Wrapper>{children}</Wrapper>
           </div>
-          <CookieBar />
+          {tnC?.value !== "1" ? <CookieBar /> : null}
         </AppContextProvider>
       </body>
     </html>

@@ -43,7 +43,7 @@ const AddToCartBtn: React.FunctionComponent<Props> = ({
     const inCart = await getCookie(cookieName);
     if (inCart?.value) {
       const items: number = Number(inCart.value);
-      const filterData = filterCookieData(inCart.name);
+      const filterData = filterCookieData(inCart);
       if (filterData) {
         if (filterData.variant === selected) {
           await createCookie(cookieName, `${items + amount}`);

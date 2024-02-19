@@ -14,7 +14,7 @@ export default async function Checkout() {
   if (cookieData) {
     for (let index = 0; index < cookieData.length; index++) {
       const element = cookieData[index];
-      const res = filterCookieData(element.name);
+      const res = filterCookieData(element);
       if (res) {
         filteredCookieData.push(res);
       }
@@ -60,8 +60,6 @@ export default async function Checkout() {
     redirect("/error");
   }
 
-  console.log(results);
-
   const overallPrice = () => {
     let price: number = 0;
     for (let index = 0; index < results.length; index++) {
@@ -79,7 +77,7 @@ export default async function Checkout() {
       <div className={styles.wrap}>
         <h1>hello checkout</h1>
         <div>
-          <h3>here is the overalll price: {overallPrice()}</h3>
+          <h3>here is the overall price: {overallPrice()}</h3>
           {/* {cartData.map((item, i) => (
             <div key={i}>
               <span>{item.product}</span>

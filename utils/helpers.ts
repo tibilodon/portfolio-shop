@@ -1,23 +1,27 @@
 //  #prisma cannot run here
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
-//separate cookie.value to product and variant
-const filterCookieData = (data: string) => {
+//separate cookie.value to product and variant, include the amount currently selected
+const filterCookieData = (
+  data: RequestCookie | undefined
+): { product: string; variant: string; amount: number } | undefined => {
   // const format = "some product name__variant_2";
   const regexPattern = /([^_]+)__(.+)/;
 
   if (data) {
-    const matchResult = regexPattern.exec(data);
+    const matchResult = regexPattern.exec(data.name);
     // const tes = regexPattern2.exec(testStr);
 
     if (matchResult) {
-      const res: { product: string; variant: string } = {
+      const res: { product: string; variant: string; amount: number } = {
         product: matchResult[1],
         variant: matchResult[2],
+        amount: Number(data.value),
       };
       return res;
     } else {
       console.log("No match found");
+      return undefined;
     }
   }
 };
@@ -90,6 +94,7 @@ export type CartObjectType = {
   price: number;
   calcPrice: number;
 };
+
 class CartData {
   protected cartData: CartObjectType[];
 
@@ -99,7 +104,7 @@ class CartData {
       for (let index = 0; index < data.length; index++) {
         const element = data[index];
         if (element.name !== "tnc") {
-          const separate = filterCookieData(element.name);
+          const separate = filterCookieData(element);
 
           if (separate) {
             let oriData = findKey(dataSet, separate.product);
@@ -158,7 +163,11 @@ const errorMsg = (key: string): string => {
   return message;
 };
 
-const validator = (customerValues: any): ValidatedType[] => {
+const validator = (
+  customerValues: {
+    [x: string]: FormDataEntryValue | null;
+  }[]
+): ValidatedType[] => {
   const invalids: ValidatedType[] = [];
   for (let index = 0; index < customerValues.length; index++) {
     const element = customerValues[index];
@@ -167,7 +176,7 @@ const validator = (customerValues: any): ValidatedType[] => {
       if (Object.prototype.hasOwnProperty.call(element, key)) {
         const val = String(element[key]);
         const validatedObj: ValidatedType = { message: "", id: "" };
-        //empty validation
+        //  empty field validation
         if (!val) {
           //TODO: create class for this
           validatedObj.message = errorMsg(key);
@@ -330,6 +339,7 @@ async function frontendValidator(
 }
 
 import { randomUUID } from "crypto";
+import { NextResponse } from "next/server";
 // import prisma from "@/prisma/prismaClient";
 
 const dateParser = () => {
@@ -455,6 +465,70 @@ const recursiveFilter = (data: any, parentId: number, result: any[]): any[] => {
   return result;
 };
 
+//  find products in db based on cookies
+//TODO:  request cookies and dbData on demand
+const fromCookieToDbData = (
+  cookieData: RequestCookie[] | undefined,
+  dbData: any
+) => {
+  const cookieFilter = cookieData?.filter((item) => item.name !== "tnc");
+  const orderData = [];
+
+  if (cookieFilter) {
+    for (let index = 0; index < cookieFilter.length; index++) {
+      const element = cookieFilter[index];
+      const res = filterCookieData(element);
+      if (res) {
+        const modRes: any = { ...res };
+        modRes.selectedAmount = element.value;
+        orderData.push(modRes);
+      }
+    }
+  }
+
+  const results = [];
+  if (dbData && orderData.length) {
+    for (let index = 0; index < dbData.length; index++) {
+      const db = dbData[index];
+      for (let index = 0; index < orderData.length; index++) {
+        const cookie = orderData[index];
+
+        if (cookie.product === db.name) {
+          //include cookie name for easier deletion
+
+          const findVariant = db.variants.find(
+            (vari: {
+              id: number;
+              createdAt: Date;
+              updatedAt: Date | null;
+              name: string;
+              price: number;
+              stock: number;
+              productId: number;
+            }) => vari.name === cookie.variant
+          );
+          const modData: any = { ...db };
+          modData.cookieName = `${cookie.product}__${cookie.variant}`;
+          modData.selectedAmount = cookie.amount;
+          //  existing variants
+          if (modData.variants.length) {
+            delete modData.variants;
+            modData.variants = findVariant;
+            results.push(modData);
+          } else {
+            results.push(modData);
+          }
+        }
+      }
+    }
+  }
+  if (results.length) {
+    return results;
+  } else {
+    throw new Error("Data cannot be found");
+  }
+};
+
 export {
   filterCookieData,
   findKey,
@@ -465,4 +539,5 @@ export {
   customerTemplate,
   orderTemplate,
   recursiveFilter,
+  fromCookieToDbData,
 };

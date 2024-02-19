@@ -33,7 +33,6 @@ export default async function ProductDetails({
   }
   const { name, price, stock, variants, imageUrl, description } = dataRes[0];
   const data = dataRes[0];
-  console.log("the prod data:", data);
   // const pageData = findKey(data, keyName);
 
   return (

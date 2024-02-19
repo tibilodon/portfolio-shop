@@ -6,30 +6,51 @@ import {
   CartObjectType,
   CustomerDataType,
   orderTemplate,
+  fromCookieToDbData,
 } from "@/utils/helpers";
 import sendEmail from "@/utils/sendEmail";
+import prisma from "@/prisma/prismaClient";
 
 export async function POST(request: NextRequest) {
-  //TODO: revalidatePath
-  //   console.log("body", request);
+  //TODO: set error boundaries
+
+  const dbData = await prisma.product.findMany({
+    include: {
+      variants: true,
+    },
+  });
+
   const requestUrl = new URL(request.url);
   const data = await request.json();
-  // console.log("cookies", cokDa);
-  //validate customerValues
-  const validateCustomerDetails = validator(data.customerValues);
 
-  if (!validateCustomerDetails.length && data.order) {
-    console.log("here is your test data", data.order[0]);
+  const { customerValues, order } = data;
+
+  //  revalidate customer details
+  const customer = validator(customerValues);
+
+  if (!customer.length && order) {
+    const productsInOrder = fromCookieToDbData(order, dbData);
+    //  validate the existence and stock of ordered products
+    if (productsInOrder) {
+      for (let index = 0; index < productsInOrder.length; index++) {
+        const element = productsInOrder[index];
+        for (const [key, value] of Object.entries(element)) {
+        }
+      }
+    }
+
     // const orderData: CartObjectType[] = data.order;
     // const customerData: CustomerDataType[] = data.customerValues;
     // const test = orderTemplate(orderData);
     // console.log("test", test);
     // await sendEmail(orderData, customerData, String(requestUrl.origin));
-    //  redirect after logged in
-    return NextResponse.redirect(requestUrl.origin, {
-      status: 301,
-    });
-    // return NextResponse.json("ogo");
+
+    //  in case of a successful submit
+    // return NextResponse.redirect(requestUrl.origin, {
+    //   status: 301,
+    // });
+
+    return NextResponse.json("would be good to go");
   }
 
   //  redirect after logged in
