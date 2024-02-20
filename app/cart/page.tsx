@@ -11,6 +11,8 @@ import { ProductType } from "../page";
 import ProductCard from "@/components/cards/product/ProductCard";
 import IncreaseDecrease from "@/components/selector/increaseDecrease/IncreaseDecrease";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import Loading from "../loading";
 
 export default async function Cart() {
   const data: RequestCookie[] | undefined = await getAllCookies();
@@ -24,6 +26,9 @@ export default async function Cart() {
 
   //  find match in db
   const results = fromCookieToDbData(data, dbData);
+  if (!results) {
+    return <Loading />;
+  }
 
   //  find product and variant based on cookieData
 
@@ -36,7 +41,7 @@ export default async function Cart() {
               name,
               price,
               variants,
-              imageUrl,
+              // imageUrl,
               cookieName,
               selectedAmount,
               stock,
@@ -49,14 +54,14 @@ export default async function Cart() {
                 >
                   <h4>name: {name}</h4>
                   <h4>price: {variants.price ? variants.price : price}</h4>
-                  {imageUrl && (
+                  {/* {imageUrl && (
                     <Image
                       width={100}
                       height={100}
                       src={imageUrl}
                       alt={`image of product: ${name}`}
                     />
-                  )}
+                  )} */}
                   {variants.name && <h5>variant: {variants.name}</h5>}
                 </Link>
 

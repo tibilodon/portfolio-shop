@@ -11,6 +11,7 @@ import { CustomMetaData } from "@/utils/helpers";
 import prisma from "@/prisma/prismaClient";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
+import Loading from "./loading";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata = new CustomMetaData("Shop Title", "Shop Description");
@@ -33,11 +34,16 @@ const getCookieData = async () => {
 
 const getDbData = async () => {
   try {
-    return await prisma.product.findMany({
+    const res = await prisma.product.findMany({
       include: {
         variants: true,
       },
     });
+    if (res) {
+      return res;
+    } else {
+      redirect("/error");
+    }
   } catch (error) {
     redirect("/error");
   }
@@ -45,7 +51,7 @@ const getDbData = async () => {
 
 const getCategories = async () => {
   try {
-    return await prisma.category.findMany({
+    const res = await prisma.category.findMany({
       include: {
         parent: true,
         subcategories: {
@@ -55,6 +61,12 @@ const getCategories = async () => {
         },
       },
     });
+
+    if (res) {
+      return res;
+    } else {
+      redirect("/error");
+    }
   } catch (error) {
     redirect("/error");
   }
@@ -69,21 +81,29 @@ export default async function RootLayout({
   const prismaData = await getDbData();
   const categories = await getCategories();
 
+  if (!prismaData || !categories) {
+    redirect("/admin");
+  }
+
   //  check right before every page load -- page is getting cached, in that way cannot read out headers before every page "load"
   const tnc = await getCookie("tnc");
 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AppContextProvider>
-          <Navbar />
-          <Sidebar categories={categories} />
-          <CartSidebar data={data} prismaData={prismaData} />
-          <div className="children">
-            <Wrapper>{children}</Wrapper>
-          </div>
-          {tnc?.value !== "1" ? <CookieBar /> : null}
-        </AppContextProvider>
+        {prismaData ? (
+          <AppContextProvider>
+            <Navbar />
+            <Sidebar categories={categories} />
+            <CartSidebar data={data} prismaData={prismaData} />
+            <div className="children">
+              <Wrapper>{children}</Wrapper>
+            </div>
+            {tnc?.value !== "1" ? <CookieBar /> : null}
+          </AppContextProvider>
+        ) : (
+          <Loading />
+        )}
       </body>
     </html>
   );

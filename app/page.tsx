@@ -6,6 +6,8 @@ import ImageSlider from "@/components/pages/home/imageSlider/ImageSlider";
 import { CustomMetaData } from "@/utils/helpers";
 import prisma from "@/prisma/prismaClient";
 import { VariantType } from "@/components/cards/product/ProductCard";
+import { redirect } from "next/navigation";
+import Loading from "./loading";
 
 export const metadata = new CustomMetaData(
   "Shop - home page",
@@ -20,7 +22,7 @@ export type ProductType = {
   description: string;
   highlighted: boolean;
   categoryId: string | null;
-  imageUrl: string;
+  // imageUrl: string;
   variants: VariantType[];
   price: number;
   stock: number;
@@ -28,7 +30,7 @@ export type ProductType = {
 
 export default async function Home() {
   //  fetch data
-  const data: ProductType[] = await prisma.product.findMany({
+  const data = await prisma.product.findMany({
     where: {
       highlighted: true,
     },
@@ -36,6 +38,10 @@ export default async function Home() {
       variants: true,
     },
   });
+
+  if (!data) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -47,7 +53,7 @@ export default async function Home() {
         {/* <PlaceholderP />
         <PlaceholderP />
         <PlaceholderP /> */}
-        <ImageSlider data={data} />
+        {data && <ImageSlider data={data} />}
       </div>
     </>
   );

@@ -21,7 +21,7 @@ export type VariantType = {
 };
 
 type Props = {
-  image: string;
+  // image: string;
   productName: string;
   description: string;
   variants: VariantType[];
@@ -31,7 +31,7 @@ type Props = {
 
 const ProductCard: React.FunctionComponent<Props> = ({
   variants,
-  image,
+  // image,
   productName,
   description,
   basePrice,
@@ -69,13 +69,13 @@ const ProductCard: React.FunctionComponent<Props> = ({
           <h3>prod: {productName}</h3>
           <h3>desc: {description}</h3>
           <h3>PRICE: {selected ? selected.price : basePrice}</h3>
-          <Images
+          {/* <Images
             image={image}
             stock={selected ? selected.stock : baseStock}
             alt={`Image representing ${productName} ${
               selected ? " with variant: " + selected.name : ""
             }`}
-          />
+          /> */}
         </Link>
 
         {selected && (

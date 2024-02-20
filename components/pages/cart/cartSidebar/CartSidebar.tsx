@@ -12,6 +12,8 @@ import { filterCookieData, fromCookieToDbData } from "@/utils/helpers";
 import { deleteCookie } from "@/utils/cookieActions";
 import DeleteFromCookies from "../buttons/deleteFromCookies/DeleteFromCookies";
 import Loading from "@/app/loading";
+import { redirect } from "next/navigation";
+import { useEffect } from "react";
 
 type Props = {
   data: RequestCookie[] | undefined;
@@ -36,9 +38,12 @@ const CartSidebar: React.FunctionComponent<Props> = ({ data, prismaData }) => {
   };
 
   const findData = fromCookieToDbData(data, prismaData);
-  if (!findData.length) {
-    return <Loading />;
-  }
+
+  useEffect(() => {
+    if (!findData) {
+      router.push("admin");
+    }
+  });
 
   const linker = (product: RequestCookie) => {
     // const separate = filterCookieData(cookie);
@@ -77,7 +82,7 @@ const CartSidebar: React.FunctionComponent<Props> = ({ data, prismaData }) => {
                   selectedAmount,
                   variants,
                   cookieName,
-                  imageUrl,
+                  // imageUrl,
                 } = item;
                 return (
                   <div key={i} className={styles.cartItems}>
@@ -87,7 +92,7 @@ const CartSidebar: React.FunctionComponent<Props> = ({ data, prismaData }) => {
                         basePrice={price}
                         selectedAmount={selectedAmount}
                         variants={variants}
-                        imageUrl={imageUrl}
+                        // imageUrl={imageUrl}
                       />
                     </span>
 

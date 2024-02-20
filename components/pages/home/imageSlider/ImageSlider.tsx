@@ -2,19 +2,24 @@
 import styles from "./imageSlider.module.css";
 import { useState, useEffect } from "react";
 
-import highLightData from "@/utils/highlights.json";
 import { useRouter } from "next/navigation";
 import { ProductType } from "@/app/page";
 import ProductCard from "@/components/cards/product/ProductCard";
 
 type Props = {
-  data: ProductType[];
+  data: any;
 };
 
 const ImageSlider: React.FunctionComponent<Props> = ({ data }) => {
   // setInterval  - data-ProductCard
   //  be able to set variant
   const router = useRouter();
+
+  useEffect(() => {
+    if (!data) {
+      router.push("/admin");
+    }
+  });
 
   const [freeze, setFreeze] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -77,14 +82,14 @@ const ImageSlider: React.FunctionComponent<Props> = ({ data }) => {
     }, 3000);
   }, [isDisabled]);
 
-  const { name, imageUrl, description, variants, price, stock } = highlightData;
+  const { name, description, variants, price, stock } = highlightData;
 
   return (
     <>
       <div className={styles.wrap}>
         <ProductCard
           description={description}
-          image={imageUrl}
+          // image={imageUrl}
           productName={name}
           variants={variants}
           basePrice={price}

@@ -8,14 +8,14 @@ type Props = {
   basePrice: number;
   selectedAmount: number;
   variants: any;
-  imageUrl: string;
+  // imageUrl: string;
 };
 const CartItem: React.FunctionComponent<Props> = ({
   name,
   basePrice,
   selectedAmount,
   variants,
-  imageUrl,
+  // imageUrl,
 }) => {
   return (
     <>
@@ -31,7 +31,7 @@ const CartItem: React.FunctionComponent<Props> = ({
         {!variants && <h5>price: {Number(basePrice) * selectedAmount}</h5>}
         <h5>amount selected: {selectedAmount}</h5>
 
-        <Images alt={`image of ${name}`} image={imageUrl} />
+        {/* <Images alt={`image of ${name}`} image={imageUrl} /> */}
       </div>
     </>
   );

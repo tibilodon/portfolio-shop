@@ -216,6 +216,11 @@ export type ValidatedType = {
   id: string;
 };
 
+export type DBErrorType = {
+  item: string;
+  cause: string;
+};
+
 export type CustomerDataType = {
   email: string;
   firstName: string;
@@ -230,6 +235,7 @@ async function frontendValidator(
   prevState: {
     message: ValidatedType[];
     redirect: boolean | string;
+    error: DBErrorType;
   },
   formData: FormData
 ) {
@@ -314,15 +320,32 @@ async function frontendValidator(
         body: JSON.stringify({ customerValues, order }),
       });
       if (resp.ok) {
+        console.log(resp);
         return {
           message: invalids,
+          error: { item: "", cause: "" },
+          redirect: resp.redirected ? resp.url : false,
+        };
+      } else {
+        const body = await resp.json();
+        console.log(body);
+        return {
+          message: invalids,
+          error: { item: body.item.name, cause: "item is out of stock" },
 
           redirect: resp.redirected ? resp.url : false,
         };
+        // const reader = resp.body?.getReader();
+        // readStream(reader);
       }
+
       // return resp;
     } catch (error) {
-      return { message: invalids, redirect: false };
+      return {
+        message: invalids,
+        redirect: false,
+        error: { item: "", cause: "" },
+      };
     }
   }
 
@@ -333,6 +356,7 @@ async function frontendValidator(
   return {
     // message: "error! please fill out the field",
     // id: ["email"],
+    error: { item: "", cause: "" },
     message: invalids,
     redirect: false,
   };
@@ -466,7 +490,6 @@ const recursiveFilter = (data: any, parentId: number, result: any[]): any[] => {
 };
 
 //  find products in db based on cookies
-//TODO:  request cookies and dbData on demand
 const fromCookieToDbData = (
   cookieData: RequestCookie[] | undefined,
   dbData: any
@@ -525,7 +548,7 @@ const fromCookieToDbData = (
   if (results.length) {
     return results;
   } else {
-    throw new Error("Data cannot be found");
+    console.log("could not find data");
   }
 };
 

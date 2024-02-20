@@ -31,7 +31,7 @@ export default async function ProductDetails({
   if (!dataRes.length) {
     return <Loading />;
   }
-  const { name, price, stock, variants, imageUrl, description } = dataRes[0];
+  const { name, price, stock, variants, description } = dataRes[0];
   const data = dataRes[0];
   // const pageData = findKey(data, keyName);
 
@@ -64,7 +64,7 @@ export default async function ProductDetails({
             basePrice={price}
             baseStock={stock}
             description={description}
-            image={imageUrl}
+            // image={imageUrl}
             productName={name}
             variants={variants}
           />

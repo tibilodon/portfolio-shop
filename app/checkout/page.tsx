@@ -19,7 +19,7 @@ export default async function Checkout() {
   //  find match in db
   const findData = fromCookieToDbData(data, dbData);
 
-  if (!findData.length) {
+  if (!findData) {
     redirect("/error");
   }
   //  calc price

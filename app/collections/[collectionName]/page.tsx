@@ -45,7 +45,7 @@ export default async function CollectionDetails({
             <ProductCard
               key={item.id}
               description={item.description}
-              image={item.imageUrl}
+              // image={item.imageUrl}
               productName={item.name}
               variants={item.variants}
               basePrice={item.price}
