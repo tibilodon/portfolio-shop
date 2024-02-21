@@ -1,8 +1,9 @@
 "use server";
+import { DeleteActionReturnClass } from "@/classes";
 import prisma from "@/prisma/prismaClient";
 import { revalidatePath } from "next/cache";
 
-export default async function createCategory(
+export async function createCategory(
   prevState: {
     message: string;
     pathname: string;
@@ -10,17 +11,14 @@ export default async function createCategory(
   },
   formData: FormData
 ) {
-  const data = {
-    name: String(formData.get("name")),
-    parentId: formData.get("parentId"),
-  };
+  const data = String(formData.get("name"));
 
   //  create main category
   if (prevState.parentId === 0) {
     try {
       const resp = await prisma.category.create({
         data: {
-          name: data.name,
+          name: data,
         },
       });
       if (resp) {
@@ -40,7 +38,7 @@ export default async function createCategory(
     try {
       const resp = await prisma.category.create({
         data: {
-          name: data.name,
+          name: data,
           parent: {
             connect: {
               id: prevState.parentId,
@@ -58,5 +56,55 @@ export default async function createCategory(
     } catch (error) {
       return { message: "error", pathname: "", parentId: 0 };
     }
+  }
+}
+
+//  delete based on passed in id
+export async function deleteCategory(id: number, pathname: string) {
+  try {
+    const resp = await prisma.category.deleteMany({
+      where: {
+        id: id,
+      },
+    });
+    revalidatePath(pathname);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function updateCategory(
+  prevState: {
+    message: string;
+    pathname: string;
+    id: number;
+  },
+  formData: FormData
+) {
+  const { pathname, id } = prevState;
+  const data = String(formData.get("category"));
+
+  if (data === "") {
+    return { message: " error: field is empty", pathname: "", id: 0 };
+  }
+
+  try {
+    const resp = await prisma.category.update({
+      where: {
+        id: id,
+      },
+      data: {
+        name: data,
+      },
+    });
+    if (resp) {
+      console.log("resp back", resp);
+      revalidatePath(pathname);
+      return { message: "successful update", pathname: "", id: 0 };
+    } else {
+      return { message: "error@update", pathname: "", id: 0 };
+    }
+  } catch (error) {
+    return { message: "error", pathname: "", id: 0 };
   }
 }
