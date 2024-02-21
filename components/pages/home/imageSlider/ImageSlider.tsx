@@ -15,11 +15,11 @@ const ImageSlider: React.FunctionComponent<Props> = ({ data }) => {
   //  be able to set variant
   const router = useRouter();
 
-  useEffect(() => {
-    if (!data) {
-      router.push("/admin");
-    }
-  });
+  // useEffect(() => {
+  //   if (!data) {
+  //     router.push("/admin");
+  //   }
+  // });
 
   const [freeze, setFreeze] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -83,25 +83,26 @@ const ImageSlider: React.FunctionComponent<Props> = ({ data }) => {
   }, [isDisabled]);
 
   const { name, description, variants, price, stock } = highlightData;
-
   return (
     <>
-      <div className={styles.wrap}>
-        <ProductCard
-          description={description}
-          // image={imageUrl}
-          productName={name}
-          variants={variants}
-          basePrice={price}
-          baseStock={stock}
-        />
-        <button disabled={isDisabled} onClick={nextHandler}>
-          next
-        </button>
-        <button disabled={isDisabled} onClick={prevHandler}>
-          prev
-        </button>
-      </div>
+      {data && (
+        <div className={styles.wrap}>
+          <ProductCard
+            description={description}
+            // image={imageUrl}
+            productName={name}
+            variants={variants}
+            basePrice={price}
+            baseStock={stock}
+          />
+          <button disabled={isDisabled} onClick={nextHandler}>
+            next
+          </button>
+          <button disabled={isDisabled} onClick={prevHandler}>
+            prev
+          </button>
+        </div>
+      )}
     </>
   );
 };

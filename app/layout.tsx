@@ -77,16 +77,23 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const data = await getCookieData();
-  const prismaData = await getDbData();
-  const categories = await getCategories();
+  // const data = await getCookieData();
+  // const prismaData = await getDbData();
+  // const categories = await getCategories();
 
-  if (!prismaData || !categories) {
-    redirect("/admin");
-  }
+  const [data, prismaData, categories, tnc] = await Promise.all([
+    getCookieData(),
+    getDbData(),
+    getCategories(),
+    getCookie("tnc"),
+  ]);
+
+  // if (!prismaData || !categories) {
+  //   redirect("/admin");
+  // }
 
   //  check right before every page load -- page is getting cached, in that way cannot read out headers before every page "load"
-  const tnc = await getCookie("tnc");
+  // const tnc = await getCookie("tnc");
 
   return (
     <html lang="en">

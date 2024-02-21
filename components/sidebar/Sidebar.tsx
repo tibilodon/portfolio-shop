@@ -6,6 +6,8 @@ import SidebarLayer1 from "./sidebarLayer/sidebarLayer1/SidebarLayer1";
 import NavForwardButton from "../buttons/navigate/forward/NavForwardButton";
 import NavCloseButton from "../buttons/navigate/close/NavCloseButton";
 import { recursiveFilter } from "@/utils/helpers";
+import { useRouter } from "next/navigation";
+
 type Props = {
   categories: ({
     parent: {
@@ -32,6 +34,8 @@ type Props = {
 };
 
 const Sidebar: React.FunctionComponent<Props> = ({ categories }) => {
+  const router = useRouter();
+
   const { sidebar, setSidebar, setHeader, setPrevHeader, setSidebarLayer } =
     useAppProvider();
 
@@ -58,6 +62,15 @@ const Sidebar: React.FunctionComponent<Props> = ({ categories }) => {
     setPrevHeader(item);
   };
 
+  //TODO: create class
+  const linker = (item: string) => {
+    const regex = /\s]+/g;
+    const page = item.replaceAll(regex, "-");
+    console.log("page", page);
+    onCloseHandler();
+    router.push("/collections/" + item);
+  };
+
   return (
     <>
       <div
@@ -72,7 +85,11 @@ const Sidebar: React.FunctionComponent<Props> = ({ categories }) => {
           {mainCategories.map((items) => {
             return (
               <div
-                onClick={() => altCategoriesHandler(items.name, items.id)}
+                onClick={
+                  isSelected.length
+                    ? () => altCategoriesHandler(items.name, items.id)
+                    : () => linker(items.name)
+                }
                 key={items.id}
                 className={styles.menuItems}
               >

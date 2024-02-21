@@ -7,6 +7,7 @@ import NavForwardButton from "@/components/buttons/navigate/forward/NavForwardBu
 import NavBackButton from "@/components/buttons/navigate/back/NavBackButton";
 import NavCloseButton from "@/components/buttons/navigate/close/NavCloseButton";
 import { recursiveFilter } from "@/utils/helpers";
+import { useRouter } from "next/navigation";
 
 type Props = {
   selected: any[];
@@ -53,6 +54,15 @@ const SidebarLayer1: React.FunctionComponent<Props> = ({ selected }) => {
     }, 100);
   };
 
+  const router = useRouter();
+  const linker = (item: string) => {
+    const regex = /\s]+/g;
+    const page = item.replaceAll(regex, "-");
+    console.log("page", page);
+    onCloseHandler();
+    router.push("/collections/" + item);
+  };
+
   return (
     <div
       className={
@@ -79,7 +89,11 @@ const SidebarLayer1: React.FunctionComponent<Props> = ({ selected }) => {
           selected.map((items) => {
             return (
               <div
-                onClick={() => handler(items.name, items.id)}
+                onClick={
+                  isSelected.length
+                    ? () => handler(items.name, items.id)
+                    : () => linker(items.name)
+                }
                 key={items.id}
                 className={styles.menuItems}
               >
@@ -90,7 +104,7 @@ const SidebarLayer1: React.FunctionComponent<Props> = ({ selected }) => {
           })}
       </div>
 
-      {isSelected && <SidebarLayer2 selected={isSelected} />}
+      {isSelected.length && <SidebarLayer2 selected={isSelected} />}
     </div>
   );
 };

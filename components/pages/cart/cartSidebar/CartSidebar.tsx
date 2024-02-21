@@ -39,11 +39,11 @@ const CartSidebar: React.FunctionComponent<Props> = ({ data, prismaData }) => {
 
   const findData = fromCookieToDbData(data, prismaData);
 
-  useEffect(() => {
-    if (!findData) {
-      router.push("admin");
-    }
-  });
+  // useEffect(() => {
+  //   if (!findData) {
+  //     router.push("/admin");
+  //   }
+  // });
 
   const linker = (product: RequestCookie) => {
     // const separate = filterCookieData(cookie);

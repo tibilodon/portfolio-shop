@@ -5,7 +5,6 @@ import {
   useState,
   Dispatch,
   SetStateAction,
-  useEffect,
 } from "react";
 // import { getCookie, getAllCookies } from "../cookieActions";
 
