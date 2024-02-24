@@ -2,6 +2,7 @@
 import prisma from "@/prisma/prismaClient";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { createClient } from "@supabase/supabase-js";
 
 //  redirect cannot work inside a try-catch block
 const setData = async (data: any) => {
@@ -84,6 +85,25 @@ export async function createProduct(
   const submitData = await setData(data);
 
   if (submitData) {
+    const supabase = createClient(
+      "https://" + process.env.SUPABASE_STORAGE!!,
+      process.env.SUPABASE_PUBLIC_ANON_KEY!!
+    );
+    const file = formData.get("image");
+
+    if (file) {
+      const { data, error } = await supabase.storage
+        .from("images")
+        .upload("test_image", file);
+      if (error) {
+        console.log(error);
+        // Handle error
+      } else {
+        console.log("img uploaded", data);
+        // Handle success
+      }
+    }
+
     //  redirect if ok -- cannot work inside a try-catch block
     redirect("/admin/product");
   } else {
