@@ -37,7 +37,10 @@ const CartSidebar: React.FunctionComponent<Props> = ({ data, prismaData }) => {
     router.push("/cart");
   };
 
-  const findData = fromCookieToDbData(data, prismaData);
+  let findData;
+  if (data && prismaData.length) {
+    findData = fromCookieToDbData(data, prismaData);
+  }
 
   // useEffect(() => {
   //   if (!findData) {
@@ -70,7 +73,7 @@ const CartSidebar: React.FunctionComponent<Props> = ({ data, prismaData }) => {
           <NavCloseButton handler={onCloseHandler} />
         </span>
         <div className={styles.menuItems}>
-          {findData?.length ? (
+          {findData ? (
             <>
               <button className={styles.toCheckoutBtn} onClick={handler}>
                 proceed to cart

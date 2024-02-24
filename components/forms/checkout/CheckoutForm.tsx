@@ -29,6 +29,7 @@ function SubmitButton() {
   );
 }
 
+
 const CheckoutForm: React.FunctionComponent<Props> = () => {
   const router = useRouter();
   const [state, formAction] = useFormState(frontendValidator, initialState);

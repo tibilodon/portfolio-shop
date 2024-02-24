@@ -3,7 +3,7 @@ import TestButton from "@/components/test/TestButton";
 import styles from "./categoryForm.module.css";
 import { useState, useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
-import { updateCategory } from "@/utils/categoryActions";
+import { updateCategory } from "@/utils/actions";
 import { usePathname } from "next/navigation";
 
 function SubmitButton() {
@@ -41,7 +41,13 @@ const UpdateCategoryForm: React.FunctionComponent<Props> = ({ id, name }) => {
           <>
             <form action={formAction}>
               <label htmlFor="category">
-                <input type="text" id="category" name="category" required />
+                <input
+                  placeholder="enter new name"
+                  type="text"
+                  id="category"
+                  name="category"
+                  required
+                />
               </label>
               <SubmitButton />
             </form>

@@ -1,7 +1,7 @@
 "use client";
 //  could take in id from parent, if any
 import { useFormState, useFormStatus } from "react-dom";
-import { createCategory } from "@/utils/categoryActions";
+import { createCategory } from "@/utils/actions";
 import { usePathname } from "next/navigation";
 
 function SubmitButton() {

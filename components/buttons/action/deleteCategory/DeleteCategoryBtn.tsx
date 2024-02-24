@@ -1,6 +1,6 @@
 "use client";
 import styles from "./deleteCategoryBtn.module.css";
-import { deleteCategory } from "@/utils/categoryActions";
+import { deleteCategory } from "@/utils/actions";
 import { useTransition } from "react";
 import { usePathname } from "next/navigation";
 

@@ -99,15 +99,17 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         {prismaData ? (
-          <AppContextProvider>
-            <Navbar />
-            <Sidebar categories={categories} />
-            <CartSidebar data={data} prismaData={prismaData} />
-            <div className="children">
-              <Wrapper>{children}</Wrapper>
-            </div>
-            {tnc?.value !== "1" ? <CookieBar /> : null}
-          </AppContextProvider>
+          <section>
+            <AppContextProvider>
+              <Navbar />
+              <Sidebar categories={categories} />
+              <CartSidebar data={data} prismaData={prismaData} />
+              <div className="children">
+                <Wrapper>{children}</Wrapper>
+              </div>
+              {tnc?.value !== "1" ? <CookieBar /> : null}
+            </AppContextProvider>
+          </section>
         ) : (
           <Loading />
         )}

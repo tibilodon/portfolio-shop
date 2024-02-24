@@ -2,3 +2,38 @@
   display: flex;
   flex-direction: column;
 }
+
+.pages {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1em;
+}
+.pages h4 {
+  border-bottom: 1px solid #333;
+  border-radius: 99px;
+  width: fit-content;
+  padding: 0.5em;
+}
+.layout {
+  min-height: 100%;
+  width: 100%;
+  margin-top: 3em;
+}
+.nav ol {
+  padding: 0.3em;
+  z-index: 32;
+  background-color: aliceblue;
+  top: 4em;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 2px solid black;
+  justify-content: space-around;
+  list-style-type: none;
+}
+.nav ol li:nth-child(n + 2):nth-child(-n + 2) {
+  border: 2px solid red;
+  padding: 0.2em;
+  font-weight: 900;
+}

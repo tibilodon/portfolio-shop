@@ -1,10 +1,4 @@
-import CreateCategoryForm from "@/components/forms/admin/category/CreateCategoryForm";
 import styles from "./page.module.css";
-import prisma from "@/prisma/prismaClient";
-import Testy from "./Testy";
-import { DBCategory, BuildHierarchyType } from "@/types";
-import DeleteCategoryBtn from "@/components/buttons/action/deleteCategory/DeleteCategoryBtn";
-import UpdateCategoryForm from "@/components/forms/admin/category/UpdateCategoryForm";
 import Link from "next/link";
 
 //  ba able to click and modify in detail
@@ -22,7 +16,10 @@ export default async function Admin() {
 
         <div className={styles.pages}>
           <Link href={"/admin/category"}>
-            <h5>Edit Categories</h5>
+            <h4>Edit Categories</h4>
+          </Link>
+          <Link href={"/admin/product"}>
+            <h4>Edit Products</h4>
           </Link>
         </div>
       </div>

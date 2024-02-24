@@ -1,5 +1,8 @@
 "use server";
-import { DeleteActionReturnClass } from "@/classes";
+import {
+  DeleteActionReturnClass,
+  CreateCategoryActionReturnVal,
+} from "@/classes";
 import prisma from "@/prisma/prismaClient";
 import { revalidatePath } from "next/cache";
 
@@ -22,19 +25,23 @@ export async function createCategory(
         },
       });
       if (resp) {
-        console.log("resp back", resp);
         revalidatePath(prevState.pathname);
-        return { message: "coolie", pathname: "", parentId: 0 };
+        return CreateCategoryActionReturnVal.createReturnValue(
+          "category created"
+        );
       } else {
-        return { message: "error", pathname: "", parentId: 0 };
+        return CreateCategoryActionReturnVal.createReturnValue(
+          "error @ creating category"
+        );
       }
     } catch (error) {
-      return { message: "error", pathname: "", parentId: 0 };
+      return CreateCategoryActionReturnVal.createReturnValue(
+        "error caught @ try-catch"
+      );
     }
   }
   //  create child category
   else {
-    console.log(prevState.parentId);
     try {
       const resp = await prisma.category.create({
         data: {
@@ -47,14 +54,19 @@ export async function createCategory(
         },
       });
       if (resp) {
-        console.log("resp back", resp);
-        revalidatePath(prevState.pathname);
-        return { message: "coolie", pathname: "", parentId: 0 };
+        //  cache busting
+        return CreateCategoryActionReturnVal.createReturnValue(
+          "alt category created"
+        );
       } else {
-        return { message: "error", pathname: "", parentId: 0 };
+        return CreateCategoryActionReturnVal.createReturnValue(
+          "error @ alt category creation"
+        );
       }
     } catch (error) {
-      return { message: "error", pathname: "", parentId: 0 };
+      return CreateCategoryActionReturnVal.createReturnValue(
+        "error @ alt category creation  - caught @ try - catch"
+      );
     }
   }
 }
@@ -98,7 +110,6 @@ export async function updateCategory(
       },
     });
     if (resp) {
-      console.log("resp back", resp);
       revalidatePath(pathname);
       return { message: "successful update", pathname: "", id: 0 };
     } else {
