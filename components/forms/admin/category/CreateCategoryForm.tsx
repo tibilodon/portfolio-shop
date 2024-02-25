@@ -23,7 +23,6 @@ const CreateCategoryForm: React.FunctionComponent<Props> = ({
   parentId,
   label,
 }) => {
-  const router = useRouter();
   const pathname = usePathname();
   const initialState = {
     message: "",

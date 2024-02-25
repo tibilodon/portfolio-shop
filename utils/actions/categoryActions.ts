@@ -55,6 +55,8 @@ export async function createCategory(
       });
       if (resp) {
         //  cache busting
+        revalidatePath(prevState.pathname);
+
         return CreateCategoryActionReturnVal.createReturnValue(
           "alt category created"
         );
