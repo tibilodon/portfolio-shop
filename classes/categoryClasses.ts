@@ -8,7 +8,8 @@ export class CreateCategoryActionReturnVal {
     message: string;
     pathname: string;
     parentId: number;
+    refresh: boolean;
   } {
-    return { message: message, pathname: "", parentId: 0 };
+    return { message: message, pathname: "", parentId: 0, refresh: true };
   }
 }

@@ -2,7 +2,8 @@
 //  could take in id from parent, if any
 import { useFormState, useFormStatus } from "react-dom";
 import { createCategory } from "@/utils/actions";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+// import { useRouter } from "next/router";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -22,11 +23,13 @@ const CreateCategoryForm: React.FunctionComponent<Props> = ({
   parentId,
   label,
 }) => {
+  const router = useRouter();
   const pathname = usePathname();
   const initialState = {
     message: "",
     pathname: pathname,
     parentId: parentId ? parentId : 0,
+    refresh: false,
   };
 
   const [state, formAction] = useFormState(createCategory, initialState);

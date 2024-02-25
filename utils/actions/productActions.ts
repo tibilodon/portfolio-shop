@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 
 //  redirect cannot work inside a try-catch block
-const setData = async (data: any) => {
+const setData = async (data: any, formData: FormData) => {
   try {
     //  submit product
     const { name, description, price, stock, highlighted, category } = data;
@@ -50,6 +50,50 @@ const setData = async (data: any) => {
           return variant;
         })
       );
+
+      //  upload images to storage
+      const supabase = createClient(
+        "https://" + process.env.SUPABASE_STORAGE!!,
+        process.env.SUPABASE_PUBLIC_ANON_KEY!!
+      );
+
+      const files = formData.getAll("image");
+      console.log("files:", files);
+      if (files) {
+        await Promise.all(
+          files.map(async (item) => {
+            const imageName = String(new Date().getTime());
+            const { data, error } = await supabase.storage
+              .from("images")
+              .upload(imageName, item);
+            if (error) {
+              console.log("upload error", error);
+            }
+            //if uploaded, create record in Image table and connect to product
+            else {
+              //  url
+              const fullPath = String(
+                "https://" +
+                  process.env.SUPABASE_STORAGE!! +
+                  "/storage/v1/object/public/images/" +
+                  data.path
+              );
+              await prisma.image.create({
+                data: {
+                  url: fullPath,
+                  product: {
+                    connect: {
+                      id: product.id,
+                    },
+                  },
+                },
+              });
+
+              console.log("img uploaded", data);
+            }
+          })
+        );
+      }
       //  on success
       return true;
     }
@@ -82,30 +126,52 @@ export async function createProduct(
     })
   );
 
-  const submitData = await setData(data);
+  const submitData = await setData(data, formData);
 
   if (submitData) {
     const supabase = createClient(
       "https://" + process.env.SUPABASE_STORAGE!!,
       process.env.SUPABASE_PUBLIC_ANON_KEY!!
     );
-    const file = formData.get("image");
+    // const file = formData.get("image");
 
-    if (file) {
-      const { data, error } = await supabase.storage
-        .from("images")
-        .upload("test_image", file);
-      if (error) {
-        console.log(error);
-        // Handle error
-      } else {
-        console.log("img uploaded", data);
-        // Handle success
-      }
+    // if (file) {
+    //   const { data, error } = await supabase.storage
+    //     .from("images")
+    //     .upload("test_image", file);
+    //   if (error) {
+    //     console.log(error);
+    //     // Handle error
+    //   } else {
+    //     console.log("img uploaded", data);
+    //     // Handle success
+    //   }
+    // }
+
+    const files = formData.getAll("image");
+    console.log("files:", files);
+    if (files) {
+      await Promise.all(
+        files.map(async (item) => {
+          const imageName = String(new Date().getTime());
+          const { data, error } = await supabase.storage
+            .from("images")
+            .upload(imageName, item);
+          if (error) {
+            console.log("upload error", error);
+          } else {
+            console.log("img uploaded", data);
+          }
+        })
+      );
     }
 
-    //  redirect if ok -- cannot work inside a try-catch block
-    redirect("/admin/product");
+    // //  on success
+    // return true;
+
+    // //  redirect if ok -- cannot work inside a try-catch block
+    return { message: "just testing" };
+    // redirect("/admin/product");
   } else {
     return { message: "cannot submit product data" };
   }

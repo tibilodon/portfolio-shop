@@ -56,6 +56,10 @@ const Sidebar: React.FunctionComponent<Props> = ({ categories }) => {
   const altCategoriesHandler = (item: string, id: number) => {
     const result: any[] = [];
     recursiveFilter(mainCategories, id, result);
+    if (!result.length) {
+      linker(item);
+      return;
+    }
     setIsSelected(result);
     setSidebarLayer(true);
     setHeader(item);
@@ -86,9 +90,10 @@ const Sidebar: React.FunctionComponent<Props> = ({ categories }) => {
             return (
               <div
                 onClick={
-                  isSelected.length
-                    ? () => altCategoriesHandler(items.name, items.id)
-                    : () => linker(items.name)
+                  // isSelected.length
+                  // ?
+                  () => altCategoriesHandler(items.name, items.id)
+                  // : () => linker(items.name)
                 }
                 key={items.id}
                 className={styles.menuItems}

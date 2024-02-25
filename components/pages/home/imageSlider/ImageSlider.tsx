@@ -5,21 +5,14 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ProductType } from "@/app/page";
 import ProductCard from "@/components/cards/product/ProductCard";
+import Image from "next/image";
 
 type Props = {
   data: any;
 };
 
 const ImageSlider: React.FunctionComponent<Props> = ({ data }) => {
-  // setInterval  - data-ProductCard
-  //  be able to set variant
-  const router = useRouter();
 
-  // useEffect(() => {
-  //   if (!data) {
-  //     router.push("/admin");
-  //   }
-  // });
 
   const [freeze, setFreeze] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -82,7 +75,7 @@ const ImageSlider: React.FunctionComponent<Props> = ({ data }) => {
     }, 3000);
   }, [isDisabled]);
 
-  const { name, description, variants, price, stock } = highlightData;
+  const { name, description, variants, price, stock, images } = highlightData;
   return (
     <>
       {data && (
@@ -95,6 +88,15 @@ const ImageSlider: React.FunctionComponent<Props> = ({ data }) => {
             basePrice={price}
             baseStock={stock}
           />
+          {images.length && (
+            <Image
+              alt="first image"
+              src={images[0].url}
+              width={400}
+              height={400}
+            />
+          )}
+
           <button disabled={isDisabled} onClick={nextHandler}>
             next
           </button>

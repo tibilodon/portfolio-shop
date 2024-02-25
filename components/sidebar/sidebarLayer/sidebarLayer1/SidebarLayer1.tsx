@@ -47,6 +47,11 @@ const SidebarLayer1: React.FunctionComponent<Props> = ({ selected }) => {
     const result: any[] = [];
 
     recursiveFilter(selected, id, result);
+
+    if (!result.length) {
+      linker(item);
+      return;
+    }
     setIsSelected(result);
     setSidebarLayer2(true);
     setTimeout(() => {
@@ -90,9 +95,10 @@ const SidebarLayer1: React.FunctionComponent<Props> = ({ selected }) => {
             return (
               <div
                 onClick={
-                  isSelected.length
-                    ? () => handler(items.name, items.id)
-                    : () => linker(items.name)
+                  () => handler(items.name, items.id)
+                  // isSelected.length
+                  //   ? () => handler(items.name, items.id)
+                  //   : () => linker(items.name)
                 }
                 key={items.id}
                 className={styles.menuItems}

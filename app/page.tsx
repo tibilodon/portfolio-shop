@@ -36,6 +36,7 @@ export default async function Home() {
     },
     include: {
       variants: true,
+      images: true,
     },
   });
 

@@ -7,6 +7,7 @@ import prisma from "@/prisma/prismaClient";
 import Images from "@/components/images/Images";
 import Loading from "@/app/loading";
 import ProductCard from "@/components/cards/product/ProductCard";
+import Image from "next/image";
 
 export default async function CollectionDetails({
   params,
@@ -24,6 +25,7 @@ export default async function CollectionDetails({
     },
     include: {
       variants: true,
+      images: true,
     },
   });
 
@@ -31,6 +33,8 @@ export default async function CollectionDetails({
   if (!data) {
     return <Loading />;
   }
+
+  console.log(data);
 
   return (
     <>
@@ -42,15 +46,26 @@ export default async function CollectionDetails({
         {/*map over data and return each product in a Card*/}
         {data.map((item) => {
           return (
-            <ProductCard
-              key={item.id}
-              description={item.description}
-              // image={item.imageUrl}
-              productName={item.name}
-              variants={item.variants}
-              basePrice={item.price}
-              baseStock={item.stock}
-            />
+            <span key={item.id}>
+              <ProductCard
+                description={item.description}
+                // image={item.imageUrl}
+                productName={item.name}
+                variants={item.variants}
+                basePrice={item.price}
+                baseStock={item.stock}
+              />
+              {item.images &&
+                item.images.map((image) => (
+                  <Image
+                    key={image.id}
+                    src={image.url}
+                    width={400}
+                    height={400}
+                    alt={item.name}
+                  />
+                ))}
+            </span>
           );
         })}
       </div>

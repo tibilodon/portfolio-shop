@@ -3,9 +3,9 @@ import styles from "./createProductForm.module.css";
 import { useFormState, useFormStatus } from "react-dom";
 import { createProduct } from "@/utils/actions";
 import CreateVariant from "./variant/CreateVariant";
-import { createClient } from "@supabase/supabase-js";
 import { useState } from "react";
 import Image from "next/image";
+import AddImage from "./image/AddImage";
 // save and quit - formAction on button - > redirect upon successful submit
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -48,24 +48,9 @@ const CreateProductForm: React.FunctionComponent<Props> = ({ categories }) => {
   const initialState = {
     message: "",
   };
-  // const supabase = createClient(
-  //   process.env.SUPABASE_STORAGE!!,
-  //   process.env.SUPABASE_PUBLIC_ANON_KEY!!
-  // );
-  // async function uploadFile(file: File) {
-  //   const { data, error } = await supabase.storage
-  //     .from("images")
-  //     .upload("test_image", file);
-  //   if (error) {
-  //     // Handle error
-  //   } else {
-  //     console.log("img uploaded", data);
-  //     // Handle success
-  //   }
-  // }
-  console.log("kill me?", process.env.SUPABASE_STORAGE);
+
   const [state, formAction] = useFormState(createProduct, initialState);
-  const [img, setImg] = useState<File[] | null>(null);
+  const [img, setImg] = useState<File | null>(null);
 
   const handler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -109,7 +94,7 @@ const CreateProductForm: React.FunctionComponent<Props> = ({ categories }) => {
 
         <CreateVariant />
 
-        <span>
+        {/* <span>
           <label style={{ backgroundColor: "red" }} htmlFor="image">
             Kép csere
           </label>
@@ -120,16 +105,17 @@ const CreateProductForm: React.FunctionComponent<Props> = ({ categories }) => {
             type="file"
             onChange={handler}
           />
-        </span>
+        </span> */}
 
-        {img && (
+        {/* {img && (
           <Image
             src={URL.createObjectURL(img)}
             width={340}
             height={340}
             alt="test img"
           />
-        )}
+        )} */}
+        <AddImage />
         <SubmitButton />
 
         <p aria-live="polite" role="status">
