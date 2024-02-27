@@ -7,7 +7,11 @@ import { DBCategory } from "@/types";
 
 export default async function Category() {
   //  fetch data
-  const data = await prisma.category.findMany();
+  const data = await prisma.category.findMany({
+    orderBy: {
+      id: "asc",
+    },
+  });
 
   //  organize data recursively
   const buildHierarchy = (items: DBCategory[], parentId = null): any =>

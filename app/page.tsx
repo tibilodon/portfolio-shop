@@ -31,12 +31,19 @@ export type ProductType = {
 export default async function Home() {
   //  fetch data
   const data = await prisma.product.findMany({
+    orderBy: {
+      id: "asc",
+    },
     where: {
       highlighted: true,
     },
     include: {
       variants: true,
-      images: true,
+      images: {
+        orderBy: {
+          id: "asc",
+        },
+      },
     },
   });
 

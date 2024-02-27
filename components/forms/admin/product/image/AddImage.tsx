@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 type Props = {};
 
-const AddImage = (props: Props) => {
+const AddImage: React.FunctionComponent<Props> = () => {
   const [file, setFile] = useState<FileList>();
   const [showInput, setShowInput] = useState(false);
   const [imageCount, setImageCount] = useState<number>(0);
@@ -33,7 +33,7 @@ const AddImage = (props: Props) => {
     <>
       <div className={styles.wrap}>
         <span>
-          <label htmlFor={`image`}>add image</label>
+          <label htmlFor={`image`}>add images</label>
           <input
             style={{ display: "none" }}
             type="file"

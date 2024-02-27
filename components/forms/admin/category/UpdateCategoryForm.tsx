@@ -46,6 +46,7 @@ const UpdateCategoryForm: React.FunctionComponent<Props> = ({ id, name }) => {
                   type="text"
                   id="category"
                   name="category"
+                  defaultValue={name}
                   required
                 />
               </label>

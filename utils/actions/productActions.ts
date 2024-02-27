@@ -133,23 +133,8 @@ export async function createProduct(
       "https://" + process.env.SUPABASE_STORAGE!!,
       process.env.SUPABASE_PUBLIC_ANON_KEY!!
     );
-    // const file = formData.get("image");
-
-    // if (file) {
-    //   const { data, error } = await supabase.storage
-    //     .from("images")
-    //     .upload("test_image", file);
-    //   if (error) {
-    //     console.log(error);
-    //     // Handle error
-    //   } else {
-    //     console.log("img uploaded", data);
-    //     // Handle success
-    //   }
-    // }
 
     const files = formData.getAll("image");
-    console.log("files:", files);
     if (files) {
       await Promise.all(
         files.map(async (item) => {
@@ -255,4 +240,50 @@ export async function test(formData: FormData) {
   } catch (error) {
     console.log(error);
   }
+}
+
+export async function editProductAction(formData: FormData) {
+  const title = String(formData.entries());
+
+  const separator = (data: string) => {
+    const regexPattern = /([^_]+)__(.+)/;
+    const matchResult = regexPattern.exec(data);
+    if (matchResult) {
+      const result = {
+        id: matchResult[2],
+      };
+    }
+  };
+
+  const variantArray = [];
+  for (const pair of Array.from(formData.entries())) {
+    //  modify key
+    console.log("pairs", pair[0], pair[1]);
+    const regexPattern = /^(\w+)__(\d+)__(\w+)$/;
+    const matchResult = regexPattern.exec(pair[0]);
+    if (matchResult) {
+      const obj = {
+        id: matchResult[2],
+        [matchResult[3]]: pair[1],
+      };
+
+      variantArray.push(obj);
+
+      // switch (matchResult[3]) {
+      //   case "name":
+      //     console.log("paiir1", pair[1]);
+      //     // obj.name = pair[1];
+      //     break;
+
+      //   default:
+      //     break;
+      // }
+    }
+  }
+  // for (let index = 0; index < variantArray.length; index++) {
+  //   const element = variantArray[index];
+  //   for (const [key, value] of Object.entries(element)) {
+  //   }
+  // }
+  console.log(variantArray);
 }

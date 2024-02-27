@@ -38,7 +38,7 @@ const CartSidebar: React.FunctionComponent<Props> = ({ data, prismaData }) => {
   };
 
   let findData;
-  if (data && prismaData.length) {
+  if (data?.length && prismaData.length) {
     findData = fromCookieToDbData(data, prismaData);
   }
 

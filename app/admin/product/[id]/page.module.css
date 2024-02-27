@@ -1,3 +1,7 @@
 /* .wrap {
   margin-top: 10em;
 } */
+.inputs {
+  display: grid;
+  grid-template-rows: 1fr;
+}

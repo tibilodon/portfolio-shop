@@ -52,6 +52,9 @@ const getDbData = async () => {
 const getCategories = async () => {
   try {
     const res = await prisma.category.findMany({
+      orderBy: {
+        id: "asc",
+      },
       include: {
         parent: true,
         subcategories: {
