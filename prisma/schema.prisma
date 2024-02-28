@@ -42,7 +42,7 @@ model Product {
 }
 
 model ProducVariant {
-  id        Int       @id @default(autoincrement())
+  id        BigInt       @id @default(autoincrement())
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
   name      String

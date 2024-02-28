@@ -12,8 +12,6 @@ type Props = {
 };
 
 const ImageSlider: React.FunctionComponent<Props> = ({ data }) => {
-
-
   const [freeze, setFreeze] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [highlightData, setHighlightData] = useState(data[0]);
@@ -88,7 +86,7 @@ const ImageSlider: React.FunctionComponent<Props> = ({ data }) => {
             basePrice={price}
             baseStock={stock}
           />
-          {images.length && (
+          {images && (
             <Image
               alt="first image"
               src={images[0].url}

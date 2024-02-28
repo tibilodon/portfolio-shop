@@ -4,6 +4,9 @@ import prisma from "@/prisma/prismaClient";
 import { editProductAction } from "@/utils/actions";
 import FormActionField from "@/components/fields/formActionField/FormActionField";
 import Image from "next/image";
+import DeleteProductBtn from "@/components/buttons/action/deleteProduct/DeleteProductBtn";
+import CreateVariant from "@/components/forms/admin/product/variant/CreateVariant";
+import NewCreateVariant from "@/components/forms/admin/product/variant/NewCreateVariant";
 export default async function EditProduct({
   params,
 }: {
@@ -24,36 +27,6 @@ export default async function EditProduct({
     return <Loading />;
   }
 
-  // console.log("prod data", product);
-  type Product = {
-    variants: {
-      id: number;
-      createdAt: Date;
-      updatedAt: Date | null;
-      name: string;
-      price: number;
-      stock: number;
-      productId: number;
-    }[];
-    images: {
-      id: number;
-      createdAt: Date;
-      updatedAt: Date | null;
-      url: string;
-      productId: number;
-    }[];
-  } & {
-    id: number;
-    created_at: Date;
-    updated_at: Date | null;
-    name: string;
-    description: string;
-    price: number;
-    stock: number;
-    highlighted: boolean;
-    categoryId: string | null;
-  };
-
   return (
     <>
       <div className={styles.wrap}>
@@ -71,8 +44,23 @@ export default async function EditProduct({
                 variants,
                 images,
               } = item;
+
+              //  sort images in for delete
+              const imgArr = [];
+              if (images.length) {
+                for (let index = 0; index < images.length; index++) {
+                  const element = images[index];
+                  const match = element.url.match(/images\/(.*)/);
+                  if (match) {
+                    imgArr.push(match[1]);
+                  }
+                }
+              }
               return (
                 <div key={id} className={styles.inputs}>
+                  <strong>
+                    <DeleteProductBtn id={id} images={imgArr} />
+                  </strong>
                   <FormActionField
                     defaultValue={name}
                     id="name"
@@ -109,7 +97,7 @@ export default async function EditProduct({
                     <option value="false">false</option>
                     <option value="true">true</option>
                   </select>
-                  {variants.length &&
+                  {/* {variants &&
                     variants.map((varItem) => {
                       const { id, name, stock, price } = varItem;
                       return (
@@ -138,8 +126,9 @@ export default async function EditProduct({
                           />
                         </span>
                       );
-                    })}
-                  {images.length &&
+                    })} */}
+                  {variants.length <= 2 && <NewCreateVariant data={variants} />}
+                  {images &&
                     images.map((item) => (
                       <Image
                         src={item.url}
@@ -152,7 +141,9 @@ export default async function EditProduct({
                 </div>
               );
             })}
-          <button formAction={editProductAction}>update</button>
+          <button formAction={editProductAction.bind(null, product.id)}>
+            update
+          </button>
         </form>
       </div>
     </>

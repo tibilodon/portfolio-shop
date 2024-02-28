@@ -1,3 +1,4 @@
+import DeleteProductBtn from "@/components/buttons/action/deleteProduct/DeleteProductBtn";
 import styles from "./page.module.css";
 import prisma from "@/prisma/prismaClient";
 import { getProductData } from "@/utils/actions";
@@ -32,13 +33,14 @@ export default async function Product() {
         <h1>edit products</h1>
 
         <Link href={"/admin/product/new"}>create new product</Link>
-        {products.length &&
+        {products &&
           products.map((item) => {
             return (
               <div key={item.id} className={styles.edit}>
                 <Link href={"/admin/product/" + item.id}>
                   <strong>edit : {item.name}</strong>
                 </Link>
+                {/* <DeleteProductBtn id={item.id} /> */}
               </div>
             );
           })}

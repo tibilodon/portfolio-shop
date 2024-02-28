@@ -30,7 +30,7 @@ CREATE TABLE "Product" (
 
 -- CreateTable
 CREATE TABLE "ProducVariant" (
-    "id" SERIAL NOT NULL,
+    "id" BIGSERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
     "name" TEXT NOT NULL,
@@ -72,6 +72,7 @@ CREATE TABLE "Order" (
     "address" TEXT NOT NULL,
     "phone" VARCHAR(20) NOT NULL,
     "total" DOUBLE PRECISION NOT NULL,
+    "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );
@@ -105,6 +106,9 @@ ALTER TABLE "Category" ADD CONSTRAINT "Category_parentId_fkey" FOREIGN KEY ("par
 
 -- AddForeignKey
 ALTER TABLE "Image" ADD CONSTRAINT "Image_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Order" ADD CONSTRAINT "Order_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "OrderProduct" ADD CONSTRAINT "OrderProduct_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
