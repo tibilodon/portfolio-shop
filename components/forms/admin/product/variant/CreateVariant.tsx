@@ -23,31 +23,31 @@ const CreateVariant: React.FunctionComponent<Props> = (props: Props) => {
           Array.from({ length: variantId }, (_, i) => i + 1).map((item, i) => {
             return (
               <span className={styles.wrap} key={i}>
-                <label htmlFor={`var__${item}__name`}>
+                <label htmlFor={`var__name__${item}`}>
                   variant {item} name
                 </label>
                 <input
                   type="text"
-                  id={`var__${item}__name`}
-                  name={`var__${item}__name`}
+                  id={`var__name__${item}`}
+                  name={`var__name__${item}`}
                   required
                 />
-                <label htmlFor={`var__${item}__price`}>
+                <label htmlFor={`var__price__${item}`}>
                   variant {item} price
                 </label>
                 <input
                   type="number"
-                  id={`var__${item}__price`}
-                  name={`var__${item}__price`}
+                  id={`var__price__${item}`}
+                  name={`var__price__${item}`}
                   required
                 />
-                <label htmlFor={`var__${item}__stock`}>
+                <label htmlFor={`var__stock__${item}`}>
                   variant {item} stock
                 </label>
                 <input
                   type="number"
-                  id={`var__${item}__stock`}
-                  name={`var__${item}__stock`}
+                  id={`var__stock__${item}`}
+                  name={`var__stock__${item}`}
                   required
                 />
               </span>

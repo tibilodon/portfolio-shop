@@ -13,18 +13,19 @@ type Props = {
   }[];
 };
 
+type NewObjType = {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date | null;
+  name: string;
+  price: number;
+  stock: number;
+  productId: number;
+};
 const NewCreateVariant: React.FunctionComponent<Props> = ({ data }) => {
   //copy state, onclick add new object
-  const newObj: {
-    id: number;
-    createdAt: Date;
-    updatedAt: Date | null;
-    name: string;
-    price: number;
-    stock: number;
-    productId: number;
-  } = {
-    id: Number(new Date().getTime()),
+  const newObj: NewObjType = {
+    id: parseInt(String(Math.floor(new Date().getTime() / 1000))),
     createdAt: new Date(),
     updatedAt: null,
     name: "add name",
@@ -32,7 +33,9 @@ const NewCreateVariant: React.FunctionComponent<Props> = ({ data }) => {
     stock: 0,
     productId: 0,
   };
-  const [dataState, setDataState] = useState(data || [newObj]);
+  const [dataState, setDataState] = useState<NewObjType[] | []>(
+    data || [newObj]
+  );
   const [showInput, setShowInput] = useState(false);
 
   const addHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

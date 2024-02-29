@@ -6,6 +6,7 @@ import CreateVariant from "./variant/CreateVariant";
 import { useState } from "react";
 import Image from "next/image";
 import AddImage from "./image/AddImage";
+import NewCreateVariant from "./variant/NewCreateVariant";
 // save and quit - formAction on button - > redirect upon successful submit
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -93,6 +94,7 @@ const CreateProductForm: React.FunctionComponent<Props> = ({ categories }) => {
         </select>
 
         <CreateVariant />
+        {/* <NewCreateVariant/> */}
 
         {/* <span>
           <label style={{ backgroundColor: "red" }} htmlFor="image">

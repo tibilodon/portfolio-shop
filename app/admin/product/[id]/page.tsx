@@ -7,22 +7,23 @@ import Image from "next/image";
 import DeleteProductBtn from "@/components/buttons/action/deleteProduct/DeleteProductBtn";
 import CreateVariant from "@/components/forms/admin/product/variant/CreateVariant";
 import NewCreateVariant from "@/components/forms/admin/product/variant/NewCreateVariant";
+import { unstable_noStore } from "next/cache";
+import { getProductById } from "@/utils/data-access/products";
+import UpsertImage from "@/components/forms/admin/product/image/upsertImage/UpsertImage";
+
+//  use for dynamic server components
+export const dynamic = "force-dynamic";
+
 export default async function EditProduct({
   params,
 }: {
   params: { id: number };
 }) {
-  //fetch product based on id
+  //  use for dynamic server components
+  unstable_noStore();
 
-  const product = await prisma.product.findUnique({
-    where: {
-      id: Number(params.id),
-    },
-    include: {
-      variants: true,
-      images: true,
-    },
-  });
+  //fetch product based on id
+  const product = await getProductById(params.id);
   if (!product) {
     return <Loading />;
   }
@@ -97,38 +98,9 @@ export default async function EditProduct({
                     <option value="false">false</option>
                     <option value="true">true</option>
                   </select>
-                  {/* {variants &&
-                    variants.map((varItem) => {
-                      const { id, name, stock, price } = varItem;
-                      return (
-                        <span key={id}>
-                          <h1>variant {name}</h1>
-                          <FormActionField
-                            required
-                            defaultValue={name}
-                            id={`variant__${id}__name`}
-                            label="name"
-                            type="text"
-                          />
-                          <FormActionField
-                            required
-                            defaultValue={stock}
-                            id={`variant__${id}__stock`}
-                            label="stock"
-                            type="number"
-                          />
-                          <FormActionField
-                            required
-                            defaultValue={price}
-                            id={`variant__${id}__price`}
-                            label="price"
-                            type="number"
-                          />
-                        </span>
-                      );
-                    })} */}
-                  {variants.length <= 2 && <NewCreateVariant data={variants} />}
-                  {images &&
+
+                  <NewCreateVariant data={variants} />
+                  {/* {images &&
                     images.map((item) => (
                       <Image
                         src={item.url}
@@ -137,7 +109,8 @@ export default async function EditProduct({
                         height={400}
                         width={400}
                       />
-                    ))}
+                    ))} */}
+                  <UpsertImage id={Number(params.id)} images={images} />
                 </div>
               );
             })}

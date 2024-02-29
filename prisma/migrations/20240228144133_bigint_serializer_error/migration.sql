@@ -30,7 +30,7 @@ CREATE TABLE "Product" (
 
 -- CreateTable
 CREATE TABLE "ProducVariant" (
-    "id" BIGSERIAL NOT NULL,
+    "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
     "name" TEXT NOT NULL,

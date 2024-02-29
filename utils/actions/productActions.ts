@@ -3,6 +3,7 @@ import prisma from "@/prisma/prismaClient";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
+import { getProductById } from "../data-access/products";
 
 //upsert variants
 
@@ -34,39 +35,35 @@ const setData = async (data: any, formData: FormData) => {
     //  submit and connect variant
     if (product.id) {
       const variantKeys = Object.keys(data).filter((key) =>
-        key.startsWith("var__")
+        key.startsWith("var__name__")
       );
-      console.log("variantKeys", variantKeys);
       await Promise.all(
         variantKeys.map(async (key) => {
-          const pattern = /__(\d+)__/;
-          const match = key.match(pattern);
-          if (match) {
-            const index = match[1];
-            // const index = key.split("__")[2];
-            const variantName = data[`var__${index}__name`];
-            const variantPrice = parseInt(data[`var__${index}__price`]);
-            const variantStock = parseInt(data[`var__${index}__stock`]);
+          const index = key.split("__")[2];
+          const variantName = data[`var__name__${index}`];
+          const variantPrice = parseInt(data[`var__price__${index}`]);
+          const variantStock = parseInt(data[`var__stock__${index}`]);
 
-            const variant = await prisma.producVariant.create({
-              data: {
-                name: variantName,
-                price: variantPrice,
-                stock: variantStock,
-                product: {
-                  connect: { id: product.id },
-                },
+          const variant = await prisma.producVariant.create({
+            data: {
+              name: variantName,
+              price: variantPrice,
+              stock: variantStock,
+              product: {
+                connect: { id: product.id },
               },
-            });
+            },
+          });
 
-            return variant;
-          }
+          return variant;
         })
       );
 
       //  upload images to storage
       const files = Array.from(formData.getAll("image"));
       //  check for images
+
+      //  for bulk uploads - as only checks them at once
       const existingFiles = (): boolean => {
         let res: boolean = false;
         files.forEach((file) => {
@@ -159,31 +156,6 @@ export async function createProduct(
   const submitData = await setData(data, formData);
 
   if (submitData) {
-    // const supabase = createClient(
-    //   "https://" + process.env.SUPABASE_STORAGE!!,
-    //   process.env.SUPABASE_PUBLIC_ANON_KEY!!
-    // );
-
-    // const files = formData.getAll("image");
-    // if (files) {
-    //   await Promise.all(
-    //     files.map(async (item) => {
-    //       const imageName = String(new Date().getTime());
-    //       const { data, error } = await supabase.storage
-    //         .from("images")
-    //         .upload(imageName, item);
-    //       if (error) {
-    //         console.log("upload error", error);
-    //       } else {
-    //         console.log("img uploaded", data);
-    //       }
-    //     })
-    //   );
-    // }
-
-    // //  on success
-    // return true;
-
     // //  redirect if ok -- cannot work inside a try-catch block
     redirect("/admin/product");
     // return { message: "just testing" };
@@ -273,26 +245,15 @@ export async function test(formData: FormData) {
 }
 
 export async function editProductAction(productId: number, formData: FormData) {
-  const title = String(formData.entries());
-  // const data = formData.entries();s
-  for (const pair of Array.from(formData.entries())) {
-    console.log(pair[0], pair[1]);
-  }
-
-  const separator = (data: string) => {
-    const regexPattern = /([^_]+)__(.+)/;
-    const matchResult = regexPattern.exec(data);
-    if (matchResult) {
-      const result = {
-        id: matchResult[2],
-      };
-    }
-  };
+  // const data = formData.entries();
+  const product = await getProductById(productId);
+  const variants = product?.variants;
+  const images = product?.images;
 
   const variantArray = [];
   for (const pair of Array.from(formData.entries())) {
     //  modify key
-    console.log("pairs", pair[0], pair[1]);
+    // console.log("pairs", pair[0], pair[1]);
     const regexPattern = /^(\w+)__(\d+)__(\w+)$/;
     const matchResult = regexPattern.exec(pair[0]);
     if (matchResult) {
@@ -306,9 +267,8 @@ export async function editProductAction(productId: number, formData: FormData) {
   }
 
   //organize variants data if any
-  console.log(variantArray);
+  // console.log(variantArray);
   if (variantArray.length > 0) {
-    console.log("hehhh");
     const mergedData = variantArray.reduce((acc: any, obj: any) => {
       const foundObj = acc.find((item: any) => item.id === obj.id);
       if (foundObj) {
@@ -319,18 +279,109 @@ export async function editProductAction(productId: number, formData: FormData) {
       return acc;
     }, []);
 
-    console.log(mergedData);
-    // await Promise.all(upsertVariant(mergedData));
-    await upsertVariant(mergedData, productId);
+    //  fetch all variants and delete ones that are not present
+    //  get the ids from the updated data
+    const updatedVariantIds = mergedData?.map((item: any) => item.id);
+    //  filter db with updated variants
+    const deleteAbleVariants = variants?.filter(
+      (item) => !updatedVariantIds.includes(item.id)
+    );
+    //--------------------------------------
+    // //  upsert variants
+    // await upsertVariant(mergedData, productId);
+
+    // //  delete variants if any
+    // if (deleteAbleVariants) {
+    //   await deleteVariants(deleteAbleVariants);
+    // }
+  }
+  // redirect("/admin/product");
+
+  //--------------------------------------
+  const files = Array.from(formData.getAll("image"));
+  //  check for images
+  const filesArray: any = [];
+
+  files.forEach((file) => {
+    if (typeof file === "object" && file !== null && file instanceof Blob) {
+      const size = Number(file.size);
+      if (size > 0) {
+        //  push eligible files
+        filesArray.push(file);
+      }
+    }
+  });
+
+  //  if new files upload to storage, create record in db
+  //  TODO: fetch all images and only upload when id does not exist
+  //  TODO: delete removed images
+  if (filesArray.length) {
+    await Promise.all(
+      filesArray.map(async (item: any) => {
+        const imageName = String(new Date().getTime());
+        const { data, error } = await supabase.storage
+          .from("images")
+          .upload(imageName, item);
+        if (error) {
+          console.log("upload error", error);
+        }
+        //if uploaded, create record in Image table and connect to product
+        else {
+          //  url
+          const fullPath = String(
+            "https://" +
+              process.env.SUPABASE_STORAGE!! +
+              "/storage/v1/object/public/images/" +
+              data.path
+          );
+          await prisma.image.create({
+            data: {
+              url: fullPath,
+              product: {
+                connect: {
+                  id: productId,
+                },
+              },
+            },
+          });
+        }
+      })
+    );
   }
 }
+
+type Variant = {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date | null;
+  name: string;
+  price: number;
+  stock: number;
+  productId: number;
+};
+
+export const deleteVariants = async (variants: Variant[]) => {
+  try {
+    const promises = variants.map(async (item) => {
+      const { id } = item;
+      await prisma.producVariant.delete({
+        where: {
+          id: id,
+        },
+      });
+    });
+    await Promise.all(promises);
+  } catch (error) {
+    console.log("error @ deleting variants", error);
+  }
+};
 
 export const upsertVariant = async (variantData: any[], productId: number) => {
   console.log("productId", productId);
   try {
     const promises = variantData.map(async (item) => {
       const { name, stock, price } = item;
-      console.log("the item-----", item);
+
       await prisma.producVariant.upsert({
         where: { id: item.id },
         update: {
