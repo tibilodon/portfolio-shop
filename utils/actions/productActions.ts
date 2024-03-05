@@ -115,8 +115,6 @@ const setData = async (data: any, formData: FormData) => {
                   },
                 },
               });
-
-              // console.log("img uploaded", data);
             }
           })
         );
@@ -253,7 +251,6 @@ export async function editProductAction(productId: number, formData: FormData) {
   const variantArray = [];
   for (const pair of Array.from(formData.entries())) {
     //  modify key
-    // console.log("pairs", pair[0], pair[1]);
     const regexPattern = /^(\w+)__(\d+)__(\w+)$/;
     const matchResult = regexPattern.exec(pair[0]);
     if (matchResult) {
@@ -267,7 +264,6 @@ export async function editProductAction(productId: number, formData: FormData) {
   }
 
   //organize variants data if any
-  // console.log(variantArray);
   if (variantArray.length > 0) {
     const mergedData = variantArray.reduce((acc: any, obj: any) => {
       const foundObj = acc.find((item: any) => item.id === obj.id);
@@ -288,17 +284,18 @@ export async function editProductAction(productId: number, formData: FormData) {
     );
     //--------------------------------------
     // //  upsert variants
-    // await upsertVariant(mergedData, productId);
+    await upsertVariant(mergedData, productId);
 
-    // //  delete variants if any
-    // if (deleteAbleVariants) {
-    //   await deleteVariants(deleteAbleVariants);
-    // }
+    //  delete variants if any
+    if (deleteAbleVariants) {
+      await deleteVariants(deleteAbleVariants);
+    }
   }
-  // redirect("/admin/product");
 
-  //--------------------------------------
-  const files = Array.from(formData.getAll("image"));
+  const files = Array.from(formData.keys())
+    .filter((key) => key.startsWith("image__"))
+    .map((key) => formData.get(key));
+
   //  check for images
   const filesArray: any = [];
 
@@ -313,8 +310,7 @@ export async function editProductAction(productId: number, formData: FormData) {
   });
 
   //  if new files upload to storage, create record in db
-  //  TODO: fetch all images and only upload when id does not exist
-  //  TODO: delete removed images
+
   if (filesArray.length) {
     await Promise.all(
       filesArray.map(async (item: any) => {
@@ -348,9 +344,56 @@ export async function editProductAction(productId: number, formData: FormData) {
       })
     );
   }
+
+  //--------------------------------------
+  // compare with db -- delete missing items
+  const imagesRemaining: number[] = [];
+  for (const pair of Array.from(formData.entries())) {
+    //  modify key
+    let regexPattern = /^image__(\d+)$/;
+    const matchResult = pair[0].match(regexPattern);
+    if (matchResult) {
+      imagesRemaining.push(Number(matchResult[1]));
+      // }
+    }
+  }
+  //  filter array, delete from db and storage
+  const deleteElements = images?.filter(
+    (item) => !imagesRemaining.includes(item.id)
+  );
+  //  TODO: delete from db
+  if (deleteElements?.length) {
+    await Promise.all(
+      deleteElements.map(async (item) => {
+        const { id } = item;
+        await prisma.image.delete({
+          where: {
+            id,
+          },
+        });
+      })
+    );
+  }
+
+  const mapDeleteElements = deleteElements?.map(
+    (item) => item.url.split("/images/")[1]
+  );
+
+  //  delete from storage
+  if (mapDeleteElements?.length) {
+    const { error: deleteImgError } = await supabase.storage
+      .from("images")
+      .remove(mapDeleteElements);
+
+    if (deleteImgError) {
+      console.log("error @img delete", deleteImgError);
+    }
+  }
+
+  redirect("/admin/product");
 }
 
-type Variant = {
+export type Variant = {
   id: number;
   createdAt: Date;
   updatedAt: Date | null;
@@ -377,7 +420,6 @@ export const deleteVariants = async (variants: Variant[]) => {
 };
 
 export const upsertVariant = async (variantData: any[], productId: number) => {
-  console.log("productId", productId);
   try {
     const promises = variantData.map(async (item) => {
       const { name, stock, price } = item;

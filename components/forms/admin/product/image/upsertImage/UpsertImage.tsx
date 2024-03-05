@@ -15,9 +15,6 @@ type Props = { images: ImageType[]; id: number };
 
 const UpsertImage: React.FunctionComponent<Props> = ({ images, id }) => {
   const ref = useRef<HTMLInputElement>(null);
-  const [files, setFiles] = useState<FileList | null>(null);
-  const [fileCounter, setFileCounter] = useState(images.length);
-
   const newObj: ImageType = {
     id: parseInt(String(Math.floor(new Date().getTime() / 1000))),
     createdAt: new Date(),
@@ -25,13 +22,15 @@ const UpsertImage: React.FunctionComponent<Props> = ({ images, id }) => {
     url: "",
     productId: id,
   };
-  const [dataState, setDataState] = useState<ImageType[] | []>(
-    images || [newObj]
+  const [files, setFiles] = useState<FileList | null>(null);
+  const [fileCounter, setFileCounter] = useState(images.length);
+
+  const [dataState, setDataState] = useState<ImageType[]>(
+    images.length ? images : [newObj]
   );
 
   const addHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-
     if (ref.current) {
       ref.current.click();
     }
@@ -42,12 +41,16 @@ const UpsertImage: React.FunctionComponent<Props> = ({ images, id }) => {
     id: number
   ) => {
     e.preventDefault();
-    setDataState((prevState) => prevState.filter((item) => item.id !== id));
+    const prevState = dataState.filter((item) => item.id !== id);
+    if (prevState.length) {
+      setDataState(prevState);
+    } else {
+      setDataState([newObj]);
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    console.log("fired");
     if (e.currentTarget.files) {
       const selectedFile = e.currentTarget.files[0];
       const fileObj: ImageType = {
@@ -57,23 +60,14 @@ const UpsertImage: React.FunctionComponent<Props> = ({ images, id }) => {
         url: selectedFile,
         productId: id,
       };
+
       setDataState((prevState) => [...prevState, fileObj]);
-      // Do something with the selected file
-      // console.log("Selected file:", selectedFile);
     }
   };
-
-  console.log("dataState", dataState);
-
+  //  btn click fires the onChange handler via useRef
   return (
     <>
       <div className={styles.wrap}>
-        {/* <input
-          type="file"
-          ref={ref}
-          style={{ display: "none" }}
-          onChange={handleFileChange}
-        /> */}
         <button onClick={addHandler}>Add image</button>
 
         {dataState.map((item) => {
@@ -82,18 +76,23 @@ const UpsertImage: React.FunctionComponent<Props> = ({ images, id }) => {
             typeof url === "string" ? url : URL.createObjectURL(url);
           return (
             <span key={id}>
-              <Image src={currentUrl} alt="asdasd" width={400} height={400} />
+              {url !== "" && (
+                <Image src={currentUrl} alt="image" width={400} height={400} />
+              )}
+
               <input
                 type="file"
-                name="image"
-                id="image"
+                name={`image__${id}`}
+                id={`image__${id}`}
                 ref={ref}
                 style={{ display: "none" }}
                 onChange={handleFileChange}
               />
-              <button onClick={(e) => removeHandler(e, id)}>
-                remove image
-              </button>
+              {url && (
+                <button onClick={(e) => removeHandler(e, id)}>
+                  remove image
+                </button>
+              )}
             </span>
           );
         })}
