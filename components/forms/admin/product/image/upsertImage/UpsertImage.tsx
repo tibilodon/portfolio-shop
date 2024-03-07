@@ -22,8 +22,6 @@ const UpsertImage: React.FunctionComponent<Props> = ({ images, id }) => {
     url: "",
     productId: id,
   };
-  const [files, setFiles] = useState<FileList | null>(null);
-  const [fileCounter, setFileCounter] = useState(images.length);
 
   const [dataState, setDataState] = useState<ImageType[]>(
     images.length ? images : [newObj]
