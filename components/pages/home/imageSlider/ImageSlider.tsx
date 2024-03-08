@@ -28,7 +28,9 @@ const ImageSlider: React.FunctionComponent<Props> = ({ data }) => {
     if (!freeze) {
       const intervalId = setInterval(() => {
         if (data && localValue() !== data.length - 1) {
-          setHighlightData(data[value]);
+          if (data[value].images.length) {
+            setHighlightData(data[value]);
+          }
         } else {
           setHighlightData(data[0]);
         }
