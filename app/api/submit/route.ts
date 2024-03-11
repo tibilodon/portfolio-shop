@@ -10,7 +10,7 @@ import {
   orderTemplate,
   fromCookieToDbData,
 } from "@/utils/helpers";
-import sendEmail from "@/utils/sendEmail";
+import { sendEmail } from "@/utils/sendEmail";
 import prisma from "@/prisma/prismaClient";
 
 export async function POST(request: NextRequest) {

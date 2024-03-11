@@ -1,4 +1,5 @@
 "use client";
+import { SessionProvider } from "next-auth/react";
 import {
   createContext,
   useContext,
@@ -105,27 +106,29 @@ export default function AppContextProvider({ children }: ProviderProps) {
   // }, []);
 
   return (
-    <AppContext.Provider
-      value={{
-        sidebar,
-        setSidebar,
-        sidebarLayer,
-        setSidebarLayer,
-        sidebarLayer2,
-        setSidebarLayer2,
-        animate,
-        setAnimate,
-        header,
-        setHeader,
-        prevHeader,
-        setPrevHeader,
-        cart,
-        setCart,
-        // cartItems,
-        // setCartItems,
-      }}
-    >
-      <>{children}</>
-    </AppContext.Provider>
+    <SessionProvider>
+      <AppContext.Provider
+        value={{
+          sidebar,
+          setSidebar,
+          sidebarLayer,
+          setSidebarLayer,
+          sidebarLayer2,
+          setSidebarLayer2,
+          animate,
+          setAnimate,
+          header,
+          setHeader,
+          prevHeader,
+          setPrevHeader,
+          cart,
+          setCart,
+          // cartItems,
+          // setCartItems,
+        }}
+      >
+        <>{children}</>
+      </AppContext.Provider>
+    </SessionProvider>
   );
 }
