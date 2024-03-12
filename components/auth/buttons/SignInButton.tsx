@@ -13,10 +13,10 @@ const SignInButton = (props: Props) => {
       <div className={styles.wrap}>
         {session && session.user ? (
           <>
-            <span>
+            <Link href={"/auth/profile"}>
               <h3>name:</h3>
               <p>{session?.user?.name}</p>
-            </span>
+            </Link>
             <Link href={"/api/auth/signout"}>sign out</Link>
           </>
         ) : (
