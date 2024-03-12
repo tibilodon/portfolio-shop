@@ -15,7 +15,7 @@ export default async function SignIn({ searchParams }: Props) {
       {/* <SignInButton /> */}
       <span>
         <SignInForm callbackUrl={searchParams.callbackUrl} />
-        <Link href={"/auth/forgotPass"}>Forgot your pass?</Link>{" "}
+        <Link href={"/auth/forgotPassword"}>Forgot your pass?</Link>{" "}
       </span>
     </>
   );

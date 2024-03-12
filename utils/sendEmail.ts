@@ -170,4 +170,24 @@ const sendVerificationEmail = async ({
     console.log(error);
   }
 };
+const sendResetPasswordEmail = async ({
+  to,
+  subject,
+  body,
+}: {
+  to: string;
+  subject: string;
+  body: string;
+}) => {
+  try {
+    const sendEmail = await transporter.sendMail({
+      from: tt,
+      to,
+      subject,
+      html: body,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 export { sendEmail, sendVerificationEmail };

@@ -6,6 +6,7 @@ export default async function Login() {
     <>
       <h1>loginPage</h1>
       <h5>already a member?</h5>
+      <Link href={"/auth/signin"}>LOG IN</Link>
       <SignInButton />
       <SignUpForm />
     </>

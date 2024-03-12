@@ -50,6 +50,11 @@ export const OPTIONS: AuthOptions = {
         if (!isPasswordCorrect) {
           throw new Error("user or pw is incorrect");
         }
+
+        //  verify email
+        if (!user.emailVerified) {
+          throw new Error("please verify your email first");
+        }
         //  pw match => return user obj without PW
         const { password, ...userWithoutPass } = user;
         return userWithoutPass;

@@ -2,7 +2,7 @@
 import styles from "./signInForm.module.css";
 import { z } from "zod";
 import { useFormState, useFormStatus } from "react-dom";
-import { signInUser } from "@/utils/actions";
+// import { signInUser } from "@/utils/actions";
 import { useState } from "react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
@@ -41,7 +41,7 @@ type InputType = z.infer<typeof ZSchema>;
 //  --client side sign in--
 const SignInForm: React.FunctionComponent<Props> = ({ callbackUrl }) => {
   const router = useRouter();
-  const [state, formAction] = useFormState(signInUser, initialState);
+  // const [state, formAction] = useFormState(signInUser, initialState);
   const [isVisiblePw, setIsVisiblePw] = useState<boolean>(false);
   const handleToggle = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();

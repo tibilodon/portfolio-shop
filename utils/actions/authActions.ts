@@ -4,6 +4,8 @@ import prisma from "@/prisma/prismaClient";
 import * as bcrypt from "bcrypt";
 import { sendVerificationEmail } from "../sendEmail";
 import { verifyTemplate } from "../emailTemplate/activation";
+import { signJwt, verifyJwt } from "../jwt";
+import { forgotPassTemplate } from "../emailTemplate/forgotPass";
 // import { signIn } from "next-auth/react";
 
 export type ErrorType = {
@@ -95,7 +97,12 @@ export async function createUser(prevState: ErrorType, formData: FormData) {
     console.log("user registered:", registerUser);
   }
 
-  const activationUrl = `${process.env.NEXTAUTH_URL}/auth/activation/${registerUser.id}`;
+  //  jwt
+  const jwtUserId = signJwt({
+    id: registerUser.id,
+  });
+
+  const activationUrl = `${process.env.NEXTAUTH_URL}/auth/activation/${jwtUserId}`;
   await sendVerificationEmail({
     to: registerUser.email,
     subject: "please verify email",
@@ -110,21 +117,109 @@ export async function createUser(prevState: ErrorType, formData: FormData) {
   };
 }
 
-export async function signInUser(prevState: ErrorType, formData: FormData) {
-  //   const res = await signIn("credentials", {
-  //     redirect: false,
-  //     username: formData.get("name"),
-  //     password: formData.get("password"),
-  //   });
-  //   if (!res?.ok) {
-  //     console.log("error from @signInUser", res?.error);
-  //     return {
-  //       message: "error @ signInUser action",
-  //       field: "na",
-  //     };
-  //   }
-  return {
-    message: "",
-    field: "",
-  };
+// export async function signInUser(prevState: ErrorType, formData: FormData) {
+//   //   const res = await signIn("credentials", {
+//   //     redirect: false,
+//   //     username: formData.get("name"),
+//   //     password: formData.get("password"),
+//   //   });
+//   //   if (!res?.ok) {
+//   //     console.log("error from @signInUser", res?.error);
+//   //     return {
+//   //       message: "error @ signInUser action",
+//   //       field: "na",
+//   //     };
+//   //   }
+//   return {
+//     message: "",
+//     field: "",
+//   };
+// }
+
+type ActivateUserFunc = (
+  jwtUserId: string
+) => Promise<"userNotExist" | "alreadyActivated" | "success">;
+
+export const activateUser: ActivateUserFunc = async (jwtUserId) => {
+  const payload = verifyJwt(jwtUserId);
+  const userId = payload?.id;
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+  if (!user) {
+    return "userNotExist";
+  }
+  if (user.emailVerified) {
+    return "alreadyActivated";
+  }
+
+  //  otherwise
+  const result = await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      emailVerified: new Date(),
+    },
+  });
+  return "success";
+};
+
+export async function forgotPassword(email: string) {
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (!user) {
+    throw new Error("the user does not exist");
+  }
+  const jwtUserId = signJwt({
+    id: user.id,
+  });
+  const resetPassUrl = `${process.env.NEXTAUTH_URL}/auth/resetPassword/${jwtUserId}`;
+  const result = await sendVerificationEmail({
+    to: user.email,
+    subject: "please verify email",
+    body: forgotPassTemplate(user.name, resetPassUrl),
+  });
+  return result;
 }
+
+type ResetPasswordFunc = (
+  jwtUserId: string,
+  password: string
+) => Promise<"userNotExist" | "success">;
+
+export const resetPassword: ResetPasswordFunc = async (jwtUserId, password) => {
+  const payload = verifyJwt(jwtUserId);
+  if (!payload) {
+    return "userNotExist";
+  }
+  const userId = payload.id;
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+
+  if (!user) {
+    return "userNotExist";
+  }
+  const result = await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      password: await bcrypt.hash(password, 10),
+    },
+  });
+  if (result) {
+    return "success";
+  } else {
+    throw new Error("error @ resetPassword--server action");
+  }
+};

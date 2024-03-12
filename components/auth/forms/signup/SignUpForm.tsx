@@ -47,7 +47,7 @@ const SignUpForm = (props: Props) => {
 
     return (
       <button type="submit" aria-disabled={pending}>
-        see pw
+        submit
       </button>
     );
   }
