@@ -261,6 +261,10 @@ export async function editProductAction(productId: number, formData: FormData) {
 
       variantArray.push(obj);
     }
+    //  exclude image "pair"-- eg.:"image__01"
+    else {
+      console.log("pairs", pair);
+    }
   }
 
   //organize variants data if any
@@ -361,7 +365,7 @@ export async function editProductAction(productId: number, formData: FormData) {
   const deleteElements = images?.filter(
     (item) => !imagesRemaining.includes(item.id)
   );
-  //  TODO: delete from db
+  //  delete from db
   if (deleteElements?.length) {
     await Promise.all(
       deleteElements.map(async (item) => {
@@ -389,6 +393,8 @@ export async function editProductAction(productId: number, formData: FormData) {
       console.log("error @img delete", deleteImgError);
     }
   }
+
+  // TODO: edit basic product details
 
   redirect("/admin/product");
 }

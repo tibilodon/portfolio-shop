@@ -19,7 +19,7 @@ const Navbar: React.FunctionComponent = () => {
         </span>
         <div className={styles.items}>
           {/*v2 only*/}
-          <Link href={"/auth/signup"}>
+          <Link href={"/auth/profile"}>
             <Image
               height={25}
               width={25}

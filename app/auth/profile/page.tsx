@@ -2,6 +2,8 @@ import { OPTIONS } from "@/app/api/auth/[...nextauth]/route";
 import SignInButton from "@/components/auth/buttons/SignInButton";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import Link from "next/link";
+import SignOutBtn from "@/components/auth/buttons/signOut/SignOutBtn";
 
 //  keeping it server
 type UserType = {
@@ -31,6 +33,12 @@ export default async function Profile() {
       <h4>name: {user?.name}</h4>
       <h4>phone: {user?.phone}</h4>
       <h4>email: {user?.email}</h4>
+      <h4>role: {user?.role}</h4>
+
+      {/* <Link href={"/api/auth/signout"}>
+        <h1>sign out</h1>
+      </Link> */}
+      <SignOutBtn />
 
       {/* <SignInButton /> */}
     </>
