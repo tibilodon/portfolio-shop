@@ -249,6 +249,7 @@ export async function editProductAction(productId: number, formData: FormData) {
   const images = product?.images;
 
   const variantArray = [];
+  const baseData: { [key: string]: string } = {};
   for (const pair of Array.from(formData.entries())) {
     //  modify key
     const regexPattern = /^(\w+)__(\d+)__(\w+)$/;
@@ -263,7 +264,9 @@ export async function editProductAction(productId: number, formData: FormData) {
     }
     //  exclude image "pair"-- eg.:"image__01"
     else {
-      console.log("pairs", pair);
+      if (!pair[0].includes("__")) {
+        baseData[String(pair[0])] = String(pair[1]);
+      }
     }
   }
 
@@ -290,10 +293,20 @@ export async function editProductAction(productId: number, formData: FormData) {
     // //  upsert variants
     await upsertVariant(mergedData, productId);
 
+    //  TODO: if variantArray is empty--> delete needed
+    console.log("delete variants", variantArray);
     //  delete variants if any
     if (deleteAbleVariants) {
       await deleteVariants(deleteAbleVariants);
     }
+  }
+  //  variantArray.length < 0, therefore all variants needs to be deleted
+  else {
+    await prisma.producVariant.deleteMany({
+      where: {
+        productId,
+      },
+    });
   }
 
   const files = Array.from(formData.keys())
@@ -395,8 +408,23 @@ export async function editProductAction(productId: number, formData: FormData) {
   }
 
   // TODO: edit basic product details
+  const baseUpdate = await prisma.product.update({
+    where: {
+      id: productId,
+    },
+    data: {
+      name: baseData?.name,
+      description: baseData?.description,
+      price: Number(baseData?.price),
+      stock: Number(baseData?.stock),
+      highlighted: Boolean(baseData?.highlighted),
+    },
+  });
 
-  redirect("/admin/product");
+  if (baseUpdate) {
+    redirect("/admin/product");
+  }
+  throw new Error("error @ update");
 }
 
 export type Variant = {
@@ -409,19 +437,24 @@ export type Variant = {
   productId: number;
 };
 
-export const deleteVariants = async (variants: Variant[]) => {
-  try {
-    const promises = variants.map(async (item) => {
-      const { id } = item;
-      await prisma.producVariant.delete({
-        where: {
-          id: id,
-        },
+export const deleteVariants = async (variants?: Variant[]) => {
+  console.log("delete variants variants", variants);
+  if (variants) {
+    try {
+      const promises = variants.map(async (item) => {
+        const { id } = item;
+        await prisma.producVariant.delete({
+          where: {
+            id: id,
+          },
+        });
       });
-    });
-    await Promise.all(promises);
-  } catch (error) {
-    console.log("error @ deleting variants", error);
+      await Promise.all(promises);
+    } catch (error) {
+      console.log("error @ deleting variants", error);
+    }
+  } else {
+    await prisma.producVariant.deleteMany({});
   }
 };
 
